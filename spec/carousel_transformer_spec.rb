@@ -441,8 +441,8 @@ RSpec.describe Markawesome::CarouselTransformer do
         result = described_class.transform(input)
 
         expect(result.scan(/<wa-carousel\s/).length).to eq(2)
-        expect(result.scan(/<wa-carousel navigation/).length).to eq(1)
-        expect(result.scan(/slides-per-page="3"/).length).to eq(1)
+        expect(result.scan('<wa-carousel navigation').length).to eq(1)
+        expect(result.scan('slides-per-page="3"').length).to eq(1)
         expect(result).to include('Slide A1')
         expect(result).to include('Slide B1')
       end
@@ -519,7 +519,7 @@ RSpec.describe Markawesome::CarouselTransformer do
 
         expect(result).to include('<wa-carousel>')
         expect(result).to include('Only slide')
-        expect(result.scan(/<wa-carousel-item>/).length).to eq(1)
+        expect(result.scan('<wa-carousel-item>').length).to eq(1)
       end
 
       it 'handles empty slide content' do
@@ -536,7 +536,7 @@ RSpec.describe Markawesome::CarouselTransformer do
         result = described_class.transform(input)
 
         expect(result).to include('<wa-carousel>')
-        expect(result.scan(/<wa-carousel-item>/).length).to eq(2)
+        expect(result.scan('<wa-carousel-item>').length).to eq(2)
       end
 
       it 'preserves content outside carousel blocks' do

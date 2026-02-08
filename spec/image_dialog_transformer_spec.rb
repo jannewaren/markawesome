@@ -128,7 +128,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
 
         result = described_class.transform(input)
 
-        expect(result.scan(/\?\?\?/).length).to eq(4) # 2 opening + 2 closing
+        expect(result.scan('???').length).to eq(4) # 2 opening + 2 closing
         expect(result).to include('image1.png')
         expect(result).to include('image2.jpg')
         expect(result).to include('Some text here.')
@@ -143,7 +143,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
 
         result = described_class.transform(input)
 
-        expect(result.scan(/\?\?\?/).length).to eq(4) # 2 images * 2 markers
+        expect(result.scan('???').length).to eq(4) # 2 images * 2 markers
         expect(result).to include('![Skip this](image2.png "nodialog")') # Original unchanged
       end
     end
@@ -217,7 +217,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
         result = described_class.transform(input)
 
         # Real images should be transformed (2 images = 4 markers)
-        expect(result.scan(/\?\?\?/).length).to eq(4)
+        expect(result.scan('???').length).to eq(4)
 
         # Code block should remain unchanged
         expect(result).to include('```markdown')
@@ -347,7 +347,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
         result = described_class.transform(input)
 
         # Standalone images should be transformed
-        expect(result.scan(/\?\?\?/).length).to eq(4) # 2 images * 2 markers
+        expect(result.scan('???').length).to eq(4) # 2 images * 2 markers
         expect(result).to include('standalone.png')
         expect(result).to include('another.png')
 
@@ -374,7 +374,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
         result = described_class.transform(input)
 
         # Standalone images should be transformed (2 images = 4 markers)
-        expect(result.scan(/\?\?\?/).length).to eq(4)
+        expect(result.scan('???').length).to eq(4)
 
         # Comparison markdown should remain unchanged
         expect(result).to include('|||')
@@ -402,7 +402,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
         expect(result).to include('img2.jpg')
         expect(result).to include('img3.jpg')
         expect(result).to include('img4.jpg')
-        expect(result.scan(/<wa-comparison/).length).to eq(2)
+        expect(result.scan('<wa-comparison').length).to eq(2)
         # No dialog syntax should be added
         expect(result).not_to include('???')
       end
