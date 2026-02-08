@@ -18,11 +18,11 @@ module Markawesome
 
       tokens.each do |token|
         attribute_schema.each do |attr_name, allowed_values|
-          if allowed_values.include?(token)
-            # Rightmost-wins: latest value for this attribute wins
-            parsed[attr_name] = token
-            break # Move to next token once we've matched it
-          end
+          next unless allowed_values.include?(token)
+
+          # Rightmost-wins: latest value for this attribute wins
+          parsed[attr_name] = token
+          break # Move to next token once we've matched it
         end
         # Tokens that don't match any attribute are silently ignored
       end
