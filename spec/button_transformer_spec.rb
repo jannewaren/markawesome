@@ -161,9 +161,9 @@ RSpec.describe Markawesome::ButtonTransformer do
     end
 
     context 'with invalid syntax' do
-      it 'ignores invalid variant names' do
+      it 'ignores invalid attribute names and creates button' do
         input = "%%%invalid\nContent\n%%%"
-        expected = "%%%invalid\nContent\n%%%"
+        expected = '<wa-button>Content</wa-button>'
 
         result = described_class.transform(input)
         expect(result).to eq(expected)
@@ -224,6 +224,320 @@ RSpec.describe Markawesome::ButtonTransformer do
       it 'handles relative URLs' do
         input = "%%%\n[Local Link](/path/to/page)\n%%%"
         expected = '<wa-button href="/path/to/page">Local Link</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with appearance attribute' do
+      it 'transforms button with accent appearance' do
+        input = "%%%accent\nClick me\n%%%"
+        expected = '<wa-button appearance="accent">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with filled appearance' do
+        input = "%%%filled\nClick me\n%%%"
+        expected = '<wa-button appearance="filled">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with outlined appearance' do
+        input = "%%%outlined\nClick me\n%%%"
+        expected = '<wa-button appearance="outlined">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with filled-outlined appearance' do
+        input = "%%%filled-outlined\nClick me\n%%%"
+        expected = '<wa-button appearance="filled-outlined">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with plain appearance' do
+        input = "%%%plain\nClick me\n%%%"
+        expected = '<wa-button appearance="plain">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines variant and appearance' do
+        input = "%%%brand filled\nClick me\n%%%"
+        expected = '<wa-button variant="brand" appearance="filled">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'handles appearance in any order' do
+        input = "%%%filled brand\nClick me\n%%%"
+        expected = '<wa-button variant="brand" appearance="filled">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with size attribute' do
+      it 'transforms button with small size' do
+        input = "%%%small\nClick me\n%%%"
+        expected = '<wa-button size="small">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with medium size' do
+        input = "%%%medium\nClick me\n%%%"
+        expected = '<wa-button size="medium">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with large size' do
+        input = "%%%large\nClick me\n%%%"
+        expected = '<wa-button size="large">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines variant and size' do
+        input = "%%%brand large\nClick me\n%%%"
+        expected = '<wa-button variant="brand" size="large">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'handles size in any order' do
+        input = "%%%large brand\nClick me\n%%%"
+        expected = '<wa-button variant="brand" size="large">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with pill attribute' do
+      it 'transforms button with pill' do
+        input = "%%%pill\nClick me\n%%%"
+        expected = '<wa-button pill>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines variant and pill' do
+        input = "%%%brand pill\nClick me\n%%%"
+        expected = '<wa-button variant="brand" pill>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines pill with size' do
+        input = "%%%pill large\nClick me\n%%%"
+        expected = '<wa-button size="large" pill>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'handles pill in any order' do
+        input = "%%%large brand pill\nClick me\n%%%"
+        expected = '<wa-button variant="brand" size="large" pill>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with caret attribute' do
+      it 'transforms button with caret' do
+        input = "%%%caret\nClick me\n%%%"
+        expected = '<wa-button with-caret>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines variant and caret' do
+        input = "%%%brand caret\nClick me\n%%%"
+        expected = '<wa-button variant="brand" with-caret>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines caret with size' do
+        input = "%%%small caret\nClick me\n%%%"
+        expected = '<wa-button size="small" with-caret>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with loading attribute' do
+      it 'transforms button with loading' do
+        input = "%%%loading\nClick me\n%%%"
+        expected = '<wa-button loading>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines variant and loading' do
+        input = "%%%brand loading\nClick me\n%%%"
+        expected = '<wa-button variant="brand" loading>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines loading with size' do
+        input = "%%%large loading\nClick me\n%%%"
+        expected = '<wa-button size="large" loading>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with disabled attribute' do
+      it 'transforms button with disabled' do
+        input = "%%%disabled\nClick me\n%%%"
+        expected = '<wa-button disabled>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines variant and disabled' do
+        input = "%%%brand disabled\nClick me\n%%%"
+        expected = '<wa-button variant="brand" disabled>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines disabled with link button' do
+        input = "%%%disabled brand\n[Link](https://example.com)\n%%%"
+        expected = '<wa-button variant="brand" disabled href="https://example.com">Link</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with complex attribute combinations' do
+      it 'combines variant, appearance, size, and pill' do
+        input = "%%%brand filled large pill\nClick me\n%%%"
+        expected = '<wa-button variant="brand" appearance="filled" size="large" pill>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines multiple attributes in any order' do
+        input = "%%%pill success small outlined\nClick me\n%%%"
+        expected = '<wa-button variant="success" appearance="outlined" size="small" pill>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines all possible attributes' do
+        input = "%%%danger filled large pill caret loading disabled\nClick me\n%%%"
+        expected = '<wa-button variant="danger" appearance="filled" size="large" pill with-caret loading disabled>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'uses rightmost-wins for duplicate attributes' do
+        input = "%%%small large\nClick me\n%%%"
+        expected = '<wa-button size="large">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with alternative syntax and new attributes' do
+      it 'transforms with appearance using alternative syntax' do
+        input = ":::wa-button brand filled\nClick me\n:::"
+        expected = '<wa-button variant="brand" appearance="filled">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms with size using alternative syntax' do
+        input = ":::wa-button large\nClick me\n:::"
+        expected = '<wa-button size="large">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms with pill using alternative syntax' do
+        input = ":::wa-button pill brand\nClick me\n:::"
+        expected = '<wa-button variant="brand" pill>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms with all attributes using alternative syntax' do
+        input = ":::wa-button success outlined small pill caret\nClick me\n:::"
+        expected = '<wa-button variant="success" appearance="outlined" size="small" pill with-caret>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with link buttons and new attributes' do
+      it 'applies size to link buttons' do
+        input = "%%%large\n[Link](https://example.com)\n%%%"
+        expected = '<wa-button size="large" href="https://example.com">Link</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'applies appearance to link buttons' do
+        input = "%%%filled\n[Link](https://example.com)\n%%%"
+        expected = '<wa-button appearance="filled" href="https://example.com">Link</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'applies pill to link buttons' do
+        input = "%%%pill brand\n[Download](https://example.com/file.zip)\n%%%"
+        expected = '<wa-button variant="brand" pill href="https://example.com/file.zip">Download</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'applies multiple attributes to link buttons' do
+        input = "%%%success outlined small pill\n[Get Started](https://example.com/start)\n%%%"
+        expected = '<wa-button variant="success" appearance="outlined" size="small" pill href="https://example.com/start">Get Started</wa-button>'
 
         result = described_class.transform(input)
         expect(result).to eq(expected)
