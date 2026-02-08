@@ -1,25 +1,57 @@
 # frozen_string_literal: true
 
 require_relative 'base_transformer'
+require_relative '../attribute_parser'
 
 module Markawesome
   # Transforms tabs syntax into wa-tab-group elements
-  # Primary syntax: ++++++placement?\n+++tab1\ncontent\n+++\n+++tab2\ncontent\n+++\n++++++
-  # Alternative syntax: :::wa-tabs placement?\n+++tab1\ncontent\n+++\n+++tab2\ncontent\n+++\n:::
-  # Placements: top (default), bottom, start, end
+  # Primary syntax: ++++++[attributes]\n+++tab1\ncontent\n+++\n+++tab2\ncontent\n+++\n++++++
+  # Alternative syntax: :::wa-tab-group [attributes]\n+++tab1\ncontent\n+++\n+++tab2\ncontent\n+++\n:::
+  # Attributes:
+  #   - placement: top (default), bottom, start, end
+  #   - activation: auto (default), manual
+  #   - active: panel name to show initially (e.g., "general", "tab-2")
+  #   - no-scroll-controls: disables scroll arrows
   class TabsTransformer < BaseTransformer
+    COMPONENT_ATTRIBUTES = {
+      placement: %w[top bottom start end],
+      activation: %w[auto manual]
+    }.freeze
     def self.transform(content)
       # Define both regex patterns
-      primary_regex = /^\+{6}(top|bottom|start|end)?\n((\+\+\+ [^\n]+\n.*?\n\+\+\+\n?)+)\+{6}/m
-      alternative_regex = /^:::wa-tabs\s*(top|bottom|start|end)?\n((\+\+\+ [^\n]+\n.*?\n\+\+\+\n?)+):::/m
+      # Captures optional attributes (placement, activation, active, no-scroll-controls)
+      primary_regex = /^\+{6}([^\n]*)\n((\+\+\+ [^\n]+\n.*?\n\+\+\+\n?)+)\+{6}/m
+      alternative_regex = /^:::wa-tab-group\s*([^\n]*)\n((\+\+\+ [^\n]+\n.*?\n\+\+\+\n?)+):::/m
 
       # Define shared transformation logic
-      transform_proc = proc do |placement, tabs_block, _third_capture|
-        placement ||= 'top'
+      transform_proc = proc do |params_string, tabs_block, _third_capture|
+        # Parse attributes using AttributeParser
+        attributes = AttributeParser.parse(params_string.to_s.strip, COMPONENT_ATTRIBUTES)
+
+        # Extract boolean flags
+        no_scroll_controls = params_string.to_s.include?('no-scroll-controls')
+
+        # Extract active panel name (any token that's not a placement or activation)
+        active_panel = nil
+        params_string.to_s.split.each do |token|
+          next if COMPONENT_ATTRIBUTES[:placement].include?(token)
+          next if COMPONENT_ATTRIBUTES[:activation].include?(token)
+          next if token == 'no-scroll-controls'
+
+          active_panel = token
+          break
+        end
 
         tabs, tab_panels = extract_tabs_and_panels(tabs_block)
 
-        "<wa-tab-group placement=\"#{placement}\">#{tabs.join}#{tab_panels.join}</wa-tab-group>"
+        # Build HTML attributes
+        html_attrs = []
+        html_attrs << "placement=\"#{attributes[:placement] || 'top'}\""
+        html_attrs << "activation=\"#{attributes[:activation]}\"" if attributes[:activation]
+        html_attrs << "active=\"#{active_panel}\"" if active_panel
+        html_attrs << 'without-scroll-controls' if no_scroll_controls
+
+        "<wa-tab-group #{html_attrs.join(' ')}>#{tabs.join}#{tab_panels.join}</wa-tab-group>"
       end
 
       # Apply both patterns
