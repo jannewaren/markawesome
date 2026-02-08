@@ -1,26 +1,34 @@
 # frozen_string_literal: true
 
 require_relative 'base_transformer'
+require_relative '../attribute_parser'
 
 module Markawesome
   # Transforms card syntax into wa-card elements
-  # Primary syntax: ===appearance?\ncontent\n===
-  # Alternative syntax: :::wa-card appearance?\ncontent\n:::
-  # Appearances: outlined (default), filled, filled-outlined, plain, accent
+  # Primary syntax: ===params?\ncontent\n===
+  # Alternative syntax: :::wa-card params?\ncontent\n:::
+  # Supported attributes:
+  #   appearance: outlined (default), filled, filled-outlined, plain, accent
+  #   orientation: vertical (default), horizontal
   class CardTransformer < BaseTransformer
+    CARD_ATTRIBUTES = {
+      appearance: %w[outlined filled filled-outlined plain accent],
+      orientation: %w[vertical horizontal]
+    }.freeze
+
     def self.transform(content)
-      # Define both regex patterns
-      primary_regex = /^===(outlined|filled|filled-outlined|plain|accent)?\n(.*?)\n===/m
-      alternative_regex = /^:::wa-card\s*(outlined|filled|filled-outlined|plain|accent)?\n(.*?)\n:::/m
+      # Define both regex patterns - capture any params
+      primary_regex = /^===([^\n]*)\n(.*?)\n===/m
+      alternative_regex = /^:::wa-card\s*([^\n]*)\n(.*?)\n:::/m
 
       # Define shared transformation logic
-      transform_proc = proc do |appearance_param, card_content|
+      transform_proc = proc do |params_string, card_content|
         card_content = card_content.strip
 
-        appearance = normalize_appearance(appearance_param)
+        attributes = AttributeParser.parse(params_string, CARD_ATTRIBUTES)
         card_parts = parse_card_content(card_content)
 
-        build_card_html(card_parts, appearance)
+        build_card_html(card_parts, attributes)
       end
 
       # Apply both patterns
@@ -30,15 +38,6 @@ module Markawesome
 
     class << self
       private
-
-      def normalize_appearance(appearance_param)
-        case appearance_param
-        when 'filled', 'filled-outlined', 'plain', 'accent'
-          appearance_param
-        else
-          'outlined' # default
-        end
-      end
 
       def parse_card_content(content)
         parts = {
@@ -81,16 +80,21 @@ module Markawesome
         parts
       end
 
-      def build_card_html(parts, appearance)
-        attributes = []
-        attributes << "appearance=\"#{appearance}\"" if appearance != 'outlined'
+      def build_card_html(parts, attributes)
+        # Extract appearance and orientation from attributes
+        appearance = attributes[:appearance] || 'outlined'
+        orientation = attributes[:orientation] || 'vertical'
+
+        html_attrs = []
+        html_attrs << "appearance=\"#{appearance}\"" if appearance != 'outlined'
+        html_attrs << "orientation=\"#{orientation}\"" if orientation != 'vertical'
 
         # Add SSR attributes if slots are present
-        attributes << 'with-media' if parts[:media]
-        attributes << 'with-header' if parts[:header]
-        attributes << 'with-footer' if parts[:footer]
+        html_attrs << 'with-media' if parts[:media]
+        html_attrs << 'with-header' if parts[:header]
+        html_attrs << 'with-footer' if parts[:footer]
 
-        attr_string = attributes.empty? ? '' : " #{attributes.join(' ')}"
+        attr_string = html_attrs.empty? ? '' : " #{html_attrs.join(' ')}"
 
         html_parts = []
 
