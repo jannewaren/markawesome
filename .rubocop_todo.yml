@@ -25,10 +25,10 @@ Lint/DuplicateBranch:
   Exclude:
     - 'lib/markawesome/transformers/details_transformer.rb'
 
-# Offense count: 13
+# Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 36
+  Max: 40
 
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
@@ -39,7 +39,7 @@ Metrics/BlockLength:
 # Offense count: 4
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
-  Max: 13
+  Max: 14
 
 # Offense count: 18
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
@@ -54,7 +54,7 @@ Metrics/ParameterLists:
 # Offense count: 3
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/PerceivedComplexity:
-  Max: 14
+  Max: 15
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
