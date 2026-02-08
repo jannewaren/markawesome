@@ -28,8 +28,8 @@ module Markawesome
         details_html = markdown_to_html(details_content)
 
         "<wa-details appearance='#{appearance_class}' icon-placement='#{icon_placement}'>" \
-        "<span slot='summary'>#{summary_html}</span>" \
-        "#{details_html}</wa-details>"
+          "<span slot='summary'>#{summary_html}</span>" \
+          "#{details_html}</wa-details>"
       end
 
       # Apply both patterns

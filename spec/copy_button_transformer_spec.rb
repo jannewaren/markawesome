@@ -107,7 +107,7 @@ RSpec.describe Markawesome::CopyButtonTransformer do
 
       it 'transforms multiple copy buttons' do
         input = "<<<\nFirst copy\n<<<\n\n<<<\nSecond copy\n<<<"
-        expected = '<wa-copy-button value="First copy"></wa-copy-button>' + "\n\n" + '<wa-copy-button value="Second copy"></wa-copy-button>'
+        expected = "<wa-copy-button value=\"First copy\"></wa-copy-button>\n\n<wa-copy-button value=\"Second copy\"></wa-copy-button>"
 
         result = described_class.transform(input)
         expect(result).to eq(expected)

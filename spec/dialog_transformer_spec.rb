@@ -454,7 +454,7 @@ RSpec.describe Markawesome::DialogTransformer do
 
         result = described_class.transform(input)
 
-        expect(result.scan(/<p>/).length).to be >= 3
+        expect(result.scan('<p>').length).to be >= 3
       end
     end
 

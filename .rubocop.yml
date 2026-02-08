@@ -1,0 +1,40 @@
+# RuboCop configuration for markawesome
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.0
+  Exclude:
+    - 'vendor/**/*'
+
+# Disable block length checks in specs - they naturally have long blocks
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+# Disable line length checks in specs - examples often have long strings
+Layout/LineLength:
+  Exclude:
+    - 'spec/**/*'
+
+# Allow longer methods in specs for setup/teardown
+Metrics/MethodLength:
+  Exclude:
+    - 'spec/**/*'
+
+# Allow more complexity in spec files
+Metrics/AbcSize:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'spec/**/*'
+
+# Allow numbered variables in specs (common for test cases)
+Naming/VariableNumber:
+  Exclude:
+    - 'spec/**/*'
