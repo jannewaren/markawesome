@@ -2,7 +2,7 @@
 
 RSpec.describe Markawesome::CalloutTransformer do
   describe '.transform' do
-    it 'transforms info callouts' do
+    it 'transforms info callouts (alias for brand)' do
       markdown = ":::info\nThis is info\n:::"
       result = described_class.transform(markdown)
 
@@ -10,6 +10,14 @@ RSpec.describe Markawesome::CalloutTransformer do
       expect(result).to include('<wa-icon slot="icon" name="circle-info" variant="solid"></wa-icon>')
       expect(result).to include('<p>This is info</p>')
       expect(result).to include('</wa-callout>')
+    end
+
+    it 'transforms brand callouts' do
+      markdown = ":::brand\nThis is brand\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-callout variant="brand">')
+      expect(result).to include('<wa-icon slot="icon" name="circle-info" variant="solid"></wa-icon>')
     end
 
     it 'transforms success callouts' do
@@ -42,6 +50,27 @@ RSpec.describe Markawesome::CalloutTransformer do
 
       expect(result).to include('<wa-callout variant="neutral">')
       expect(result).to include('<wa-icon slot="icon" name="gear" variant="solid"></wa-icon>')
+    end
+
+    it 'supports size attribute' do
+      markdown = ":::info small\nThis is small\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-callout variant="brand" size="small">')
+    end
+
+    it 'supports appearance attribute' do
+      markdown = ":::info accent\nThis is accent\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-callout variant="brand" appearance="accent">')
+    end
+
+    it 'supports size and appearance together' do
+      markdown = ":::warning large filled-outlined\nContent\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-callout variant="warning" appearance="filled-outlined" size="large">')
     end
 
     it 'does not transform invalid callout types' do
