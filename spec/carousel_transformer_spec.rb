@@ -177,6 +177,41 @@ RSpec.describe Markawesome::CarouselTransformer do
         expect(result).to include('<wa-carousel autoplay>')
       end
 
+      it 'transforms carousel with autoplay-interval parameter' do
+        input = <<~MARKDOWN
+          ~~~~~~autoplay-interval:5000
+          ~~~
+          Slide 1
+          ~~~
+          ~~~
+          Slide 2
+          ~~~
+          ~~~~~~
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('autoplay-interval="5000"')
+      end
+
+      it 'transforms carousel with autoplay and autoplay-interval parameters' do
+        input = <<~MARKDOWN
+          ~~~~~~autoplay autoplay-interval:2000
+          ~~~
+          Slide 1
+          ~~~
+          ~~~
+          Slide 2
+          ~~~
+          ~~~~~~
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('autoplay')
+        expect(result).to include('autoplay-interval="2000"')
+      end
+
       it 'transforms carousel with mouse-dragging parameter' do
         input = <<~MARKDOWN
           ~~~~~~mouse-dragging
@@ -357,7 +392,7 @@ RSpec.describe Markawesome::CarouselTransformer do
 
       it 'transforms carousel with all parameter types combined' do
         input = <<~MARKDOWN
-          ~~~~~~3 2 loop navigation pagination scroll-hint:3rem
+          ~~~~~~3 2 loop navigation pagination autoplay autoplay-interval:4000 scroll-hint:3rem
           ~~~
           Slide 1
           ~~~
@@ -377,6 +412,8 @@ RSpec.describe Markawesome::CarouselTransformer do
         expect(result).to include('loop')
         expect(result).to include('navigation')
         expect(result).to include('pagination')
+        expect(result).to include('autoplay')
+        expect(result).to include('autoplay-interval="4000"')
         expect(result).to include('style="--scroll-hint: 3rem"')
       end
 

@@ -7,7 +7,8 @@ module Markawesome
   # Primary syntax: ~~~~~~params\n~~~ slide1\ncontent\n~~~\n~~~ slide2\ncontent\n~~~\n~~~~~~
   # Alternative syntax: :::wa-carousel params\n~~~ slide1\ncontent\n~~~\n~~~ slide2\ncontent\n~~~\n:::
   # Params can include: numbers (slides-per-page, slides-per-move), keywords (loop, navigation, pagination,
-  # autoplay, mouse-dragging, vertical), and CSS properties (scroll-hint:value, aspect-ratio:value, slide-gap:value)
+  # autoplay, mouse-dragging, vertical), key-value pairs (autoplay-interval:value), and CSS properties
+  # (scroll-hint:value, aspect-ratio:value, slide-gap:value)
   class CarouselTransformer < BaseTransformer
     def self.transform(content)
       # Define both regex patterns
@@ -48,10 +49,12 @@ module Markawesome
         numeric_count = 0
 
         tokens.each do |token|
-          # Check for CSS custom properties (key:value)
+          # Check for key:value pairs (attributes and CSS custom properties)
           if token.include?(':')
             key, value = token.split(':', 2)
             case key
+            when 'autoplay-interval'
+              result[:attributes]['autoplay-interval'] = value
             when 'scroll-hint'
               result[:css_vars]['--scroll-hint'] = value
             when 'aspect-ratio'
