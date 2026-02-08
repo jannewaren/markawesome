@@ -1,23 +1,39 @@
 # frozen_string_literal: true
 
 require_relative 'base_transformer'
+require_relative '../attribute_parser'
 
 module Markawesome
   # Transforms badge syntax into wa-badge elements
-  # Primary syntax: !!!variant?\ncontent\n!!!
-  # Alternative syntax: :::wa-badge variant?\ncontent\n:::
+  # Primary syntax: !!!params?\ncontent\n!!!
+  # Alternative syntax: :::wa-badge params?\ncontent\n:::
+  #
+  # Params: space-separated tokens, any order (rightmost-wins for conflicts)
   # Variants: brand, success, neutral, warning, danger
+  # Appearance: accent, filled, outlined, filled-outlined
+  # Attention: none, pulse, bounce
+  # Flags: pill
   class BadgeTransformer < BaseTransformer
+    BADGE_ATTRIBUTES = {
+      variant: %w[brand success neutral warning danger],
+      appearance: %w[accent filled outlined filled-outlined],
+      attention: %w[none pulse bounce],
+      pill: %w[pill]
+    }.freeze
+
     def self.transform(content)
-      # Define both regex patterns
-      primary_regex = /^!!!(brand|success|neutral|warning|danger)?\n(.*?)\n!!!/m
-      alternative_regex = /^:::wa-badge\s*(brand|success|neutral|warning|danger)?\n(.*?)\n:::/m
+      # Define both regex patterns - capture params as a single string
+      primary_regex = /^!!!(.*?)\n(.*?)\n!!!/m
+      alternative_regex = /^:::wa-badge\s*(.*?)\n(.*?)\n:::/m
 
       # Define shared transformation logic
-      transform_proc = proc do |variant, badge_content|
+      transform_proc = proc do |params_string, badge_content|
         badge_content = badge_content.strip
 
-        build_badge_html(badge_content, variant)
+        # Parse space-separated parameters
+        attributes = AttributeParser.parse(params_string, BADGE_ATTRIBUTES)
+
+        build_badge_html(badge_content, attributes)
       end
 
       # Apply both patterns
@@ -28,8 +44,7 @@ module Markawesome
     class << self
       private
 
-      def build_badge_html(content, variant)
-        variant_attr = variant ? " variant=\"#{variant}\"" : ''
+      def build_badge_html(content, attributes)
         badge_html = markdown_to_html(content).strip
 
         # Remove paragraph tags if the content is just text
@@ -39,7 +54,16 @@ module Markawesome
         # Replace spaces after closing tags with non-breaking spaces to prevent CSS collapse
         badge_html = badge_html.gsub(%r{(</\w+>)\s+}, '\1&nbsp;')
 
-        "<wa-badge#{variant_attr}>#{badge_html}</wa-badge>"
+        # Build HTML attributes
+        attr_parts = []
+        attr_parts << "variant=\"#{attributes[:variant]}\"" if attributes[:variant]
+        attr_parts << "appearance=\"#{attributes[:appearance]}\"" if attributes[:appearance]
+        attr_parts << "attention=\"#{attributes[:attention]}\"" if attributes[:attention]
+        attr_parts << 'pill' if attributes[:pill]
+
+        attrs_string = attr_parts.empty? ? '' : " #{attr_parts.join(' ')}"
+
+        "<wa-badge#{attrs_string}>#{badge_html}</wa-badge>"
       end
     end
   end
