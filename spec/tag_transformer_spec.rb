@@ -54,6 +54,168 @@ RSpec.describe Markawesome::TagTransformer do
       end
     end
 
+    context 'with appearance attribute' do
+      it 'transforms tag with accent appearance' do
+        input = "@@@accent\nTag\n@@@"
+        expected = '<wa-tag appearance="accent">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with filled appearance' do
+        input = "@@@filled\nTag\n@@@"
+        expected = '<wa-tag appearance="filled">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with outlined appearance' do
+        input = "@@@outlined\nTag\n@@@"
+        expected = '<wa-tag appearance="outlined">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with filled-outlined appearance' do
+        input = "@@@filled-outlined\nTag\n@@@"
+        expected = '<wa-tag appearance="filled-outlined">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with variant and appearance' do
+        input = "@@@brand accent\nTag\n@@@"
+        expected = '<wa-tag variant="brand" appearance="accent">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with size attribute' do
+      it 'transforms tag with small size' do
+        input = "@@@small\nTag\n@@@"
+        expected = '<wa-tag size="small">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with medium size' do
+        input = "@@@medium\nTag\n@@@"
+        expected = '<wa-tag size="medium">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with large size' do
+        input = "@@@large\nTag\n@@@"
+        expected = '<wa-tag size="large">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with variant and size' do
+        input = "@@@success large\nTag\n@@@"
+        expected = '<wa-tag variant="success" size="large">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with pill attribute' do
+      it 'transforms tag with pill attribute' do
+        input = "@@@pill\nTag\n@@@"
+        expected = '<wa-tag pill>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with variant and pill' do
+        input = "@@@brand pill\nTag\n@@@"
+        expected = '<wa-tag variant="brand" pill>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with size and pill' do
+        input = "@@@small pill\nTag\n@@@"
+        expected = '<wa-tag size="small" pill>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with with-remove attribute' do
+      it 'transforms tag with with-remove attribute' do
+        input = "@@@with-remove\nTag\n@@@"
+        expected = '<wa-tag with-remove>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with variant and with-remove' do
+        input = "@@@danger with-remove\nTag\n@@@"
+        expected = '<wa-tag variant="danger" with-remove>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with size and with-remove' do
+        input = "@@@large with-remove\nTag\n@@@"
+        expected = '<wa-tag size="large" with-remove>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'with multiple attributes' do
+      it 'transforms tag with variant, appearance, and size' do
+        input = "@@@brand accent small\nTag\n@@@"
+        expected = '<wa-tag variant="brand" appearance="accent" size="small">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with all attributes' do
+        input = "@@@success filled large pill with-remove\nTag\n@@@"
+        expected = '<wa-tag variant="success" appearance="filled" size="large" pill with-remove>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with attributes in different order' do
+        input = "@@@pill large brand filled\nTag\n@@@"
+        expected = '<wa-tag variant="brand" appearance="filled" size="large" pill>Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'handles rightmost-wins for duplicate attribute types' do
+        input = "@@@small large\nTag\n@@@"
+        expected = '<wa-tag size="large">Tag</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
     context 'with markdown content' do
       it 'handles markdown formatting within tags' do
         input = "@@@success\n**Bold** text\n@@@"
@@ -102,11 +264,15 @@ RSpec.describe Markawesome::TagTransformer do
     end
 
     context 'with invalid syntax' do
-      it 'ignores invalid variant names' do
+      it 'treats invalid tokens as content when no valid attributes present' do
         input = "@@@invalid\nText\n@@@"
+        # "invalid" is not a recognized attribute, so it becomes part of content
+        # But since it's on the params line (before newline), it's treated as a param token
+        # that doesn't match anything, so only "Text" remains as content
+        expected = '<wa-tag>Text</wa-tag>'
 
         result = described_class.transform(input)
-        expect(result).to eq(input) # Should remain unchanged
+        expect(result).to eq(expected)
       end
 
       it 'does not transform incomplete tag syntax' do
@@ -235,6 +401,46 @@ Line two</wa-tag>'
       it 'transforms inline tag with neutral variant' do
         input = 'See @@@ neutral Documentation @@@ for more'
         expected = 'See <wa-tag variant="neutral">Documentation</wa-tag> for more'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms inline tag with appearance' do
+        input = 'Check @@@ accent Tag @@@ here'
+        expected = 'Check <wa-tag appearance="accent">Tag</wa-tag> here'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms inline tag with size' do
+        input = 'Check @@@ small Tag @@@ here'
+        expected = 'Check <wa-tag size="small">Tag</wa-tag> here'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms inline tag with pill' do
+        input = 'Check @@@ pill Tag @@@ here'
+        expected = 'Check <wa-tag pill>Tag</wa-tag> here'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms inline tag with with-remove' do
+        input = 'Check @@@ with-remove Tag @@@ here'
+        expected = 'Check <wa-tag with-remove>Tag</wa-tag> here'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms inline tag with multiple attributes' do
+        input = 'Check @@@ brand accent small pill Tag @@@ here'
+        expected = 'Check <wa-tag variant="brand" appearance="accent" size="small" pill>Tag</wa-tag> here'
 
         result = described_class.transform(input)
         expect(result).to eq(expected)
