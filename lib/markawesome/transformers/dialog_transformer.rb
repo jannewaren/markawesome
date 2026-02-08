@@ -2,14 +2,21 @@
 
 require 'digest'
 require_relative 'base_transformer'
+require_relative '../attribute_parser'
 
 module Markawesome
   # Transforms dialog syntax into wa-dialog elements with trigger buttons
   # Primary syntax: ???params\nbutton text\n>>>\ncontent\n???
   # Alternative syntax: :::wa-dialog params\nbutton text\n>>>\ncontent\n:::
-  # Params: light-dismiss and optional width (e.g., 500px, 50vw, 40em)
+  #
+  # Params: space-separated tokens (order doesn't matter)
+  # Flags: light-dismiss
+  # Width: CSS unit value (e.g., 500px, 50vw, 40em)
   # Note: Header with close X button is always enabled for accessibility
   class DialogTransformer < BaseTransformer
+    DIALOG_ATTRIBUTES = {
+      light_dismiss: %w[light-dismiss]
+    }.freeze
     def self.transform(content)
       # Define both regex patterns - capture parameter string, button text, and content
       # Params are on the same line as the opening delimiter
@@ -48,22 +55,17 @@ module Markawesome
     class << self
       private
 
-      # Parse parameters from the params string
+      # Parse parameters from the params string using AttributeParser
       def parse_parameters(params_string)
         return [false, nil] if params_string.nil? || params_string.strip.empty?
 
+        # Parse attributes using AttributeParser
+        attributes = AttributeParser.parse(params_string, DIALOG_ATTRIBUTES)
+        light_dismiss = attributes[:light_dismiss] == 'light-dismiss'
+
+        # Look for width parameter (CSS unit value, not from predefined list)
         tokens = params_string.strip.split(/\s+/)
-
-        light_dismiss = tokens.include?('light-dismiss')
-
-        # Look for width parameter (last token with CSS units)
-        width = nil
-        tokens.reverse_each do |token|
-          if token.match?(/^\d+(\.\d+)?(px|em|rem|vw|vh|%|ch)$/)
-            width = token
-            break
-          end
-        end
+        width = tokens.find { |token| token.match?(/^\d+(\.\d+)?(px|em|rem|vw|vh|%|ch)$/) }
 
         [light_dismiss, width]
       end
