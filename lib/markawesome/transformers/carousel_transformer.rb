@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'base_transformer'
+require_relative '../attribute_parser'
 
 module Markawesome
   # Transforms carousel syntax into wa-carousel elements
@@ -10,6 +11,15 @@ module Markawesome
   # autoplay, mouse-dragging, vertical), key-value pairs (autoplay-interval:value), and CSS properties
   # (scroll-hint:value, aspect-ratio:value, slide-gap:value)
   class CarouselTransformer < BaseTransformer
+    COMPONENT_ATTRIBUTES = {
+      loop: %w[loop],
+      navigation: %w[navigation],
+      pagination: %w[pagination],
+      autoplay: %w[autoplay],
+      'mouse-dragging': %w[mouse-dragging],
+      vertical: %w[vertical]
+    }.freeze
+
     def self.transform(content)
       # Define both regex patterns
       # Match: ~~~~~~params (optional)
@@ -45,6 +55,19 @@ module Markawesome
           css_vars: {}
         }
 
+        # Parse boolean flags using AttributeParser
+        attributes = AttributeParser.parse(params, COMPONENT_ATTRIBUTES)
+
+        # Convert boolean attributes to result format
+        attributes.each_key do |key|
+          if key == :vertical
+            result[:attributes]['orientation'] = 'vertical'
+          else
+            result[:attributes][key.to_s] = true
+          end
+        end
+
+        # Parse numeric and key:value tokens manually
         tokens = params.strip.split(/\s+/)
         numeric_count = 0
 
@@ -71,14 +94,6 @@ module Markawesome
               result[:attributes]['slides-per-page'] = token
             elsif numeric_count == 2
               result[:attributes]['slides-per-move'] = token
-            end
-          # Check for boolean flags
-          elsif %w[loop navigation pagination autoplay mouse-dragging vertical].include?(token)
-            # For orientation, we need to handle it specially
-            if token == 'vertical'
-              result[:attributes]['orientation'] = 'vertical'
-            else
-              result[:attributes][token] = true
             end
           end
         end
