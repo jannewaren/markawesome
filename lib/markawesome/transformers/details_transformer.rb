@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'base_transformer'
+require_relative '../attribute_parser'
 
 module Markawesome
   # Transforms summary/details syntax into wa-details elements
@@ -11,6 +12,13 @@ module Markawesome
   # Boolean flags: disabled, open
   # Name: name:group-id for accordion behavior
   class DetailsTransformer < BaseTransformer
+    COMPONENT_ATTRIBUTES = {
+      appearance: %w[outlined filled filled-outlined plain],
+      icon_placement: %w[start end],
+      disabled: %w[disabled],
+      open: %w[open]
+    }.freeze
+
     def self.transform(content)
       # Define both regex patterns - capture parameter string
       primary_regex = /^\^\^\^?(.*?)\n(.*?)\n^>>>\n(.*?)\n^\^\^\^?/m
@@ -21,21 +29,24 @@ module Markawesome
         summary_content = summary_content.strip
         details_content = details_content.strip
 
-        # Parse parameters from the params string
-        appearance_param, icon_placement_param, disabled, open_state, name_value = parse_parameters(params_string)
+        # Parse parameters using AttributeParser
+        attributes = AttributeParser.parse(params_string, COMPONENT_ATTRIBUTES)
 
-        appearance_class = normalize_appearance(appearance_param)
-        icon_placement = normalize_icon_placement(icon_placement_param)
+        # Extract name parameter (format: name:value) - special handling
+        name_value = extract_name_value(params_string)
+
+        appearance_class = normalize_appearance(attributes[:appearance])
+        icon_placement = attributes[:icon_placement] || 'end'
         summary_html = markdown_to_html(summary_content)
         details_html = markdown_to_html(details_content)
 
         # Build attributes
-        attributes = "appearance='#{appearance_class}' icon-placement='#{icon_placement}'"
-        attributes += ' disabled' if disabled
-        attributes += ' open' if open_state
-        attributes += " name='#{name_value}'" if name_value
+        attr_parts = ["appearance='#{appearance_class}'", "icon-placement='#{icon_placement}'"]
+        attr_parts << 'disabled' if attributes[:disabled]
+        attr_parts << 'open' if attributes[:open]
+        attr_parts << "name='#{name_value}'" if name_value
 
-        "<wa-details #{attributes}>" \
+        "<wa-details #{attr_parts.join(' ')}>" \
           "<span slot='summary'>#{summary_html}</span>" \
           "#{details_html}</wa-details>"
       end
@@ -48,25 +59,13 @@ module Markawesome
     class << self
       private
 
-      def parse_parameters(params_string)
-        return [nil, nil, false, false, nil] if params_string.nil? || params_string.strip.empty?
-
-        # Split by whitespace and extract known parameters
-        tokens = params_string.strip.split(/\s+/)
-
-        appearance_options = %w[outlined filled filled-outlined plain]
-        placement_options = %w[start end]
-
-        appearance_param = tokens.find { |token| appearance_options.include?(token) }
-        icon_placement_param = tokens.find { |token| placement_options.include?(token) }
-        disabled = tokens.include?('disabled')
-        open_state = tokens.include?('open')
+      def extract_name_value(params_string)
+        return nil if params_string.nil? || params_string.strip.empty?
 
         # Extract name parameter (format: name:value)
+        tokens = params_string.strip.split(/\s+/)
         name_token = tokens.find { |token| token.start_with?('name:') }
-        name_value = name_token&.sub(/^name:/, '')
-
-        [appearance_param, icon_placement_param, disabled, open_state, name_value]
+        name_token&.sub(/^name:/, '')
       end
 
       def normalize_appearance(appearance_param)
@@ -79,17 +78,6 @@ module Markawesome
           'plain'
         else
           'outlined'
-        end
-      end
-
-      def normalize_icon_placement(icon_placement_param)
-        case icon_placement_param
-        when 'start'
-          'start'
-        when 'end'
-          'end'
-        else
-          'end'
         end
       end
     end
