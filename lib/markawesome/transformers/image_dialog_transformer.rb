@@ -86,21 +86,21 @@ module Markawesome
       # Must protect both markdown syntax (|||...|||) and already-transformed HTML
       def protect_comparisons(content)
         comparison_blocks = []
-        
+
         # First protect markdown comparison syntax: |||...|||
         protected = content.gsub(/\|\|\|(\d+)?\n.*?\n\|\|\|/m) do |match|
           placeholder = "<!--IMAGE_DIALOG_COMPARISON_#{comparison_blocks.length}-->"
           comparison_blocks << match
           placeholder
         end
-        
+
         # Also protect already-transformed HTML comparison blocks: <wa-comparison ...>...</wa-comparison>
-        protected = protected.gsub(/<wa-comparison[^>]*>.*?<\/wa-comparison>/m) do |match|
+        protected = protected.gsub(%r{<wa-comparison[^>]*>.*?</wa-comparison>}m) do |match|
           placeholder = "<!--IMAGE_DIALOG_COMPARISON_#{comparison_blocks.length}-->"
           comparison_blocks << match
           placeholder
         end
-        
+
         [protected, comparison_blocks]
       end
 
@@ -117,7 +117,7 @@ module Markawesome
       def transform_to_dialog(alt_text, image_url, title, config = {})
         # Parse width from title if specified (e.g., "50%", "800px", "60vw")
         width = extract_width_from_title(title)
-        
+
         # Use default width from config if no width specified in title
         width ||= config[:default_width] if config[:default_width]
 

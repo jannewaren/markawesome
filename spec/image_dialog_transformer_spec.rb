@@ -218,7 +218,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
 
         # Real images should be transformed (2 images = 4 markers)
         expect(result.scan(/\?\?\?/).length).to eq(4)
-        
+
         # Code block should remain unchanged
         expect(result).to include('```markdown')
         expect(result).to include('![Example image](example.png)')
@@ -375,7 +375,7 @@ RSpec.describe Markawesome::ImageDialogTransformer do
 
         # Standalone images should be transformed (2 images = 4 markers)
         expect(result.scan(/\?\?\?/).length).to eq(4)
-        
+
         # Comparison markdown should remain unchanged
         expect(result).to include('|||')
         expect(result).to include('![Before](before.jpg)')

@@ -95,7 +95,9 @@ module Markawesome
         html_parts = []
 
         # Media slot
-        html_parts << "<img slot=\"media\" src=\"#{parts[:media][:src]}\" alt=\"#{parts[:media][:alt]}\">" if parts[:media]
+        if parts[:media]
+          html_parts << "<img slot=\"media\" src=\"#{parts[:media][:src]}\" alt=\"#{parts[:media][:alt]}\">"
+        end
 
         # Header slot
         if parts[:header]
@@ -110,7 +112,9 @@ module Markawesome
         end
 
         # Footer slot
-        html_parts << "<div slot=\"footer\"><wa-button href=\"#{parts[:footer][:href]}\">#{parts[:footer][:text]}</wa-button></div>" if parts[:footer]
+        if parts[:footer]
+          html_parts << "<div slot=\"footer\"><wa-button href=\"#{parts[:footer][:href]}\">#{parts[:footer][:text]}</wa-button></div>"
+        end
 
         "<wa-card#{attr_string}>#{html_parts.join}</wa-card>"
       end
