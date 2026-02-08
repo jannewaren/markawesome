@@ -128,5 +128,87 @@ RSpec.describe Markawesome::DetailsTransformer do
       expect(result_2).to include('<wa-details appearance=\'filled\' icon-placement=\'start\'>')
       expect(result_1).to eq(result_2)
     end
+
+    it 'transforms with disabled attribute' do
+      markdown = "^^^disabled\nSummary here\n>>>\nDetails here\n^^^"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'outlined\' icon-placement=\'end\' disabled>')
+      expect(result).to include('<span slot=\'summary\'><p>Summary here</p>')
+      expect(result).to include('<p>Details here</p>')
+    end
+
+    it 'transforms with open attribute' do
+      markdown = "^^^open\nSummary here\n>>>\nDetails here\n^^^"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'outlined\' icon-placement=\'end\' open>')
+      expect(result).to include('<span slot=\'summary\'><p>Summary here</p>')
+      expect(result).to include('<p>Details here</p>')
+    end
+
+    it 'transforms with name attribute' do
+      markdown = "^^^name:group-1\nSummary here\n>>>\nDetails here\n^^^"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'outlined\' icon-placement=\'end\' name=\'group-1\'>')
+      expect(result).to include('<span slot=\'summary\'><p>Summary here</p>')
+      expect(result).to include('<p>Details here</p>')
+    end
+
+    it 'transforms with disabled and open together' do
+      markdown = "^^^disabled open\nSummary here\n>>>\nDetails here\n^^^"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'outlined\' icon-placement=\'end\' disabled open>')
+    end
+
+    it 'transforms with all attributes combined' do
+      markdown = "^^^filled start disabled open name:accordion-1\nSummary here\n>>>\nDetails here\n^^^"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'filled\' icon-placement=\'start\' disabled open name=\'accordion-1\'>')
+      expect(result).to include('<span slot=\'summary\'><p>Summary here</p>')
+      expect(result).to include('<p>Details here</p>')
+    end
+
+    it 'transforms alternative syntax with disabled' do
+      markdown = ":::wa-details disabled\nSummary here\n>>>\nDetails here\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'outlined\' icon-placement=\'end\' disabled>')
+    end
+
+    it 'transforms alternative syntax with open' do
+      markdown = ":::wa-details open\nSummary here\n>>>\nDetails here\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'outlined\' icon-placement=\'end\' open>')
+    end
+
+    it 'transforms alternative syntax with name' do
+      markdown = ":::wa-details name:my-group\nSummary here\n>>>\nDetails here\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'outlined\' icon-placement=\'end\' name=\'my-group\'>')
+    end
+
+    it 'transforms alternative syntax with all new attributes' do
+      markdown = ":::wa-details filled-outlined start disabled open name:test-group\nSummary here\n>>>\nDetails here\n:::"
+      result = described_class.transform(markdown)
+
+      expect(result).to include('<wa-details appearance=\'filled outlined\' icon-placement=\'start\' disabled open name=\'test-group\'>')
+    end
+
+    it 'handles flexible parameter ordering with new attributes' do
+      markdown_1 = "^^^disabled name:g1 open filled\nSummary\n>>>\nDetails\n^^^"
+      markdown_2 = "^^^filled open disabled name:g1\nSummary\n>>>\nDetails\n^^^"
+
+      result_1 = described_class.transform(markdown_1)
+      result_2 = described_class.transform(markdown_2)
+
+      expect(result_1).to include('<wa-details appearance=\'filled\' icon-placement=\'end\' disabled open name=\'g1\'>')
+      expect(result_2).to include('<wa-details appearance=\'filled\' icon-placement=\'end\' disabled open name=\'g1\'>')
+    end
   end
 end
