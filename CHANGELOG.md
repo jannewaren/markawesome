@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-02-09
+
+### Added
+
+- **IconSlotParser**: New reusable parser for `icon:name` and `icon:slot:name` syntax across components
+- **ButtonTransformer**: Icon support with `icon:name` (start slot) and `icon:end:name` for start/end icon slots
+- **CalloutTransformer**: Custom icon override with `icon:name` to replace default variant icons
+- **DetailsTransformer**: Custom expand/collapse icons with `icon:expand:name` and `icon:collapse:name`
+- **TagTransformer**: Inline content icons with `icon:name` for both block and inline tag syntax
+
+### Design
+
+- IconSlotParser composes with AttributeParser — strips icon tokens first, passes remaining params for attribute parsing
+- Supports slot name mapping (e.g. `expand` → `expand-icon`) for Web Awesome's HTML slot conventions
+- Rightmost-wins semantics consistent with AttributeParser
+- Content slot mode omits `slot=` attribute for inline icon usage (tags)
+
 ## [0.3.0] - 2026-02-08
 
 ### Added

@@ -2,6 +2,7 @@
 
 require_relative 'base_transformer'
 require_relative '../attribute_parser'
+require_relative '../icon_slot_parser'
 
 module Markawesome
   # Transforms callout syntax into wa-callout elements
@@ -17,6 +18,7 @@ module Markawesome
       appearance: %w[accent filled outlined plain filled-outlined]
     }.freeze
     VARIANT_ALIASES = { 'info' => 'brand' }.freeze
+    ICON_SLOTS = { default: 'icon', slots: %w[icon] }.freeze
 
     def self.transform(content)
       variant_pattern = VARIANTS.join('|')
@@ -25,13 +27,21 @@ module Markawesome
 
       transform_proc = proc do |variant, extra_params, inner_content|
         actual_variant = VARIANT_ALIASES.fetch(variant, variant)
-        extra_attrs = AttributeParser.parse(extra_params, CALLOUT_ATTRIBUTES)
+
+        # Parse icon tokens first, then pass remaining to AttributeParser
+        icon_result = IconSlotParser.parse(extra_params, ICON_SLOTS)
+        extra_attrs = AttributeParser.parse(icon_result[:remaining], CALLOUT_ATTRIBUTES)
 
         attr_parts = ["variant=\"#{actual_variant}\""]
         attr_parts << "appearance=\"#{extra_attrs[:appearance]}\"" if extra_attrs[:appearance]
         attr_parts << "size=\"#{extra_attrs[:size]}\"" if extra_attrs[:size]
 
-        icon_html = icon_for(actual_variant)
+        # Use custom icon if provided, otherwise use default variant icon
+        icon_html = if icon_result[:icons]['icon']
+                      "<wa-icon slot=\"icon\" name=\"#{icon_result[:icons]['icon']}\" variant=\"solid\"></wa-icon>"
+                    else
+                      icon_for(actual_variant)
+                    end
         html_content = "#{icon_html}#{markdown_to_html(inner_content)}"
 
         "<wa-callout #{attr_parts.join(' ')}>#{html_content}</wa-callout>"

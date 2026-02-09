@@ -73,6 +73,61 @@ RSpec.describe Markawesome::CalloutTransformer do
       expect(result).to include('<wa-callout variant="warning" appearance="filled-outlined" size="large">')
     end
 
+    context 'with custom icon override' do
+      it 'overrides default icon with icon:name' do
+        markdown = ":::warning icon:shield\nSecurity notice\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="icon" name="shield" variant="solid"></wa-icon>')
+        expect(result).not_to include('triangle-exclamation')
+      end
+
+      it 'uses default icon when no icon token present' do
+        markdown = ":::warning\nRegular warning\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="icon" name="triangle-exclamation" variant="solid"></wa-icon>')
+      end
+
+      it 'combines custom icon with size and appearance' do
+        markdown = ":::brand icon:rocket large filled\nBlast off\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-callout variant="brand" appearance="filled" size="large">')
+        expect(result).to include('<wa-icon slot="icon" name="rocket" variant="solid"></wa-icon>')
+      end
+
+      it 'works with explicit icon slot' do
+        markdown = ":::success icon:icon:star\nStarred\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="icon" name="star" variant="solid"></wa-icon>')
+      end
+
+      it 'handles hyphenated icon names' do
+        markdown = ":::danger icon:circle-xmark\nError occurred\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="icon" name="circle-xmark" variant="solid"></wa-icon>')
+      end
+
+      it 'works with alternative syntax' do
+        markdown = ":::wa-callout warning icon:shield\nSecurity notice\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="icon" name="shield" variant="solid"></wa-icon>')
+        expect(result).to include('<wa-callout variant="warning">')
+      end
+
+      it 'works with info alias and custom icon' do
+        markdown = ":::info icon:lightbulb\nTip content\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-callout variant="brand">')
+        expect(result).to include('<wa-icon slot="icon" name="lightbulb" variant="solid"></wa-icon>')
+      end
+    end
+
     it 'does not transform invalid callout types' do
       markdown = ":::invalid\nThis is invalid\n:::"
       result = described_class.transform(markdown)
