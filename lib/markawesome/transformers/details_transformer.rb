@@ -2,6 +2,7 @@
 
 require_relative 'base_transformer'
 require_relative '../attribute_parser'
+require_relative '../icon_slot_parser'
 
 module Markawesome
   # Transforms summary/details syntax into wa-details elements
@@ -19,6 +20,12 @@ module Markawesome
       open: %w[open]
     }.freeze
 
+    ICON_SLOTS = {
+      default: nil,
+      slots: %w[expand collapse],
+      slot_map: { 'expand' => 'expand-icon', 'collapse' => 'collapse-icon' }
+    }.freeze
+
     def self.transform(content)
       # Define both regex patterns - capture parameter string
       primary_regex = /^\^\^\^?(.*?)\n(.*?)\n^>>>\n(.*?)\n^\^\^\^?/m
@@ -29,11 +36,12 @@ module Markawesome
         summary_content = summary_content.strip
         details_content = details_content.strip
 
-        # Parse parameters using AttributeParser
-        attributes = AttributeParser.parse(params_string, COMPONENT_ATTRIBUTES)
+        # Parse icon tokens first, then pass remaining to AttributeParser and name extraction
+        icon_result = IconSlotParser.parse(params_string, ICON_SLOTS)
+        attributes = AttributeParser.parse(icon_result[:remaining], COMPONENT_ATTRIBUTES)
 
         # Extract name parameter (format: name:value) - special handling
-        name_value = extract_name_value(params_string)
+        name_value = extract_name_value(icon_result[:remaining])
 
         appearance_class = normalize_appearance(attributes[:appearance])
         icon_placement = attributes[:icon_placement] || 'end'
@@ -46,9 +54,11 @@ module Markawesome
         attr_parts << 'open' if attributes[:open]
         attr_parts << "name='#{name_value}'" if name_value
 
+        icon_html = IconSlotParser.to_html(icon_result[:icons], ICON_SLOTS[:slot_map])
+
         "<wa-details #{attr_parts.join(' ')}>" \
           "<span slot='summary'>#{summary_html}</span>" \
-          "#{details_html}</wa-details>"
+          "#{icon_html}#{details_html}</wa-details>"
       end
 
       # Apply both patterns

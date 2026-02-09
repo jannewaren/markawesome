@@ -510,6 +510,92 @@ RSpec.describe Markawesome::ButtonTransformer do
       end
     end
 
+    context 'with icon support' do
+      it 'transforms button with start icon (default)' do
+        input = "%%%icon:download\nDownload File\n%%%"
+        expected = '<wa-button><wa-icon slot="start" name="download"></wa-icon>Download File</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with explicit start icon' do
+        input = "%%%icon:start:gear\nSettings\n%%%"
+        expected = '<wa-button><wa-icon slot="start" name="gear"></wa-icon>Settings</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with end icon' do
+        input = "%%%icon:end:arrow-right\nNext\n%%%"
+        expected = '<wa-button><wa-icon slot="end" name="arrow-right"></wa-icon>Next</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms button with both start and end icons' do
+        input = "%%%icon:start:gear icon:end:arrow-right\nSettings\n%%%"
+        result = described_class.transform(input)
+
+        expect(result).to include('<wa-icon slot="start" name="gear"></wa-icon>')
+        expect(result).to include('<wa-icon slot="end" name="arrow-right"></wa-icon>')
+        expect(result).to include('Settings</wa-button>')
+      end
+
+      it 'combines icon with variant and other attributes' do
+        input = "%%%success icon:gear large pill\nSettings\n%%%"
+        expected = '<wa-button variant="success" size="large" pill>' \
+                   '<wa-icon slot="start" name="gear"></wa-icon>Settings</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms link button with icon' do
+        input = "%%%brand icon:download\n[Download](https://example.com/file.zip)\n%%%"
+        expected = '<wa-button variant="brand" href="https://example.com/file.zip">' \
+                   '<wa-icon slot="start" name="download"></wa-icon>Download</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms link button with end icon' do
+        input = "%%%icon:end:arrow-right\n[Continue](https://example.com)\n%%%"
+        expected = '<wa-button href="https://example.com">' \
+                   '<wa-icon slot="end" name="arrow-right"></wa-icon>Continue</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'works with alternative syntax' do
+        input = ":::wa-button brand icon:download\nGet File\n:::"
+        expected = '<wa-button variant="brand"><wa-icon slot="start" name="download"></wa-icon>Get File</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'handles icon with hyphenated name' do
+        input = "%%%icon:circle-check\nVerified\n%%%"
+        expected = '<wa-button><wa-icon slot="start" name="circle-check"></wa-icon>Verified</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'existing tests still work without icons' do
+        input = "%%%brand\nClick me\n%%%"
+        expected = '<wa-button variant="brand">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
     context 'with link buttons and new attributes' do
       it 'applies size to link buttons' do
         input = "%%%large\n[Link](https://example.com)\n%%%"

@@ -200,6 +200,63 @@ RSpec.describe Markawesome::DetailsTransformer do
       expect(result).to include('<wa-details appearance=\'filled outlined\' icon-placement=\'start\' disabled open name=\'test-group\'>')
     end
 
+    context 'with custom expand/collapse icons' do
+      it 'transforms with custom expand icon' do
+        markdown = "^^^icon:expand:plus\nSummary here\n>>>\nDetails here\n^^^"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="expand-icon" name="plus"></wa-icon>')
+      end
+
+      it 'transforms with custom collapse icon' do
+        markdown = "^^^icon:collapse:minus\nSummary here\n>>>\nDetails here\n^^^"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="collapse-icon" name="minus"></wa-icon>')
+      end
+
+      it 'transforms with both expand and collapse icons' do
+        markdown = "^^^icon:expand:plus icon:collapse:minus\nSummary here\n>>>\nDetails here\n^^^"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="expand-icon" name="plus"></wa-icon>')
+        expect(result).to include('<wa-icon slot="collapse-icon" name="minus"></wa-icon>')
+      end
+
+      it 'combines icons with other attributes' do
+        markdown = "^^^icon:expand:chevron-down outlined open\nSummary here\n>>>\nDetails here\n^^^"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="expand-icon" name="chevron-down"></wa-icon>')
+        expect(result).to include("appearance='outlined'")
+        expect(result).to include('open>')
+      end
+
+      it 'works without icons (existing behavior preserved)' do
+        markdown = "^^^filled\nSummary here\n>>>\nDetails here\n^^^"
+        result = described_class.transform(markdown)
+
+        expect(result).to include("<wa-details appearance='filled' icon-placement='end'>")
+        expect(result).not_to include('<wa-icon')
+      end
+
+      it 'works with alternative syntax' do
+        markdown = ":::wa-details icon:expand:caret-right icon:collapse:caret-down\nSummary here\n>>>\nDetails here\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="expand-icon" name="caret-right"></wa-icon>')
+        expect(result).to include('<wa-icon slot="collapse-icon" name="caret-down"></wa-icon>')
+      end
+
+      it 'combines icons with name attribute' do
+        markdown = "^^^icon:expand:plus name:group-1\nSummary here\n>>>\nDetails here\n^^^"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="expand-icon" name="plus"></wa-icon>')
+        expect(result).to include("name='group-1'")
+      end
+    end
+
     it 'handles flexible parameter ordering with new attributes' do
       markdown_1 = "^^^disabled name:g1 open filled\nSummary\n>>>\nDetails\n^^^"
       markdown_2 = "^^^filled open disabled name:g1\nSummary\n>>>\nDetails\n^^^"

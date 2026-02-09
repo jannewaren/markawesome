@@ -2,6 +2,7 @@
 
 require_relative 'base_transformer'
 require_relative '../attribute_parser'
+require_relative '../icon_slot_parser'
 
 module Markawesome
   # Transforms button syntax into wa-button elements
@@ -31,6 +32,8 @@ module Markawesome
       disabled: %w[disabled]
     }.freeze
 
+    ICON_SLOTS = { default: 'start', slots: %w[start end] }.freeze
+
     def self.transform(content)
       # Define both regex patterns - capture all space-separated parameters
       primary_regex = /^%%%([^\n]*)\n(.*?)\n%%%/m
@@ -40,10 +43,11 @@ module Markawesome
       transform_proc = proc do |params_string, button_content|
         button_content = button_content.strip
 
-        # Parse attributes using AttributeParser
-        attributes = AttributeParser.parse(params_string, BUTTON_ATTRIBUTES)
+        # Parse icon tokens first, then pass remaining to AttributeParser
+        icon_result = IconSlotParser.parse(params_string, ICON_SLOTS)
+        attributes = AttributeParser.parse(icon_result[:remaining], BUTTON_ATTRIBUTES)
 
-        build_button_html(button_content, attributes)
+        build_button_html(button_content, attributes, icon_result[:icons])
       end
 
       # Apply both patterns
@@ -54,7 +58,7 @@ module Markawesome
     class << self
       private
 
-      def build_button_html(content, attributes)
+      def build_button_html(content, attributes, icons = {})
         # Build HTML attributes from parsed attributes
         html_attrs = []
 
@@ -67,6 +71,7 @@ module Markawesome
         html_attrs << 'disabled' if attributes[:disabled]
 
         attrs_string = html_attrs.empty? ? '' : " #{html_attrs.join(' ')}"
+        icon_html = IconSlotParser.to_html(icons)
 
         # Check if content contains a markdown link
         link_match = content.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
@@ -83,7 +88,7 @@ module Markawesome
           # Fix whitespace issues like in badges
           button_html = button_html.gsub(%r{(</\w+>)\s+}, '\1&nbsp;')
 
-          "<wa-button#{attrs_string} href=\"#{link_url}\">#{button_html}</wa-button>"
+          "<wa-button#{attrs_string} href=\"#{link_url}\">#{icon_html}#{button_html}</wa-button>"
         else
           # It's a regular button
           button_html = markdown_to_html(content).strip
@@ -92,7 +97,7 @@ module Markawesome
           # Fix whitespace issues like in badges
           button_html = button_html.gsub(%r{(</\w+>)\s+}, '\1&nbsp;')
 
-          "<wa-button#{attrs_string}>#{button_html}</wa-button>"
+          "<wa-button#{attrs_string}>#{icon_html}#{button_html}</wa-button>"
         end
       end
     end

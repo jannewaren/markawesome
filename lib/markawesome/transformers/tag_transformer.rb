@@ -2,6 +2,7 @@
 
 require_relative 'base_transformer'
 require_relative '../attribute_parser'
+require_relative '../icon_slot_parser'
 
 module Markawesome
   # Transforms tag syntax into wa-tag elements
@@ -24,6 +25,8 @@ module Markawesome
       pill: %w[pill],
       'with-remove': %w[with-remove]
     }.freeze
+
+    ICON_SLOTS = { default: 'content', slots: %w[content] }.freeze
 
     def self.transform(content)
       # Define regex patterns
@@ -51,10 +54,14 @@ module Markawesome
         params_tokens = []
         content_tokens = []
 
-        # Separate attribute tokens from content tokens
+        # Separate attribute and icon tokens from content tokens
         tokens.each do |token|
           matched = COMPONENT_ATTRIBUTES.any? { |_attr, values| values.include?(token) }
-          matched ? params_tokens << token : content_tokens << token
+          if matched || token.start_with?('icon:')
+            params_tokens << token
+          else
+            content_tokens << token
+          end
         end
 
         # Build params and content strings
@@ -81,8 +88,9 @@ module Markawesome
       private
 
       def build_tag_html(content, params)
-        # Parse attributes using AttributeParser
-        attributes = AttributeParser.parse(params, COMPONENT_ATTRIBUTES)
+        # Parse icon tokens first, then pass remaining to AttributeParser
+        icon_result = IconSlotParser.parse(params, ICON_SLOTS)
+        attributes = AttributeParser.parse(icon_result[:remaining], COMPONENT_ATTRIBUTES)
 
         # Build HTML attributes
         html_attrs = []
@@ -93,13 +101,14 @@ module Markawesome
         html_attrs << 'with-remove' if attributes[:'with-remove']
 
         attrs_string = html_attrs.empty? ? '' : " #{html_attrs.join(' ')}"
+        icon_html = IconSlotParser.to_html(icon_result[:icons])
 
         tag_html = markdown_to_html(content).strip
 
         # Remove paragraph tags if the content is just text
         tag_html = tag_html.gsub(%r{^<p>(.*)</p>$}m, '\1')
 
-        "<wa-tag#{attrs_string}>#{tag_html}</wa-tag>"
+        "<wa-tag#{attrs_string}>#{icon_html}#{tag_html}</wa-tag>"
       end
     end
   end

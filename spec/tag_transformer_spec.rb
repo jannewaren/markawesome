@@ -216,6 +216,64 @@ RSpec.describe Markawesome::TagTransformer do
       end
     end
 
+    context 'with icon support' do
+      it 'transforms tag with icon (block syntax)' do
+        input = "@@@brand icon:check\nApproved\n@@@"
+        expected = '<wa-tag variant="brand"><wa-icon name="check"></wa-icon>Approved</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag with icon and multiple attributes' do
+        input = "@@@success icon:circle-check large pill\nPassed\n@@@"
+        expected = '<wa-tag variant="success" size="large" pill><wa-icon name="circle-check"></wa-icon>Passed</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms tag without icon (existing behavior preserved)' do
+        input = "@@@brand\nVersion 2.0\n@@@"
+        expected = '<wa-tag variant="brand">Version 2.0</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms inline tag with icon' do
+        input = 'Status: @@@ success icon:check Done @@@'
+        expected = 'Status: <wa-tag variant="success"><wa-icon name="check"></wa-icon>Done</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms inline tag with icon and pill' do
+        input = 'Check @@@ brand icon:star pill Featured @@@ here'
+        expected = 'Check <wa-tag variant="brand" pill><wa-icon name="star"></wa-icon>Featured</wa-tag> here'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'handles icon with hyphenated name' do
+        input = "@@@danger icon:circle-xmark\nFailed\n@@@"
+        expected = '<wa-tag variant="danger"><wa-icon name="circle-xmark"></wa-icon>Failed</wa-tag>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'icon has no slot attribute (content icon)' do
+        input = "@@@icon:gear\nSettings\n@@@"
+        result = described_class.transform(input)
+
+        expect(result).to include('<wa-icon name="gear"></wa-icon>')
+        expect(result).not_to include('slot=')
+      end
+    end
+
     context 'with markdown content' do
       it 'handles markdown formatting within tags' do
         input = "@@@success\n**Bold** text\n@@@"
