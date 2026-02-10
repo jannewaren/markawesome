@@ -7,6 +7,7 @@ module Markawesome
   # Main transformer that orchestrates all component transformers
   class Transformer
     def self.process(content, options = {})
+      content = LayoutTransformer.transform(content)
       content = BadgeTransformer.transform(content)
       content = ButtonTransformer.transform(content)
       content = CalloutTransformer.transform(content)
