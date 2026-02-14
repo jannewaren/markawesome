@@ -10,6 +10,7 @@ module Markawesome
   # Supported attributes:
   #   appearance: outlined (default), filled, filled-outlined, plain, accent
   #   orientation: vertical (default), horizontal
+  # Card header: first **bold** line (not a heading) becomes the header slot
   class CardTransformer < BaseTransformer
     CARD_ATTRIBUTES = {
       appearance: %w[outlined filled filled-outlined plain accent],
@@ -57,11 +58,11 @@ module Markawesome
           content = content.sub(/^!\[([^\]]*)\]\(([^)]+)\)\n?/, '')
         end
 
-        # Extract first heading as header
-        if content.match(/^# (.+)$/)
+        # Extract first bold line as header
+        if content.match(/^\*\*(.+)\*\*$/)
           parts[:header] = ::Regexp.last_match(1).strip
-          # Remove the heading from content
-          content = content.sub(/^# .+\n?/, '')
+          # Remove the bold line from content
+          content = content.sub(/^\*\*(.+)\*\*\n?/, '')
         end
 
         # Extract trailing buttons/links as footer

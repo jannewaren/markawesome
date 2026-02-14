@@ -20,10 +20,10 @@ RSpec.describe Markawesome::CardTransformer do
     end
 
     context 'card with header' do
-      it 'transforms card with heading to header slot' do
+      it 'transforms card with bold first line to header slot' do
         input = <<~MARKDOWN
           ===
-          # Card Title
+          **Card Title**
           This is the card content.
           ===
         MARKDOWN
@@ -41,7 +41,7 @@ RSpec.describe Markawesome::CardTransformer do
         input = <<~MARKDOWN
           ===
           ![Alt text](image.jpg)
-          # Card Title
+          **Card Title**
           This is the card content.
           ===
         MARKDOWN
@@ -57,7 +57,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'transforms card with trailing link to footer slot' do
         input = <<~MARKDOWN
           ===
-          # Card Title
+          **Card Title**
           This is the card content.
           [Learn More](https://example.com)
           ===
@@ -74,7 +74,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'transforms card with filled appearance' do
         input = <<~MARKDOWN
           ===filled
-          # Card Title
+          **Card Title**
           This is a filled card.
           ===
         MARKDOWN
@@ -86,7 +86,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'defaults to outlined appearance when not specified' do
         input = <<~MARKDOWN
           ===
-          # Card Title
+          **Card Title**
           This is a default card.
           ===
         MARKDOWN
@@ -99,7 +99,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'transforms card with accent appearance' do
         input = <<~MARKDOWN
           ===accent
-          # Accent Card
+          **Accent Card**
           This is an accent card.
           ===
         MARKDOWN
@@ -111,7 +111,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'transforms card with plain appearance' do
         input = <<~MARKDOWN
           ===plain
-          # Plain Card
+          **Plain Card**
           This is a plain card.
           ===
         MARKDOWN
@@ -123,7 +123,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'transforms card with filled-outlined appearance' do
         input = <<~MARKDOWN
           ===filled-outlined
-          # Filled-Outlined Card
+          **Filled-Outlined Card**
           This is a filled-outlined card.
           ===
         MARKDOWN
@@ -150,7 +150,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'defaults to vertical orientation when not specified' do
         input = <<~MARKDOWN
           ===
-          # Vertical Card
+          **Vertical Card**
           This is a vertical card (default).
           ===
         MARKDOWN
@@ -163,7 +163,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'transforms card with explicit vertical orientation' do
         input = <<~MARKDOWN
           ===vertical
-          # Explicit Vertical
+          **Explicit Vertical**
           This explicitly sets vertical orientation.
           ===
         MARKDOWN
@@ -200,7 +200,7 @@ RSpec.describe Markawesome::CardTransformer do
       it 'applies rightmost-wins for duplicate attributes' do
         input = <<~MARKDOWN
           ===filled accent
-          # Test Card
+          **Test Card**
           The rightmost appearance (accent) should win.
           ===
         MARKDOWN
@@ -216,7 +216,7 @@ RSpec.describe Markawesome::CardTransformer do
         input = <<~MARKDOWN
           ===filled
           ![Hero image](hero.jpg)
-          # Complete Card
+          **Complete Card**
           This card has everything: media, header, content, and footer.
           [Get Started](https://example.com)
           ===
@@ -236,7 +236,7 @@ RSpec.describe Markawesome::CardTransformer do
         input = <<~MARKDOWN
           ===accent horizontal
           ![Hero](hero.jpg)
-          # Horizontal Card
+          **Horizontal Card**
           This is a horizontal card with accent appearance.
           ===
         MARKDOWN
@@ -254,13 +254,28 @@ RSpec.describe Markawesome::CardTransformer do
         input = <<~MARKDOWN
           :::wa-card filled horizontal
           ![Image](image.jpg)
-          # Alternative Syntax
+          **Alternative Syntax**
           This uses the alternative wa-card syntax.
           :::
         MARKDOWN
 
         result = described_class.transform(input)
         expect(result).to include('<wa-card appearance="filled" orientation="horizontal" with-media with-header>')
+      end
+    end
+
+    context 'does not treat # heading as header' do
+      it 'leaves # heading as regular content' do
+        input = <<~MARKDOWN
+          ===
+          # This is not a header
+          This is the card content.
+          ===
+        MARKDOWN
+
+        result = described_class.transform(input)
+        expect(result).not_to include('slot="header"')
+        expect(result).to include('This is not a header')
       end
     end
   end
