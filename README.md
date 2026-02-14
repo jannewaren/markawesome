@@ -10,21 +10,51 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 - 🚀 **Simple Syntax** - Clean, intuitive Markdown extensions
 - ⚙️ **Configurable** - Customize icons, variants, and component behavior
 
-## Supported components
+## Supported Components
 
 | Component | Primary Syntax | Alternative Syntax | HTML Output |
 |-----------|----------------|-------------------|-------------|
 | **Badge** | `!!!variant` | `:::wa-badge variant` | `<wa-badge variant="brand">content</wa-badge>` |
 | **Button** | `%%%variant` | `:::wa-button variant` | `<wa-button variant="brand" href="url">text</wa-button>` or `<wa-button variant="brand">text</wa-button>` |
-| **Callouts** | `:::info` | `:::wa-callout info` | `<wa-callout variant="brand"><wa-icon name="circle-info"></wa-icon>content</wa-callout>` |
+| **Callout** | `:::info` | `:::wa-callout info` | `<wa-callout variant="brand"><wa-icon ...></wa-icon>content</wa-callout>` |
 | **Card** | `===` | `:::wa-card` | `<wa-card>content</wa-card>` |
 | **Carousel** | `~~~~~~` | `:::wa-carousel` | `<wa-carousel>` with carousel items |
 | **Comparison** | `\|\|\|` or `\|\|\|25` | `:::wa-comparison` or `:::wa-comparison 25` | `<wa-comparison>` with before/after slots |
 | **Copy Button** | `<<<` | `:::wa-copy-button` | `<wa-copy-button value="content">content</wa-copy-button>` |
-| **Details** | `^^^appearance? icon-placement?` | `:::wa-details appearance? icon-placement?` | `<wa-details appearance="..." icon-placement="...">content</wa-details>` |
+| **Details** | `^^^appearance? icon-placement?` | `:::wa-details appearance? icon-placement?` | `<wa-details>content</wa-details>` |
 | **Dialog** | `???params?` | `:::wa-dialog params?` | `<wa-dialog>` with trigger button and content |
+| **Icon** | `$$$icon-name` | `:::wa-icon icon-name` | `<wa-icon name="icon-name"></wa-icon>` |
+| **Image Dialog** | `![alt](url)` | — | Wraps images in clickable `<wa-dialog>` overlays |
 | **Tab Group** | `++++++` | `:::wa-tabs` | `<wa-tab-group><wa-tab>content</wa-tab></wa-tab-group>` |
 | **Tag** | `@@@brand` | `:::wa-tag brand` | `<wa-tag variant="brand">content</wa-tag>` |
+
+## Layout Utilities
+
+Layout utilities use `::::` (quadruple colon) syntax to wrap content in CSS layout containers. Inner content is not markdown-converted, so component `:::` syntax inside layouts works normally.
+
+| Layout | Primary Syntax | Alternative Syntax | HTML Output |
+|--------|----------------|-------------------|-------------|
+| **Grid** | `::::grid` | `::::wa-grid` | `<div class="wa-grid">content</div>` |
+| **Stack** | `::::stack` | `::::wa-stack` | `<div class="wa-stack">content</div>` |
+| **Cluster** | `::::cluster` | `::::wa-cluster` | `<div class="wa-cluster">content</div>` |
+| **Split** | `::::split` | `::::wa-split` | `<div class="wa-split">content</div>` |
+| **Flank** | `::::flank` | `::::wa-flank` | `<div class="wa-flank">content</div>` |
+| **Frame** | `::::frame` | `::::wa-frame` | `<div class="wa-frame">content</div>` |
+
+### Common layout attributes
+
+All layouts support these key:value attributes:
+
+- `gap:SIZE` — Sets spacing (`0`, `3xs`, `2xs`, `xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`)
+- `align:VALUE` — Align items (`start`, `end`, `center`, `stretch`, `baseline`)
+- `justify:VALUE` — Justify content (`start`, `end`, `center`, `space-between`, `space-around`, `space-evenly`)
+
+### Layout-specific attributes
+
+- **Grid**: `min:CSS_VALUE` — Minimum column size (e.g., `min:200px`)
+- **Split**: `row` or `column` — Direction modifier
+- **Flank**: `start` or `end` — Position modifier; `size:CSS_VALUE`, `content:PCT`
+- **Frame**: `landscape`, `portrait`, or `square` — Aspect ratio; `radius:SIZE` (`s`, `m`, `l`, `pill`, `circle`, `square`)
 
 ## Installation
 
