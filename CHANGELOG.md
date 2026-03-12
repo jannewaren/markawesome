@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-03-12
+
+### Added
+
+- **PopoverTransformer**: New `&&&` syntax for `wa-popover` floating content component
+  - Trigger text and popover content separated by `>>>` (same pattern as dialog/details)
+  - Placement options: `top` (default), `bottom`, `left`, `right`
+  - `without-arrow` flag to hide the popover arrow
+  - `distance:N` parameter for custom trigger-to-popover distance in pixels
+  - `link` flag to render trigger as a link-styled element instead of a button
+  - Unique anchor IDs generated via MD5 hash for trigger/popover pairing
+  - Alternative `:::wa-popover` syntax supported
+  - Markdown content support in popover body via Kramdown
+  - HTML escaping for trigger text (XSS prevention)
+
 ## [0.6.0] - 2026-02-14
 
 ### Changed
