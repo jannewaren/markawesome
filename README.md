@@ -25,6 +25,7 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 | **Dialog** | `???params?` | `:::wa-dialog params?` | `<wa-dialog>` with trigger button and content |
 | **Icon** | `$$$icon-name` | `:::wa-icon icon-name` | `<wa-icon name="icon-name"></wa-icon>` |
 | **Image Dialog** | `![alt](url)` | — | Wraps images in clickable `<wa-dialog>` overlays |
+| **Popover** | `&&&params?` | `:::wa-popover params?` | `<wa-popover>` with trigger button and content |
 | **Tab Group** | `++++++` | `:::wa-tabs` | `<wa-tab-group><wa-tab>content</wa-tab></wa-tab-group>` |
 | **Tag** | `@@@brand` | `:::wa-tag brand` | `<wa-tag variant="brand">content</wa-tag>` |
 
