@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.7.0] - 2026-03-12
+## [0.8.0] - 2026-03-12
 
 ### Added
 
@@ -19,11 +19,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
   - Markdown content support in popover body via Kramdown
   - HTML escaping for trigger text (XSS prevention)
 
-## [0.6.0] - 2026-02-14
+## [0.7.0]
 
 ### Changed
 
 - **BREAKING: Card header syntax** — Card headers now use `**bold text**` instead of `# heading`. The first bold-only line inside a card block becomes the header slot. This avoids markdownlint warnings about multiple top-level headings (MD025) and incorrect heading levels (MD001), and better reflects that card titles are not semantic document headings.
+
+## [0.6.0] - 2026-02-14
+
+_(Version bump included LayoutTransformer and icon slot syntax — see 0.5.0 and 0.4.0 entries below.)_
 
 ## [0.5.0] - 2026-02-10
 
