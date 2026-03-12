@@ -164,6 +164,7 @@ module Markawesome
         if link_style
           link_style_attr = 'background: none; border: none; padding: 0; ' \
                             'color: inherit; text-decoration: underline; ' \
+                            'text-decoration-style: dotted; ' \
                             'cursor: pointer; font: inherit;'
           "<button id='#{popover_id}' style='#{link_style_attr}'>#{trigger_content}</button>"
         else
