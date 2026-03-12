@@ -377,6 +377,158 @@ RSpec.describe Markawesome::PopoverTransformer do
       end
     end
 
+    context 'with inline syntax' do
+      it 'transforms basic inline popover' do
+        result = described_class.transform('&&&Peppol >>> A standardized e-invoicing network&&&')
+
+        expect(result).to include("<button id='popover-")
+        expect(result).to include('text-decoration: underline')
+        expect(result).to include('>Peppol</button>')
+        expect(result).to include("<wa-popover for='popover-")
+        expect(result).to include('A standardized e-invoicing network</wa-popover>')
+        expect(result).not_to include('<wa-button')
+      end
+
+      it 'works within a sentence' do
+        input = 'Send invoices via &&&Peppol >>> A standardized network&&& to your customers.'
+        result = described_class.transform(input)
+
+        expect(result).to start_with('Send invoices via <button')
+        expect(result).to end_with('</wa-popover> to your customers.')
+      end
+
+      it 'supports placement parameter' do
+        result = described_class.transform('&&&bottom Peppol >>> Description&&&')
+
+        expect(result).to include("placement='bottom'")
+        expect(result).to include('>Peppol</button>')
+      end
+
+      it 'supports without-arrow flag' do
+        result = described_class.transform('&&&without-arrow Peppol >>> Description&&&')
+
+        expect(result).to include('without-arrow')
+        expect(result).to include('>Peppol</button>')
+      end
+
+      it 'supports distance parameter' do
+        result = described_class.transform('&&&distance:10 Peppol >>> Description&&&')
+
+        expect(result).to include("distance='10'")
+        expect(result).to include('>Peppol</button>')
+      end
+
+      it 'supports combined parameters' do
+        result = described_class.transform('&&&right without-arrow distance:5 API keys >>> Authenticate your requests&&&')
+
+        expect(result).to include("placement='right'")
+        expect(result).to include('without-arrow')
+        expect(result).to include("distance='5'")
+        expect(result).to include('>API keys</button>')
+      end
+
+      it 'handles multi-word trigger text' do
+        result = described_class.transform('&&&API authentication >>> Details about auth&&&')
+
+        expect(result).to include('>API authentication</button>')
+      end
+
+      it 'handles multiple inline popovers on one line' do
+        input = 'Learn about &&&Peppol >>> Network&&& and &&&SFTP >>> File transfer&&&'
+        result = described_class.transform(input)
+
+        expect(result).to include('>Peppol</button>')
+        expect(result).to include('>SFTP</button>')
+        expect(result).to include('Network</wa-popover>')
+        expect(result).to include('File transfer</wa-popover>')
+      end
+
+      it 'always renders link style trigger' do
+        result = described_class.transform('&&&Trigger >>> Content&&&')
+
+        expect(result).to include('<button')
+        expect(result).to include('text-decoration: underline')
+        expect(result).not_to include('<wa-button')
+      end
+
+      it 'escapes HTML in trigger text' do
+        result = described_class.transform("&&&<script>alert('xss')</script> >>> Content&&&")
+
+        expect(result).to include('&lt;script&gt;')
+        expect(result).not_to match(/<script>alert/)
+      end
+
+      it 'escapes HTML in popover content' do
+        result = described_class.transform('&&&Trigger >>> <b>bold</b> & "quotes"&&&')
+
+        expect(result).to include('&lt;b&gt;bold&lt;/b&gt;')
+        expect(result).to include('&amp;')
+        expect(result).to include('&quot;quotes&quot;')
+      end
+
+      it 'does not match across newlines' do
+        input = "&&&Trigger\n>>> Content&&&"
+        result = described_class.transform(input)
+
+        # Should not produce inline popover - the newline prevents inline match
+        expect(result).not_to include('text-decoration: underline')
+      end
+
+      it 'generates consistent IDs for same trigger and content' do
+        result1 = described_class.transform('&&&Term >>> Definition&&&')
+        result2 = described_class.transform('&&&Term >>> Definition&&&')
+
+        id1 = result1.match(/id='(popover-[a-f0-9]+)'/)[1]
+        id2 = result2.match(/id='(popover-[a-f0-9]+)'/)[1]
+
+        expect(id1).to eq(id2)
+      end
+
+      it 'links popover to trigger via matching for/id attributes' do
+        result = described_class.transform('&&&Term >>> Definition&&&')
+
+        id = result.match(/id='(popover-[a-f0-9]+)'/)[1]
+        expect(result).to include("for='#{id}'")
+      end
+
+      it 'defaults placement to top' do
+        result = described_class.transform('&&&Trigger >>> Content&&&')
+
+        expect(result).to include("placement='top'")
+      end
+
+      it 'outputs trigger and popover on same line without newlines' do
+        result = described_class.transform('&&&Trigger >>> Content&&&')
+
+        # The entire output should be a single line
+        expect(result).not_to include("\n")
+      end
+    end
+
+    context 'with mixed inline and block syntax' do
+      it 'transforms both inline and block popovers in same content' do
+        input = <<~MARKDOWN
+          Read about &&&Peppol >>> E-invoicing network&&& in our docs.
+
+          &&&
+          Detailed info
+          >>>
+          This is a longer explanation with **markdown** support.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        # Inline popover (link style)
+        expect(result).to include('>Peppol</button>')
+        expect(result).to include('E-invoicing network</wa-popover>')
+
+        # Block popover (button style)
+        expect(result).to include("variant='text'>Detailed info</wa-button>")
+        expect(result).to include('<strong>markdown</strong>')
+      end
+    end
+
     context 'edge cases' do
       it 'handles popover with minimal content' do
         input = <<~MARKDOWN

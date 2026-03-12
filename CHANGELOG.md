@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-03-12
+
+### Added
+
+- **PopoverTransformer**: Inline syntax `&&&trigger text >>> popover content&&&` for use within sentences
+  - Always renders as link-styled trigger (underlined text button)
+  - Supports all parameters: placement, `without-arrow`, `distance:N`
+  - Parameters placed before trigger text, separated by spaces
+  - Plain text content (HTML-escaped, no markdown processing)
+  - Multiple inline popovers supported on the same line
+
 ## [0.8.0] - 2026-03-12
 
 ### Added
