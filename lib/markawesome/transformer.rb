@@ -24,6 +24,7 @@ module Markawesome
       end
 
       content = DialogTransformer.transform(content)
+      content = PopoverTransformer.transform(content)
       content = IconTransformer.transform(content)
       content = TagTransformer.transform(content)
       TabsTransformer.transform(content)
