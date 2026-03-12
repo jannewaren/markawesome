@@ -306,6 +306,77 @@ RSpec.describe Markawesome::PopoverTransformer do
       end
     end
 
+    context 'with link trigger style' do
+      it 'renders a link-styled button instead of wa-button' do
+        input = <<~MARKDOWN
+          &&&link
+          Learn more
+          >>>
+          Additional details here.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("<button id='popover-")
+        expect(result).to include('text-decoration: underline')
+        expect(result).to include('cursor: pointer')
+        expect(result).to include('>Learn more</button>')
+        expect(result).not_to include('<wa-button')
+      end
+
+      it 'combines link with placement' do
+        input = <<~MARKDOWN
+          &&&bottom link
+          More info
+          >>>
+          Popover below.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("<button id='popover-")
+        expect(result).to include('text-decoration: underline')
+        expect(result).to include("placement='bottom'")
+        expect(result).not_to include('<wa-button')
+      end
+
+      it 'combines link with without-arrow and distance' do
+        input = <<~MARKDOWN
+          &&&link without-arrow distance:5
+          Hover here
+          >>>
+          Content.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("<button id='popover-")
+        expect(result).to include('text-decoration: underline')
+        expect(result).to include('without-arrow')
+        expect(result).to include("distance='5'")
+      end
+
+      it 'works with alternative syntax' do
+        input = <<~MARKDOWN
+          :::wa-popover link bottom
+          Click for details
+          >>>
+          Details here.
+          :::
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("<button id='popover-")
+        expect(result).to include('text-decoration: underline')
+        expect(result).to include("placement='bottom'")
+        expect(result).not_to include('<wa-button')
+      end
+    end
+
     context 'edge cases' do
       it 'handles popover with minimal content' do
         input = <<~MARKDOWN
