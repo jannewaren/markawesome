@@ -8,6 +8,7 @@ module Markawesome
   class Transformer
     def self.process(content, options = {})
       content = LayoutTransformer.transform(content)
+      content = PopoverTransformer.transform(content)
       content = BadgeTransformer.transform(content)
       content = ButtonTransformer.transform(content)
       content = CalloutTransformer.transform(content)
@@ -24,7 +25,6 @@ module Markawesome
       end
 
       content = DialogTransformer.transform(content)
-      content = PopoverTransformer.transform(content)
       content = IconTransformer.transform(content)
       content = TagTransformer.transform(content)
       TabsTransformer.transform(content)
