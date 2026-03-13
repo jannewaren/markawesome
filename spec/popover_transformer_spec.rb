@@ -491,6 +491,27 @@ RSpec.describe Markawesome::PopoverTransformer do
         expect(result).to include("for='#{id}'")
       end
 
+      it 'converts backslash-n in content to br tags' do
+        result = described_class.transform('&&&Trigger >>> Line one\nLine two&&&')
+
+        expect(result).to include('Line one<br>Line two')
+      end
+
+      it 'converts multiple backslash-n sequences to multiple br tags' do
+        result = described_class.transform('&&&Trigger >>> NO: Org number\nSE: Org number\nDK: CVR&&&')
+
+        expect(result).to include('NO: Org number<br>SE: Org number<br>DK: CVR')
+      end
+
+      it 'does not convert backslash-n in trigger text' do
+        result = described_class.transform('&&&Trigger\ntext >>> Content&&&')
+
+        # The \n in the trigger area should not be converted - and since inline
+        # popovers don't match across real newlines, this shouldn't match at all
+        # if it were a real newline. With literal \n in trigger, it stays as-is.
+        expect(result).to include('>Trigger\\ntext</button>')
+      end
+
       it 'defaults placement to top' do
         result = described_class.transform('&&&Trigger >>> Content&&&')
 
