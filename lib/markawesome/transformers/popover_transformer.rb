@@ -129,6 +129,7 @@ module Markawesome
       def build_inline_popover_html(popover_id, trigger_text, content_text, options)
         trigger_content = escape_html(trigger_text)
         content_escaped = escape_html(content_text)
+        content_escaped = content_escaped.gsub('\n', '<br>')
 
         popover_attrs = ["for='#{popover_id}'"]
         popover_attrs << "placement='#{options[:placement]}'"

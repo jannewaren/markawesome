@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.3] - 2026-03-13
+
+### Added
+
+- Inline popover content now supports `\n` escape sequences for line breaks — rendered as `<br>` in HTML output. Useful for structured multi-line content in table cells where actual newlines break markdown table syntax.
+
 ## [0.9.2] - 2026-03-13
 
 ### Added
