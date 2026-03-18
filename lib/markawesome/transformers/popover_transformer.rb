@@ -167,7 +167,7 @@ module Markawesome
                             'color: inherit; text-decoration: underline; ' \
                             'text-decoration-style: dotted; ' \
                             'cursor: pointer; font: inherit;'
-          "<button id='#{popover_id}' class='ma-popover-trigger' style='#{link_style_attr}'>#{trigger_content}</button>"
+          "<button type='button' id='#{popover_id}' class='ma-popover-trigger' style='#{link_style_attr}'>#{trigger_content}</button>"
         else
           "<wa-button id='#{popover_id}' variant='text'>#{trigger_content}</wa-button>"
         end
