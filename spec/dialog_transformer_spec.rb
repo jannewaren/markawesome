@@ -500,5 +500,85 @@ RSpec.describe Markawesome::DialogTransformer do
         expect(result).to include("style='--width: 45.5em'")
       end
     end
+
+    context 'with without-header attribute' do
+      it 'adds without-header and removes label' do
+        input = <<~MARKDOWN
+          ???without-header
+          Open Dialog
+          >>>
+          Content here.
+          ???
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('without-header')
+        expect(result).not_to include("label='")
+      end
+
+      it 'combines without-header and light-dismiss' do
+        input = <<~MARKDOWN
+          ???without-header light-dismiss
+          Open Dialog
+          >>>
+          Content here.
+          ???
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('without-header')
+        expect(result).to include('light-dismiss')
+        expect(result).not_to include("label='")
+      end
+
+      it 'combines without-header and width' do
+        input = <<~MARKDOWN
+          ???without-header 600px
+          Open Dialog
+          >>>
+          Content here.
+          ???
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('without-header')
+        expect(result).to include("style='--width: 600px'")
+        expect(result).not_to include("label='")
+      end
+
+      it 'works with alternative syntax' do
+        input = <<~MARKDOWN
+          :::wa-dialog without-header
+          Open Dialog
+          >>>
+          Content here.
+          :::
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('without-header')
+        expect(result).not_to include("label='")
+      end
+
+      it 'ignores heading extraction when without-header' do
+        input = <<~MARKDOWN
+          ???without-header
+          Open Dialog
+          >>>
+          # Heading
+          Content here.
+          ???
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('without-header')
+        expect(result).not_to include("label='")
+      end
+    end
   end
 end

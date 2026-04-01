@@ -228,6 +228,174 @@ RSpec.describe Markawesome::IconTransformer do
       end
     end
 
+    context 'with extended inline syntax ($$$icon-name[params])' do
+      it 'transforms icon with rotate attribute' do
+        content = 'Rotated $$$arrow-right[rotate:90] icon.'
+        expected = 'Rotated <wa-icon name="arrow-right" rotate="90"></wa-icon> icon.'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms icon with flip attribute' do
+        content = 'Flipped $$$arrow-left[flip:x] icon.'
+        expected = 'Flipped <wa-icon name="arrow-left" flip="x"></wa-icon> icon.'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms icon with flip both' do
+        content = '$$$arrow-up[flip:both]'
+        expected = '<wa-icon name="arrow-up" flip="both"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms icon with animation attribute' do
+        content = 'Loading $$$spinner[animation:spin] please wait.'
+        expected = 'Loading <wa-icon name="spinner" animation="spin"></wa-icon> please wait.'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'supports all animation values' do
+        %w[beat flip bounce shake spin spin-pulse spin-reverse].each do |anim|
+          content = "$$$icon[animation:#{anim}]"
+          result = described_class.transform(content)
+          expect(result).to include("animation=\"#{anim}\"")
+        end
+      end
+
+      it 'transforms icon with family attribute' do
+        content = 'Brand icon: $$$twitter[family:brands]'
+        expected = 'Brand icon: <wa-icon name="twitter" family="brands"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'supports all family values' do
+        %w[classic brands sharp duotone sharp-duotone].each do |fam|
+          content = "$$$icon[family:#{fam}]"
+          result = described_class.transform(content)
+          expect(result).to include("family=\"#{fam}\"")
+        end
+      end
+
+      it 'transforms icon with variant attribute' do
+        content = '$$$gear[variant:solid]'
+        expected = '<wa-icon name="gear" variant="solid"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'supports all variant values' do
+        %w[thin light regular solid].each do |var|
+          content = "$$$icon[variant:#{var}]"
+          result = described_class.transform(content)
+          expect(result).to include("variant=\"#{var}\"")
+        end
+      end
+
+      it 'transforms icon with label attribute' do
+        content = '$$$home[label:"Go home"]'
+        expected = '<wa-icon name="home" label="Go home"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms icon with label using single quotes' do
+        content = "$$$home[label:'Go home']"
+        expected = '<wa-icon name="home" label="Go home"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines multiple attributes' do
+        content = '$$$spinner[family:classic variant:solid animation:spin]'
+        expected = '<wa-icon name="spinner" family="classic" variant="solid" animation="spin"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines rotate and flip' do
+        content = '$$$arrow-right[rotate:90 flip:x]'
+        expected = '<wa-icon name="arrow-right" rotate="90" flip="x"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines all attributes' do
+        content = '$$$star[family:classic variant:solid rotate:180 flip:y animation:beat label:"Favorite"]'
+        result = described_class.transform(content)
+
+        expect(result).to include('name="star"')
+        expect(result).to include('family="classic"')
+        expect(result).to include('variant="solid"')
+        expect(result).to include('rotate="180"')
+        expect(result).to include('flip="y"')
+        expect(result).to include('animation="beat"')
+        expect(result).to include('label="Favorite"')
+      end
+
+      it 'ignores invalid attribute values' do
+        content = '$$$icon[rotate:45]'
+        result = described_class.transform(content)
+        expect(result).not_to include('rotate=')
+        expect(result).to include('name="icon"')
+      end
+
+      it 'still transforms simple syntax alongside extended' do
+        content = 'Simple $$$home and extended $$$spinner[animation:spin] icons.'
+        result = described_class.transform(content)
+
+        expect(result).to include('<wa-icon name="home"></wa-icon>')
+        expect(result).to include('<wa-icon name="spinner" animation="spin"></wa-icon>')
+      end
+    end
+
+    context 'with alternative syntax and attributes' do
+      it 'transforms icon with attributes in block syntax' do
+        content = ":::wa-icon spinner animation:spin\n:::"
+        expected = '<wa-icon name="spinner" animation="spin"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms icon with family in block syntax' do
+        content = ":::wa-icon twitter family:brands\n:::"
+        expected = '<wa-icon name="twitter" family="brands"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms icon with multiple attributes in block syntax' do
+        content = ":::wa-icon gear variant:solid rotate:90 flip:x\n:::"
+        expected = '<wa-icon name="gear" variant="solid" rotate="90" flip="x"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'transforms icon with label in block syntax' do
+        content = ":::wa-icon home label:\"Go home\"\n:::"
+        expected = '<wa-icon name="home" label="Go home"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+    end
+
     context 'edge cases' do
       it 'handles empty content' do
         content = ''
@@ -247,6 +415,20 @@ RSpec.describe Markawesome::IconTransformer do
 
         result = described_class.transform(content)
         expect(result).to eq(expected)
+      end
+
+      it 'handles empty brackets' do
+        content = '$$$home[]'
+        expected = '<wa-icon name="home"></wa-icon>'
+
+        result = described_class.transform(content)
+        expect(result).to eq(expected)
+      end
+
+      it 'does not transform brackets without icon name' do
+        content = 'Text with [rotate:90] not an icon.'
+        result = described_class.transform(content)
+        expect(result).to eq(content)
       end
     end
   end

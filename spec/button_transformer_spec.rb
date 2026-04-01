@@ -629,5 +629,47 @@ RSpec.describe Markawesome::ButtonTransformer do
         expect(result).to eq(expected)
       end
     end
+
+    context 'with target attribute' do
+      it 'adds target="_blank" to link buttons' do
+        input = "%%%target\n[External Link](https://example.com)\n%%%"
+        expected = '<wa-button href="https://example.com" target="_blank">External Link</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines target with variant' do
+        input = "%%%brand target\n[External Link](https://example.com)\n%%%"
+        expected = '<wa-button variant="brand" href="https://example.com" target="_blank">External Link</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines target with multiple attributes' do
+        input = "%%%brand pill target large\n[External](https://example.com)\n%%%"
+        expected = '<wa-button variant="brand" size="large" pill href="https://example.com" target="_blank">External</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'does not add target to regular buttons' do
+        input = "%%%target\nClick me\n%%%"
+        expected = '<wa-button>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'works with alternative syntax' do
+        input = ":::wa-button brand target\n[Link](https://example.com)\n:::"
+        expected = '<wa-button variant="brand" href="https://example.com" target="_blank">Link</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
   end
 end

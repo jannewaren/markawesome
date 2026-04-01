@@ -15,7 +15,8 @@ module Markawesome
   # Note: Header with close X button is always enabled for accessibility
   class DialogTransformer < BaseTransformer
     DIALOG_ATTRIBUTES = {
-      light_dismiss: %w[light-dismiss]
+      light_dismiss: %w[light-dismiss],
+      without_header: %w[without-header]
     }.freeze
     def self.transform(content)
       # Define both regex patterns - capture parameter string, button text, and content
@@ -31,7 +32,7 @@ module Markawesome
         dialog_content = dialog_content.strip
 
         # Parse parameters
-        light_dismiss, width = parse_parameters(params_string)
+        light_dismiss, width, without_header = parse_parameters(params_string)
 
         # Extract label from first heading or use button text
         label, content_without_label = extract_label(dialog_content, button_text)
@@ -44,7 +45,7 @@ module Markawesome
 
         # Build the dialog HTML
         build_dialog_html(dialog_id, button_text, label, content_html,
-                          light_dismiss, width)
+                          light_dismiss, width, without_header)
       end
 
       # Apply both patterns
@@ -57,17 +58,18 @@ module Markawesome
 
       # Parse parameters from the params string using AttributeParser
       def parse_parameters(params_string)
-        return [false, nil] if params_string.nil? || params_string.strip.empty?
+        return [false, nil, false] if params_string.nil? || params_string.strip.empty?
 
         # Parse attributes using AttributeParser
         attributes = AttributeParser.parse(params_string, DIALOG_ATTRIBUTES)
         light_dismiss = attributes[:light_dismiss] == 'light-dismiss'
+        without_header = attributes[:without_header] == 'without-header'
 
         # Look for width parameter (CSS unit value, not from predefined list)
         tokens = params_string.strip.split(/\s+/)
         width = tokens.find { |token| token.match?(/^\d+(\.\d+)?(px|em|rem|vw|vh|%|ch)$/) }
 
-        [light_dismiss, width]
+        [light_dismiss, width, without_header]
       end
 
       # Extract label from first heading in content
@@ -95,12 +97,14 @@ module Markawesome
       # Build the complete dialog HTML with trigger button
       # Header with X close button is always enabled for accessibility
       def build_dialog_html(dialog_id, button_text, label, content_html,
-                            light_dismiss, width)
+                            light_dismiss, width, without_header = false)
         # Build dialog attributes
         dialog_attrs = ["id='#{dialog_id}'"]
         # Escape both HTML and attribute characters for label
-        # Header is always shown to provide the X close button
-        dialog_attrs << "label='#{escape_attribute(escape_html(label))}'"
+        unless without_header
+          dialog_attrs << "label='#{escape_attribute(escape_html(label))}'"
+        end
+        dialog_attrs << 'without-header' if without_header
         dialog_attrs << 'light-dismiss' if light_dismiss
 
         # Build style attribute for width if specified

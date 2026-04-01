@@ -17,8 +17,10 @@ module Markawesome
   # - caret: caret (dropdown indicator)
   # - loading: loading (loading state)
   # - disabled: disabled (disabled state)
+  # - target: _blank (open link in new tab)
   #
   # Link buttons: %%%brand\n[Text](url)\n%%%
+  # Link button with target: %%%brand target\n[Text](url)\n%%%
   # Regular buttons: %%%brand large pill\nText\n%%%
   class ButtonTransformer < BaseTransformer
     # Define the schema for button attributes
@@ -29,7 +31,8 @@ module Markawesome
       pill: %w[pill],
       caret: %w[caret],
       loading: %w[loading],
-      disabled: %w[disabled]
+      disabled: %w[disabled],
+      target: %w[target]
     }.freeze
 
     ICON_SLOTS = { default: 'start', slots: %w[start end] }.freeze
@@ -88,7 +91,10 @@ module Markawesome
           # Fix whitespace issues like in badges
           button_html = button_html.gsub(%r{(</\w+>)\s+}, '\1&nbsp;')
 
-          "<wa-button#{attrs_string} href=\"#{link_url}\">#{icon_html}#{button_html}</wa-button>"
+          # Add target="_blank" for link buttons when target is specified
+          target_attr = attributes[:target] ? ' target="_blank"' : ''
+
+          "<wa-button#{attrs_string} href=\"#{link_url}\"#{target_attr}>#{icon_html}#{button_html}</wa-button>"
         else
           # It's a regular button
           button_html = markdown_to_html(content).strip
