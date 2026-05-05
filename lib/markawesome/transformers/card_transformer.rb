@@ -37,8 +37,34 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      primary_regex = /^===([^\n]*)\n(.*?)\n===/m
+      alternative_regex = /^:::wa-card\s*([^\n]*)\n(.*?)\n:::/m
+
+      transform_proc = proc do |_params_string, card_content|
+        parts = parse_card_content(card_content.to_s.strip)
+        render_card_markdown(parts)
+      end
+
+      patterns = dual_syntax_patterns(primary_regex, alternative_regex, transform_proc)
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
+
+      def render_card_markdown(parts)
+        blocks = []
+        if parts[:media]
+          blocks << "![#{parts[:media][:alt]}](#{parts[:media][:src]})"
+        end
+        blocks << "### #{parts[:header]}" if parts[:header]
+        blocks << parts[:content] if parts[:content] && !parts[:content].empty?
+        if parts[:footer]
+          blocks << "[#{parts[:footer][:text]}](#{parts[:footer][:href]})"
+        end
+        blocks.join("\n\n")
+      end
 
       def parse_card_content(content)
         parts = {

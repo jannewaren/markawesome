@@ -40,6 +40,12 @@ module Markawesome
       restore_fenced_code_blocks(result, fenced_code_blocks)
     end
 
+    # For plain-markdown output image-dialog wrapping is dropped: the raw
+    # markdown image syntax is already what we want.
+    def self.render_as_markdown(content, _config = {})
+      content
+    end
+
     class << self
       private
 

@@ -71,6 +71,32 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      inline_regex = /&&&[ \t]*([^\r\n]*?)[ \t]*>>>[ \t]*([^\r\n]+?)[ \t]*&&&/
+      primary_regex = /^&&&([^\n]*)$\n(.*?)\n^>>>$\n(.*?)\n^&&&$/m
+      alternative_regex = /^:::wa-popover([^\n]*)$\n(.*?)\n^>>>$\n(.*?)\n^:::$/m
+
+      inline_transform = {
+        regex: inline_regex,
+        block: proc do |_match, matchdata|
+          combined = matchdata[1]
+          popover_content = matchdata[2].strip
+          _params, trigger_text = parse_inline_trigger_and_params(combined)
+          "**#{trigger_text}** (#{popover_content})"
+        end
+      }
+
+      block_transform_proc = proc do |_params_string, trigger_text, popover_content|
+        "**#{trigger_text.to_s.strip}**\n\n#{popover_content.to_s.strip}"
+      end
+
+      patterns = [
+        inline_transform,
+        *dual_syntax_patterns(primary_regex, alternative_regex, block_transform_proc)
+      ]
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
 

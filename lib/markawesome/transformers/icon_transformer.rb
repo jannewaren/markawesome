@@ -34,6 +34,16 @@ module Markawesome
       restore_code_blocks(result, code_blocks)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      protected_content, code_blocks = protect_code_blocks(content)
+
+      # Drop primary-syntax icons entirely.
+      result = protected_content.gsub(/\$\$\$([a-zA-Z0-9\-_]+)(?![a-zA-Z0-9\-_]|\s+name\b)/, '')
+      result = result.gsub(/:::wa-icon\s+([a-zA-Z0-9\-_]+)\s*\n:::/m, '')
+
+      restore_code_blocks(result, code_blocks)
+    end
+
     class << self
       private
 

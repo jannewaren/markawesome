@@ -59,6 +59,21 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      primary_regex = /^\+{6}([^\n]*)\n((\+\+\+ [^\n]+\n.*?\n\+\+\+\n?)+)\+{6}/m
+      alternative_regex = /^:::wa-tab-group\s*([^\n]*)\n((\+\+\+ [^\n]+\n.*?\n\+\+\+\n?)+):::/m
+
+      transform_proc = proc do |_params_string, tabs_block, _third|
+        tab_contents = tabs_block.scan(/^\+\+\+ ([^\n]+)\n(.*?)\n\+\+\+/m)
+        tab_contents.map do |title, panel_content|
+          "### #{title.strip}\n\n#{panel_content.strip}"
+        end.join("\n\n")
+      end
+
+      patterns = dual_syntax_patterns(primary_regex, alternative_regex, transform_proc)
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
 

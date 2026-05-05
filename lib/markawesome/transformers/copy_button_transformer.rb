@@ -66,6 +66,18 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      primary_regex = /^<<<(.*?)\n(.*?)\n<<</m
+      alternative_regex = /^:::wa-copy-button\s*(.*?)\n(.*?)\n:::/m
+
+      transform_proc = proc do |_params_string, copy_content|
+        copy_content.to_s.strip
+      end
+
+      patterns = dual_syntax_patterns(primary_regex, alternative_regex, transform_proc)
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
 

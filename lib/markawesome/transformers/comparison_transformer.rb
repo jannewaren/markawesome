@@ -38,8 +38,26 @@ module Markawesome
       end
     end
 
+    def self.render_as_markdown(content, _options = {})
+      content = content.gsub(/^\|\|\|(\d+)?\n(.*?)\n\|\|\|/m) do |match|
+        images = extract_images(::Regexp.last_match(2))
+        images.length == 2 ? render_comparison_markdown(images) : match
+      end
+
+      content.gsub(/^:::wa-comparison\s*(\d+)?\n(.*?)\n:::/m) do |match|
+        images = extract_images(::Regexp.last_match(2))
+        images.length == 2 ? render_comparison_markdown(images) : match
+      end
+    end
+
     class << self
       private
+
+      def render_comparison_markdown(images)
+        before_alt, before_src = images[0]
+        after_alt, after_src = images[1]
+        "**Before:** ![#{before_alt}](#{before_src})\n\n**After:** ![#{after_alt}](#{after_src})"
+      end
 
       def build_comparison_html(content, position = nil)
         images = extract_images(content)

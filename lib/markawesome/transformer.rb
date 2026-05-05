@@ -2,11 +2,14 @@
 
 require 'kramdown'
 require_relative 'transformers'
+require_relative 'code_block_protector'
 
 module Markawesome
   # Main transformer that orchestrates all component transformers
   class Transformer
     def self.process(content, options = {})
+      content, tokens = CodeBlockProtector.protect(content)
+
       content = LayoutTransformer.transform(content)
       content = PopoverTransformer.transform(content)
       content = BadgeTransformer.transform(content)
@@ -27,7 +30,9 @@ module Markawesome
       content = DialogTransformer.transform(content)
       content = IconTransformer.transform(content)
       content = TagTransformer.transform(content)
-      TabsTransformer.transform(content)
+      content = TabsTransformer.transform(content)
+
+      CodeBlockProtector.restore(content, tokens)
     end
   end
 end

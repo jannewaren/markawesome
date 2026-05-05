@@ -48,6 +48,18 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      primary_regex = /^::::(grid|stack|cluster|split|flank|frame)[ \t]*([^\n]*)\n(.*?)\n::::/m
+      alternative_regex = /^::::wa-(grid|stack|cluster|split|flank|frame)[ \t]*([^\n]*)\n(.*?)\n::::/m
+
+      transform_proc = proc do |_type, _params_string, inner_content|
+        inner_content.to_s
+      end
+
+      patterns = dual_syntax_patterns(primary_regex, alternative_regex, transform_proc)
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
 

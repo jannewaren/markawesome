@@ -51,6 +51,31 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    GFM_ALERT_MAP = {
+      'info' => 'NOTE',
+      'brand' => 'NOTE',
+      'success' => 'TIP',
+      'neutral' => 'IMPORTANT',
+      'warning' => 'WARNING',
+      'danger' => 'CAUTION'
+    }.freeze
+
+    def self.render_as_markdown(content, _options = {})
+      variant_pattern = VARIANTS.join('|')
+      primary_regex = /^:::(#{variant_pattern})([^\n]*)\n(.*?)\n:::/m
+      alternative_regex = /^:::wa-callout\s+(#{variant_pattern})([^\n]*)\n(.*?)\n:::/m
+
+      transform_proc = proc do |variant, _extra_params, inner_content|
+        alert = GFM_ALERT_MAP.fetch(variant, 'NOTE')
+        body = inner_content.to_s.strip
+        quoted = body.empty? ? '' : body.split("\n").map { |l| l.empty? ? '>' : "> #{l}" }.join("\n")
+        body.empty? ? "> [!#{alert}]" : "> [!#{alert}]\n#{quoted}"
+      end
+
+      patterns = dual_syntax_patterns(primary_regex, alternative_regex, transform_proc)
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
 
