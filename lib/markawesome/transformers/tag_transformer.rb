@@ -84,6 +84,37 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      primary_regex = /^@@@([^\r\n]*?)\r?\n(.*?)\r?\n@@@/m
+      alternative_regex = /^:::wa-tag\s*([^\r\n]*?)\r?\n(.*?)\r?\n:::/m
+      inline_regex = /@@@\h*([^@\r\n]+?)\h*@@@/
+
+      block_transform_proc = proc do |_params, tag_content|
+        text = tag_content.to_s.strip
+        text.empty? ? '' : "**#{text}**"
+      end
+
+      inline_transform = {
+        regex: inline_regex,
+        block: proc do |_match, matchdata|
+          full_content = matchdata[1].to_s.strip
+          # Strip attribute tokens (variant, appearance, size, pill, with-remove, icon:...)
+          content_tokens = full_content.split(/\s+/).reject do |token|
+            COMPONENT_ATTRIBUTES.any? { |_attr, values| values.include?(token) } ||
+              token.start_with?('icon:')
+          end
+          rendered = content_tokens.any? ? content_tokens.join(' ') : full_content
+          rendered.empty? ? '' : "**#{rendered}**"
+        end
+      }
+
+      patterns = [
+        inline_transform,
+        *dual_syntax_patterns(primary_regex, alternative_regex, block_transform_proc)
+      ]
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
 

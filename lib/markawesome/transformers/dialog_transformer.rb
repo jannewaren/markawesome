@@ -52,6 +52,25 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    def self.render_as_markdown(content, _options = {})
+      primary_regex = /^\?\?\?([^\n]*)$\n(.*?)\n^>>>$\n(.*?)\n^\?\?\?$/m
+      alternative_regex = /^:::wa-dialog([^\n]*)$\n(.*?)\n^>>>$\n(.*?)\n^:::$/m
+
+      transform_proc = proc do |_params_string, button_text, dialog_content|
+        trigger = button_text.to_s.strip
+        body = dialog_content.to_s.strip
+        # If dialog body already starts with a heading, use it verbatim.
+        if body.match?(/^#\s+/)
+          "_#{trigger}:_\n\n#{body}"
+        else
+          "_#{trigger}:_\n\n#{body}"
+        end
+      end
+
+      patterns = dual_syntax_patterns(primary_regex, alternative_regex, transform_proc)
+      apply_multiple_patterns(content, patterns)
+    end
+
     class << self
       private
 

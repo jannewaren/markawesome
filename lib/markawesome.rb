@@ -2,7 +2,9 @@
 
 require_relative 'markawesome/version'
 require_relative 'markawesome/icon_slot_parser'
+require_relative 'markawesome/code_block_protector'
 require_relative 'markawesome/transformer'
+require_relative 'markawesome/plain_markdown_renderer'
 
 # Main module for Markawesome - framework-agnostic Markdown to Web Awesome component transformer
 module Markawesome

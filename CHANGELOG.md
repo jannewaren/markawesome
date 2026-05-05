@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-05-05
+
+### Added
+
+- `Markawesome::PlainMarkdownRenderer` — alternate output format that degrades each Web Awesome component to its closest plain-markdown equivalent: GFM alerts for callouts, `<details>` for details, sequential `###` sections for tabs, plain links for buttons, bold for badges/tags, and so on. Useful for sites that want to publish a clean-markdown copy of their pages alongside the HTML — for example, per-page `.md` endpoints or an `llms.txt`-style index that tools and LLM consumers can read without parsing `<wa-*>` tags.
+- `Markawesome::CodeBlockProtector` — stateless helper that replaces fenced code blocks with opaque placeholders before transformation and restores them after. Extracted from `jekyll-webawesome`'s hook logic so the same guarantee applies anywhere Markawesome is used (Hugo, Middleman, plain Ruby).
+- `render_as_markdown(content, options = {})` class method on every transformer, sitting alongside the existing `transform` method. `Markawesome::Transformer.process` still emits HTML; `Markawesome::PlainMarkdownRenderer.process` emits clean markdown.
+- `Markawesome::PlainMarkdownRenderer.register_override(:component) { |content, opts| ... }` for swapping in a custom rendering of a single component without forking the gem.
+
+### Changed
+
+- `Markawesome::Transformer.process` now wraps the pipeline with `CodeBlockProtector.protect/restore`, so fenced code examples that contain `:::`/`^^^`/`@@@` no longer trigger accidental transformation. Previously this protection lived in `jekyll-webawesome`, leaving consumers of Markawesome on other frameworks without it.
+
 ## [0.9.5] - 2026-03-18
 
 ### Fixed
