@@ -22,6 +22,11 @@ module Markawesome
     }.freeze
 
     def self.transform(content)
+      # Tracks ID base usage within this transform call so repeated popovers
+      # (same trigger + content) get disambiguated suffixes instead of
+      # colliding on the page.
+      seen_ids = Hash.new(0)
+
       # Inline regex (single-line, no newlines allowed)
       inline_regex = /&&&[ \t]*([^\r\n]*?)[ \t]*>>>[ \t]*([^\r\n]+?)[ \t]*&&&/
 
@@ -39,7 +44,7 @@ module Markawesome
           params_string, trigger_text = parse_inline_trigger_and_params(combined)
           placement, without_arrow, distance, _link_style = parse_parameters(params_string)
 
-          popover_id = generate_popover_id(trigger_text, popover_content)
+          popover_id = generate_popover_id(trigger_text, popover_content, seen_ids)
 
           build_inline_popover_html(popover_id, trigger_text, popover_content,
                                     { placement: placement, without_arrow: without_arrow,
@@ -54,7 +59,7 @@ module Markawesome
 
         placement, without_arrow, distance, link_style = parse_parameters(params_string)
 
-        popover_id = generate_popover_id(trigger_text, popover_content)
+        popover_id = generate_popover_id(trigger_text, popover_content, seen_ids)
 
         content_html = markdown_to_html(popover_content)
 
@@ -116,10 +121,12 @@ module Markawesome
         [placement, without_arrow, distance, link_style]
       end
 
-      def generate_popover_id(trigger_text, content)
+      def generate_popover_id(trigger_text, content, seen_ids)
         hash_input = "#{trigger_text}#{content}"
         hash = Digest::MD5.hexdigest(hash_input)
-        "popover-#{hash[0..7]}"
+        base = "popover-#{hash[0..7]}"
+        occurrence = seen_ids[base] += 1
+        occurrence == 1 ? base : "#{base}-#{occurrence}"
       end
 
       def parse_inline_trigger_and_params(combined_string)
