@@ -187,6 +187,50 @@ RSpec.describe Markawesome::PopoverTransformer do
         expect(id1).to eq(id2)
       end
 
+      it 'disambiguates duplicate popovers within the same document' do
+        input = <<~MARKDOWN
+          &&&
+          Same trigger
+          >>>
+          Same content
+          &&&
+
+          &&&
+          Same trigger
+          >>>
+          Same content
+          &&&
+
+          &&&
+          Same trigger
+          >>>
+          Same content
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        ids = result.scan(/id='(popover-[a-f0-9-]+)'/).flatten
+        expect(ids.length).to eq(3)
+        expect(ids.uniq.length).to eq(3)
+        expect(ids[1]).to end_with('-2')
+        expect(ids[2]).to end_with('-3')
+
+        # Each popover's `for` attribute must point at its trigger's id
+        ids.each { |id| expect(result).to include("for='#{id}'") }
+      end
+
+      it 'disambiguates duplicate inline popovers within the same document' do
+        input = 'See &&&Term >>> Definition&&& and again &&&Term >>> Definition&&&.'
+        result = described_class.transform(input)
+
+        ids = result.scan(/id='(popover-[a-f0-9-]+)'/).flatten
+        expect(ids.length).to eq(2)
+        expect(ids.uniq.length).to eq(2)
+        expect(ids[1]).to end_with('-2')
+        ids.each { |id| expect(result).to include("for='#{id}'") }
+      end
+
       it 'preserves markdown formatting in content' do
         input = <<~MARKDOWN
           &&&
