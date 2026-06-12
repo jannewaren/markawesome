@@ -362,7 +362,7 @@ RSpec.describe Markawesome::PopoverTransformer do
 
         result = described_class.transform(input)
 
-        expect(result).to include("<button id='popover-")
+        expect(result).to include("<button type='button' id='popover-")
         expect(result).to include('text-decoration: underline')
         expect(result).to include('cursor: pointer')
         expect(result).to include('>Learn more</button>')
@@ -380,7 +380,7 @@ RSpec.describe Markawesome::PopoverTransformer do
 
         result = described_class.transform(input)
 
-        expect(result).to include("<button id='popover-")
+        expect(result).to include("<button type='button' id='popover-")
         expect(result).to include('text-decoration: underline')
         expect(result).to include("placement='bottom'")
         expect(result).not_to include('<wa-button')
@@ -397,7 +397,7 @@ RSpec.describe Markawesome::PopoverTransformer do
 
         result = described_class.transform(input)
 
-        expect(result).to include("<button id='popover-")
+        expect(result).to include("<button type='button' id='popover-")
         expect(result).to include('text-decoration: underline')
         expect(result).to include('without-arrow')
         expect(result).to include("distance='5'")
@@ -414,7 +414,7 @@ RSpec.describe Markawesome::PopoverTransformer do
 
         result = described_class.transform(input)
 
-        expect(result).to include("<button id='popover-")
+        expect(result).to include("<button type='button' id='popover-")
         expect(result).to include('text-decoration: underline')
         expect(result).to include("placement='bottom'")
         expect(result).not_to include('<wa-button')
@@ -425,7 +425,7 @@ RSpec.describe Markawesome::PopoverTransformer do
       it 'transforms basic inline popover' do
         result = described_class.transform('&&&Peppol >>> A standardized e-invoicing network&&&')
 
-        expect(result).to include("<button id='popover-")
+        expect(result).to include("<button type='button' id='popover-")
         expect(result).to include('text-decoration: underline')
         expect(result).to include('>Peppol</button>')
         expect(result).to include("<wa-popover for='popover-")
