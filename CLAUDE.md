@@ -45,3 +45,39 @@ Inner Markdown content is converted to HTML via `markdown_to_html()` (wraps Kram
 - Tests are in `spec/`, one file per transformer (`spec/<name>_transformer_spec.rb`)
 - Tests call individual transformer `.transform()` methods directly, not the full pipeline
 - Uses `expect` syntax only (monkey patching disabled)
+
+## Development & Release Workflow (markawesome + jekyll-webawesome)
+
+markawesome (this transformation engine) and jekyll-webawesome (the Jekyll
+integration) are developed together. Component markup changes are made here and
+validated end-to-end through jekyll-webawesome's `examples/` site before either
+gem is released. Follow this order:
+
+1. **Change markawesome first.** Make the transformer change here, update its
+   specs, add a `CHANGELOG.md` entry, and commit.
+2. **Use local markawesome from jekyll-webawesome.** Temporarily point
+   jekyll-webawesome at this working copy by switching its root `Gemfile` to
+   `gem 'markawesome', path: '../markawesome'`, then `bundle install`.
+   (jekyll-webawesome's `examples/Gemfile` already uses the local path.)
+3. **Add real test cases to the examples site.** Add cases to
+   jekyll-webawesome's `examples/index.md` that exercise the change — not
+   synthetic snippets, but markup that would visibly break or render wrong
+   without it.
+4. **Check them visually.** Serve the examples site
+   (`cd examples && bundle exec jekyll serve`) and verify the rendered
+   components in a browser. Confirm the change actually renders (measure/inspect
+   the live DOM), not just that the HTML attribute is present. The Web Awesome
+   version is set by the CDN kit configured on webawesome.com (the kit URL in
+   the examples layout is opaque), so validate against whatever version that kit
+   currently serves.
+5. **Release markawesome.** Bump `lib/markawesome/version.rb`, finalize the
+   CHANGELOG, `gem build markawesome.gemspec`, and `gem push` to RubyGems.
+6. **Update the required markawesome version in jekyll-webawesome.** Bump the
+   `~> X.Y` constraint in its gemspec, restore its root `Gemfile` from the local
+   path back to the published `~> X.Y`, bump its version + CHANGELOG, and commit.
+7. **Release jekyll-webawesome.** `gem build` and `gem push` it to RubyGems.
+
+> **Push every release commit to git immediately after `gem push`.** A gem
+> published to RubyGems but never pushed to the repo leaves clones diverged: the
+> version bump and any code in that release become invisible to other machines,
+> and the next release collides on the version number.
