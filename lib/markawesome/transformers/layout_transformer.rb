@@ -18,7 +18,7 @@ module Markawesome
   # Flank-specific: start, end modifiers; size:CSS_VALUE, content:PCT
   # Frame-specific: landscape, portrait, square modifiers; radius:SIZE
   class LayoutTransformer < BaseTransformer
-    VALID_GAPS = %w[0 3xs 2xs xs s m l xl 2xl 3xl].freeze
+    VALID_GAPS = %w[0 3xs 2xs xs s m l xl 2xl 3xl 4xl 5xl].freeze
     VALID_ALIGNS = %w[start end center stretch baseline].freeze
     VALID_JUSTIFIES = %w[start end center space-between space-around space-evenly].freeze
     VALID_RADII = %w[s m l pill circle square].freeze

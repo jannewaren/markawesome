@@ -17,7 +17,7 @@ RSpec.describe Markawesome::PopoverTransformer do
         result = described_class.transform(input)
 
         expect(result).to include("<wa-button id='popover-")
-        expect(result).to include("variant='text'>Hover for info</wa-button>")
+        expect(result).to include("appearance='plain'>Hover for info</wa-button>")
         expect(result).to include("<wa-popover for='popover-")
         expect(result).to include("placement='top'")
         expect(result).to include('<p>This is the popover content.</p>')
@@ -277,7 +277,7 @@ RSpec.describe Markawesome::PopoverTransformer do
         result = described_class.transform(input)
 
         expect(result).to include("<wa-button id='popover-")
-        expect(result).to include("variant='text'>Hover for info</wa-button>")
+        expect(result).to include("appearance='plain'>Hover for info</wa-button>")
         expect(result).to include("<wa-popover for='popover-")
         expect(result).to include('<p>This is the popover content.</p>')
       end
@@ -343,8 +343,8 @@ RSpec.describe Markawesome::PopoverTransformer do
 
         result = described_class.transform(input)
 
-        expect(result).to include("variant='text'>First Popover</wa-button>")
-        expect(result).to include("variant='text'>Second Popover</wa-button>")
+        expect(result).to include("appearance='plain'>First Popover</wa-button>")
+        expect(result).to include("appearance='plain'>Second Popover</wa-button>")
         expect(result).to include('<p>Primary syntax</p>')
         expect(result).to include('<p>Alternative syntax</p>')
       end
@@ -589,7 +589,7 @@ RSpec.describe Markawesome::PopoverTransformer do
         expect(result).to include('E-invoicing network</wa-popover>')
 
         # Block popover (button style)
-        expect(result).to include("variant='text'>Detailed info</wa-button>")
+        expect(result).to include("appearance='plain'>Detailed info</wa-button>")
         expect(result).to include('<strong>markdown</strong>')
       end
     end
@@ -607,7 +607,7 @@ RSpec.describe Markawesome::PopoverTransformer do
         result = described_class.transform(input)
 
         expect(result).to include("<wa-button id='popover-")
-        expect(result).to include("variant='text'>OK</wa-button>")
+        expect(result).to include("appearance='plain'>OK</wa-button>")
         expect(result).to include('<wa-popover')
       end
 

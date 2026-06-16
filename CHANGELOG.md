@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-06-16
+
+Aligns generated markup with Web Awesome 3.8.0 (latest). See `ROADMAP.md` for the remaining enhancement backlog from the same audit.
+
+### Fixed
+
+- `DialogTransformer` footer button now emits `variant='brand'` instead of the non-existent `variant='primary'`. `primary` is a Shoelace-era value with no equivalent in Web Awesome 3.x, so the button silently fell back to the default neutral variant instead of rendering as a brand call-to-action.
+- `DialogTransformer` image-trigger buttons now emit `appearance='plain'` instead of the invalid `variant='text'`. Because `text` is not a valid `variant`, the wrapping button fell back to the default `accent` appearance — rendering image thumbnails inside a filled accent button background. `appearance='plain'` removes the button chrome as intended.
+- `PopoverTransformer` triggers now emit `appearance='plain'` instead of the invalid `variant='text'`, so popover triggers render as plain text rather than filled buttons.
+- `DetailsTransformer` now emits `appearance='filled-outlined'` (hyphenated) instead of `'filled outlined'` (space). The space-separated value is not a valid appearance and silently fell back to `outlined`.
+
+### Added
+
+- Web Awesome 3.x size scale (`xs`, `s`, `m`, `l`, `xl`) is now accepted for `button`, `callout`, and `tag` components. The legacy `small`/`medium`/`large` tokens continue to work.
+- Layout utilities now accept the `4xl` and `5xl` gap tokens (`wa-gap-4xl`, `wa-gap-5xl`), added to Web Awesome's spacing scale in 3.4.
+
 ## [0.10.1] - 2026-05-08
 
 ### Fixed

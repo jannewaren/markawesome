@@ -20,7 +20,7 @@ RSpec.describe Markawesome::DialogTransformer do
         expect(result).to include("'>Open Dialog</wa-button>")
         expect(result).to include("<wa-dialog id='dialog-")
         expect(result).to include('<p>This is the dialog content.</p>')
-        expect(result).to include("<wa-button slot='footer' variant='primary' data-dialog='close'>Close</wa-button>")
+        expect(result).to include("<wa-button slot='footer' variant='brand' data-dialog='close'>Close</wa-button>")
       end
 
       it 'extracts label from first heading' do

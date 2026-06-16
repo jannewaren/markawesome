@@ -97,7 +97,7 @@ module Markawesome
         when 'filled'
           'filled'
         when 'filled-outlined'
-          'filled outlined'
+          'filled-outlined'
         when 'plain'
           'plain'
         else

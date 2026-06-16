@@ -25,7 +25,7 @@ module Markawesome
     BUTTON_ATTRIBUTES = {
       variant: %w[brand success neutral warning danger],
       appearance: %w[accent filled outlined filled-outlined plain],
-      size: %w[small medium large],
+      size: %w[xs s m l xl small medium large],
       pill: %w[pill],
       caret: %w[caret],
       loading: %w[loading],

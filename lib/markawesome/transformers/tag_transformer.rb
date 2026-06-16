@@ -21,7 +21,7 @@ module Markawesome
     COMPONENT_ATTRIBUTES = {
       variant: %w[brand success neutral warning danger],
       appearance: %w[accent filled outlined filled-outlined],
-      size: %w[small medium large],
+      size: %w[xs s m l xl small medium large],
       pill: %w[pill],
       'with-remove': %w[with-remove]
     }.freeze

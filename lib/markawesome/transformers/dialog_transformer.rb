@@ -160,15 +160,15 @@ module Markawesome
         # Only allow HTML for image tags (for image dialog support), escape everything else for security
         button_content = is_image_button ? button_text : escape_html(button_text)
         button_id_attr = is_image_button ? " id='#{button_id}'" : ''
-        button_variant = is_image_button ? " variant='text'" : ''
-        html << "<wa-button#{button_id_attr}#{button_variant} data-dialog='open #{dialog_id}'>#{button_content}</wa-button>"
+        button_appearance = is_image_button ? " appearance='plain'" : ''
+        html << "<wa-button#{button_id_attr}#{button_appearance} data-dialog='open #{dialog_id}'>#{button_content}</wa-button>"
 
         # Dialog element
         html << "<wa-dialog #{dialog_attrs.join(' ')}#{style_attr}>"
         html << content_html
 
         # Footer with close button
-        html << "<wa-button slot='footer' variant='primary' data-dialog='close'>Close</wa-button>"
+        html << "<wa-button slot='footer' variant='brand' data-dialog='close'>Close</wa-button>"
 
         html << '</wa-dialog>'
 

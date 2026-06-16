@@ -23,7 +23,7 @@ RSpec.describe Markawesome::DetailsTransformer do
       markdown = "^^^filled-outlined\nSummary here\n>>>\nDetails here\n^^^"
       result = described_class.transform(markdown)
 
-      expect(result).to include('<wa-details appearance=\'filled outlined\' icon-placement=\'end\'>')
+      expect(result).to include('<wa-details appearance=\'filled-outlined\' icon-placement=\'end\'>')
     end
 
     it 'transforms plain appearance' do
@@ -99,7 +99,7 @@ RSpec.describe Markawesome::DetailsTransformer do
       markdown = "^^^filled-outlined start\nSummary here\n>>>\nDetails here\n^^^"
       result = described_class.transform(markdown)
 
-      expect(result).to include('<wa-details appearance=\'filled outlined\' icon-placement=\'start\'>')
+      expect(result).to include('<wa-details appearance=\'filled-outlined\' icon-placement=\'start\'>')
     end
 
     it 'transforms alternative syntax with icon placement' do
@@ -197,7 +197,7 @@ RSpec.describe Markawesome::DetailsTransformer do
       markdown = ":::wa-details filled-outlined start disabled open name:test-group\nSummary here\n>>>\nDetails here\n:::"
       result = described_class.transform(markdown)
 
-      expect(result).to include('<wa-details appearance=\'filled outlined\' icon-placement=\'start\' disabled open name=\'test-group\'>')
+      expect(result).to include('<wa-details appearance=\'filled-outlined\' icon-placement=\'start\' disabled open name=\'test-group\'>')
     end
 
     context 'with custom expand/collapse icons' do

@@ -14,7 +14,7 @@ module Markawesome
   class CalloutTransformer < BaseTransformer
     VARIANTS = %w[info brand success neutral warning danger].freeze
     CALLOUT_ATTRIBUTES = {
-      size: %w[small medium large],
+      size: %w[xs s m l xl small medium large],
       appearance: %w[accent filled outlined plain filled-outlined]
     }.freeze
     VARIANT_ALIASES = { 'info' => 'brand' }.freeze
