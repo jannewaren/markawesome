@@ -1,8 +1,11 @@
 # Roadmap
 
 Future improvements for markawesome, captured from an audit of our generated
-markup against [Web Awesome](https://webawesome.com/) **3.8.0** (latest as of
-June 2026).
+markup against [Web Awesome](https://webawesome.com/) **3.9.0** (latest as of
+June 2026). The 3.8.0 → 3.9.0 release added no new attributes or values to any
+component we currently emit — it was dominated by SSR plumbing, form controls
+(out of scope), and bug fixes — so nothing in it requires a markup change here.
+The two notes below flag where 3.9.0 touches items already on this backlog.
 
 These are **enhancements, not bugs** — the markup we emit today is valid 3.x.
 Everything below is backward-compatible and static-site-safe: no JavaScript,
@@ -84,6 +87,11 @@ docs sections, and "show more" content. We already support single `details`;
 accordion is the grouped, mutually-exclusive-capable version. Highest-value new
 component for a docs/content site.
 
+> _3.9.0 note:_ still experimental. 3.9.0 fixed an accordion/accordion-item SSR
+> hydration race (irrelevant to a static Jekyll build) and **removed the
+> `--wa-accordion-divider-color` custom property** — don't plan to expose a
+> divider-color attribute, it's no longer a supported knob.
+
 ### 2. `tooltip`
 
 Inline contextual help on hover/focus. Zero JavaScript, and we can
@@ -109,6 +117,10 @@ Markdown.
 Hierarchical list rendering for file/directory layouts, taxonomies, and nested
 navigation. Maps cleanly from nested Markdown lists to `<wa-tree>` /
 `<wa-tree-item>`.
+
+> _3.9.0 note:_ added a `leaf-multiple` value to `<wa-tree selection>`. Tree
+> selection is interactive (needs JS to mean anything), so for static docs we'd
+> emit `<wa-tree>` for display/navigation only and skip the selection modes.
 
 ---
 
