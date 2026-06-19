@@ -18,5 +18,15 @@ RSpec.describe Markawesome::IconTransformer do
       md = ":::wa-icon gear\n:::"
       expect(described_class.render_as_markdown(md).strip).to eq('')
     end
+
+    it 'degrades a labeled block to its label text' do
+      md = ":::wa-icon heart solid\nAdd to favorites\n:::"
+      expect(described_class.render_as_markdown(md).strip).to eq('Add to favorites')
+    end
+
+    it 'still drops an unlabeled enriched block' do
+      md = ":::wa-icon star spin\n:::"
+      expect(described_class.render_as_markdown(md).strip).to eq('')
+    end
   end
 end

@@ -3,6 +3,7 @@
 require_relative 'base_transformer'
 require_relative '../attribute_parser'
 require_relative '../icon_slot_parser'
+require_relative '../icon_attributes'
 
 module Markawesome
   # Transforms callout syntax into wa-callout elements
@@ -28,20 +29,20 @@ module Markawesome
       transform_proc = proc do |variant, extra_params, inner_content|
         actual_variant = VARIANT_ALIASES.fetch(variant, variant)
 
-        # Parse icon tokens first, then pass remaining to AttributeParser
+        # Parse icon tokens first, then pass remaining to AttributeParser.
+        # CALLOUT_ATTRIBUTES and IconAttributes::SCHEMA namespaces are disjoint, so the
+        # same remaining-token string can be parsed against both independently.
         icon_result = IconSlotParser.parse(extra_params, ICON_SLOTS)
         extra_attrs = AttributeParser.parse(icon_result[:remaining], CALLOUT_ATTRIBUTES)
+        icon_attrs  = AttributeParser.parse(icon_result[:remaining], IconAttributes::SCHEMA)
+        icon_attrs[:variant] ||= 'solid' # preserve historical default
 
         attr_parts = ["variant=\"#{actual_variant}\""]
         attr_parts << "appearance=\"#{extra_attrs[:appearance]}\"" if extra_attrs[:appearance]
         attr_parts << "size=\"#{extra_attrs[:size]}\"" if extra_attrs[:size]
 
-        # Use custom icon if provided, otherwise use default variant icon
-        icon_html = if icon_result[:icons]['icon']
-                      "<wa-icon slot=\"icon\" name=\"#{icon_result[:icons]['icon']}\" variant=\"solid\"></wa-icon>"
-                    else
-                      icon_for(actual_variant)
-                    end
+        icon_name = icon_result[:icons]['icon'] || icon_name_for(actual_variant)
+        icon_html = callout_icon_html(icon_name, icon_attrs)
         html_content = "#{icon_html}#{markdown_to_html(inner_content)}"
 
         "<wa-callout #{attr_parts.join(' ')}>#{html_content}</wa-callout>"
@@ -79,11 +80,16 @@ module Markawesome
     class << self
       private
 
-      def icon_for(variant)
+      def icon_name_for(variant)
         config = Markawesome.configuration
         icons = config&.callout_icons || default_icons
-        icon_name = icons[variant.to_sym]
-        "<wa-icon slot=\"icon\" name=\"#{icon_name}\" variant=\"solid\"></wa-icon>"
+        icons[variant.to_sym]
+      end
+
+      def callout_icon_html(name, attributes)
+        parts = ['slot="icon"', "name=\"#{name}\""]
+        parts.concat(IconAttributes.pairs(attributes))
+        "<wa-icon #{parts.join(' ')}></wa-icon>"
       end
 
       def default_icons

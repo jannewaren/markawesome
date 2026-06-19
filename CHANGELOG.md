@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0] - 2026-06-20
+
+### Added
+
+- The standalone `:::wa-icon` block now accepts `family` (`classic`, `sharp`, `duotone`, `sharp-duotone`, `brands`), `variant` (`thin`, `light`, `regular`, `solid`), and `animation` (`beat`, `fade`, `beat-fade`, `bounce`, `flip`, `shake`, `spin`, `spin-pulse`, `spin-reverse`) as bare enumerated tokens after the icon name (order-independent, rightmost-wins, unknown tokens dropped — same parsing as button `variant`/`size`). The block body becomes the icon's accessible `label` (stripped, whitespace-collapsed, HTML-escaped); an empty body emits no `label`, leaving the icon presentational per Web Awesome's default. Emit order is deterministic: `name family variant animation label`.
+- `CalloutTransformer` callouts can now override their icon's `family`/`variant`/`animation` using the same bare tokens on the callout line (e.g. `:::warning shake`). The historical `variant="solid"` default is preserved when no icon-variant token is given, so existing callouts render byte-identically. Works alongside the existing `icon:name` override.
+- New shared `Markawesome::IconAttributes` module — single source of truth for the `<wa-icon>` family/variant/animation vocabulary (verified against Web Awesome 3.x), consumed by both `IconTransformer` and `CalloutTransformer`.
+
+The inline `$$$name` form stays **name-only** (mid-prose, semantically decorative). Embedded `icon:slot:name` icons in button/tag/details are unchanged. Note: `family`/`variant` produce a *visible* weight/family change only with a Font Awesome Pro kit; the attributes are always emitted to the DOM regardless of kit tier (validated against the examples site's WA 3.8.0 kit, where `animation` and `label` are fully functional and the weight/family attributes reach the element without a visible glyph swap on the free tier).
+
 ## [0.12.0] - 2026-06-19
 
 ### Added

@@ -1,17 +1,25 @@
 # frozen_string_literal: true
 
 require_relative 'base_transformer'
+require_relative '../attribute_parser'
+require_relative '../icon_attributes'
 
 module Markawesome
   # Transforms icon syntax into wa-icon elements
-  # Primary syntax: $$$icon-name
-  # Alternative syntax: :::wa-icon icon-name
+  # Primary syntax: $$$icon-name (name only, decorative)
+  # Alternative syntax: :::wa-icon icon-name [family] [variant] [animation]\n[label]\n:::
   #
   # Examples:
   # $$$settings -> <wa-icon name="settings"></wa-icon>
   # $$$home -> <wa-icon name="home"></wa-icon>
   # $$$user-circle -> <wa-icon name="user-circle"></wa-icon>
+  # :::wa-icon star spin\n::: -> <wa-icon name="star" animation="spin"></wa-icon>
+  # :::wa-icon heart solid\nFavorite\n::: ->
+  #   <wa-icon name="heart" variant="solid" label="Favorite"></wa-icon>
   class IconTransformer < BaseTransformer
+    # First-line params + optional multi-line body. The closer is anchored to a line
+    # start; the opener is intentionally not anchored so it still matches mid-prose.
+    ALTERNATIVE_REGEX = /:::wa-icon[ \t]+([^\n]*?)[ \t]*\n(.*?)^:::/m
     def self.transform(content)
       # Protect code blocks first
       protected_content, code_blocks = protect_code_blocks(content)
@@ -25,9 +33,16 @@ module Markawesome
       end
 
       # Apply alternative syntax transformation
-      result = result.gsub(/:::wa-icon\s+([a-zA-Z0-9\-_]+)\s*\n:::/m) do
-        icon_name = ::Regexp.last_match(1)
-        build_icon_html(icon_name)
+      result = result.gsub(ALTERNATIVE_REGEX) do
+        first_line = ::Regexp.last_match(1)
+        raw_body   = ::Regexp.last_match(2)
+
+        tokens     = first_line.strip.split(/\s+/)
+        icon_name  = tokens.shift # first token is always the name
+        attributes = AttributeParser.parse(tokens.join(' '), IconAttributes::SCHEMA)
+        label      = normalize_label(raw_body)
+
+        build_icon_html(icon_name, attributes, label)
       end
 
       # Restore code blocks
@@ -39,7 +54,12 @@ module Markawesome
 
       # Drop primary-syntax icons entirely.
       result = protected_content.gsub(/\$\$\$([a-zA-Z0-9\-_]+)(?![a-zA-Z0-9\-_]|\s+name\b)/, '')
-      result = result.gsub(/:::wa-icon\s+([a-zA-Z0-9\-_]+)\s*\n:::/m, '')
+
+      # A labeled block degrades to its label text (collapsed, not HTML-escaped — it
+      # re-enters a markdown stream); an unlabeled block degrades to ''.
+      result = result.gsub(ALTERNATIVE_REGEX) do
+        ::Regexp.last_match(2).to_s.strip.gsub(/\s+/, ' ')
+      end
 
       restore_code_blocks(result, code_blocks)
     end
@@ -47,12 +67,24 @@ module Markawesome
     class << self
       private
 
-      def build_icon_html(icon_name)
-        # Clean and validate icon name
-        clean_name = icon_name.strip
+      def build_icon_html(icon_name, attributes = {}, label = nil)
+        parts = ["name=\"#{icon_name.strip}\""]
+        parts.concat(IconAttributes.pairs(attributes))
+        parts << "label=\"#{label}\"" if label && !label.empty?
+        "<wa-icon #{parts.join(' ')}></wa-icon>"
+      end
 
-        # Return the wa-icon element
-        "<wa-icon name=\"#{clean_name}\"></wa-icon>"
+      # Label is an attribute VALUE, not markup: strip, collapse whitespace, HTML-escape.
+      # Deliberately NOT run through markdown_to_html (unlike button/callout bodies).
+      def normalize_label(raw_body)
+        text = raw_body.to_s.strip.gsub(/\s+/, ' ')
+        text.empty? ? nil : escape_html(text)
+      end
+
+      # Same escape set as Dialog/Popover transformers.
+      def escape_html(text)
+        text.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;')
+            .gsub('"', '&quot;').gsub("'", '&#39;')
       end
 
       def protect_code_blocks(content)

@@ -180,6 +180,77 @@ RSpec.describe Markawesome::IconTransformer do
       end
     end
 
+    context 'with enriched alternative syntax' do
+      it 'adds a family attribute' do
+        result = described_class.transform(":::wa-icon star sharp\n:::")
+        expect(result).to eq('<wa-icon name="star" family="sharp"></wa-icon>')
+      end
+
+      it 'adds a variant attribute' do
+        result = described_class.transform(":::wa-icon star solid\n:::")
+        expect(result).to eq('<wa-icon name="star" variant="solid"></wa-icon>')
+      end
+
+      it 'adds an animation attribute' do
+        result = described_class.transform(":::wa-icon star spin\n:::")
+        expect(result).to eq('<wa-icon name="star" animation="spin"></wa-icon>')
+      end
+
+      it 'combines family, variant, animation, and label in deterministic order' do
+        result = described_class.transform(":::wa-icon star spin solid sharp\nFeatured\n:::")
+        expect(result).to eq(
+          '<wa-icon name="star" family="sharp" variant="solid" animation="spin" label="Featured"></wa-icon>'
+        )
+      end
+
+      it 'is token-order-independent' do
+        result = described_class.transform(":::wa-icon star spin solid sharp\n:::")
+        expect(result).to eq(
+          '<wa-icon name="star" family="sharp" variant="solid" animation="spin"></wa-icon>'
+        )
+      end
+
+      it 'applies rightmost-wins for repeated attributes' do
+        result = described_class.transform(":::wa-icon star thin solid\n:::")
+        expect(result).to eq('<wa-icon name="star" variant="solid"></wa-icon>')
+      end
+
+      it 'silently drops unknown tokens' do
+        result = described_class.transform(":::wa-icon star bogus spin\n:::")
+        expect(result).to eq('<wa-icon name="star" animation="spin"></wa-icon>')
+      end
+
+      it 'sets a multi-word label from the block body' do
+        result = described_class.transform(":::wa-icon heart solid\nAdd to favorites\n:::")
+        expect(result).to eq('<wa-icon name="heart" variant="solid" label="Add to favorites"></wa-icon>')
+      end
+
+      it 'collapses a multi-line body into a single-space label' do
+        result = described_class.transform(":::wa-icon bell shake\nFirst line\nSecond line\n:::")
+        expect(result).to eq('<wa-icon name="bell" animation="shake" label="First line Second line"></wa-icon>')
+      end
+
+      it 'HTML-escapes the label value' do
+        result = described_class.transform(%(:::wa-icon flag\nit's <a> & "b"\n:::))
+        expect(result).to eq(%(<wa-icon name="flag" label="it&#39;s &lt;a&gt; &amp; &quot;b&quot;"></wa-icon>))
+      end
+
+      it 'emits a bare name for an empty body (backward compatible)' do
+        result = described_class.transform(":::wa-icon settings\n:::")
+        expect(result).to eq('<wa-icon name="settings"></wa-icon>')
+      end
+
+      it 'leaves $$$ inline icons name-only with trailing tokens untouched' do
+        result = described_class.transform('$$$heart solid')
+        expect(result).to eq('<wa-icon name="heart"></wa-icon> solid')
+      end
+
+      it 'does not transform an enriched block inside a fenced code block' do
+        content = "```\n:::wa-icon star spin\n:::\n```"
+        expect(described_class.transform(content)).to eq(content)
+      end
+    end
+
     context 'with mixed syntax' do
       it 'transforms both primary and alternative syntax' do
         content = <<~MARKDOWN

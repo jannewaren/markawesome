@@ -128,6 +128,40 @@ RSpec.describe Markawesome::CalloutTransformer do
       end
     end
 
+    context 'with icon family/variant/animation overrides' do
+      it 'applies an animation to the default variant icon' do
+        markdown = ":::warning shake\nHeads up\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include(
+          '<wa-icon slot="icon" name="triangle-exclamation" variant="solid" animation="shake"></wa-icon>'
+        )
+      end
+
+      it 'overrides the variant on a custom icon' do
+        markdown = ":::brand icon:rocket light\nBlast off\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="icon" name="rocket" variant="light"></wa-icon>')
+      end
+
+      it 'overrides family, variant, and animation together' do
+        markdown = ":::danger sharp regular bounce\nWatch out\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include(
+          '<wa-icon slot="icon" name="circle-exclamation" family="sharp" variant="regular" animation="bounce"></wa-icon>'
+        )
+      end
+
+      it 'keeps the historical solid default for plain callouts (regression guard)' do
+        markdown = ":::success\nDone\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-icon slot="icon" name="circle-check" variant="solid"></wa-icon>')
+      end
+    end
+
     it 'does not transform invalid callout types' do
       markdown = ":::invalid\nThis is invalid\n:::"
       result = described_class.transform(markdown)
