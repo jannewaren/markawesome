@@ -47,18 +47,6 @@ WA 3.6 refactored `<wa-copy-button>` onto a real internal button and added a
 **`tooltip`** attribute: `full` (label + tooltip), `copy` (tooltip only),
 `none`. We should expose this so authors can control the hover affordance.
 
-### `button` (link form) — `target`, `rel`, `download`
-
-When a button wraps a Markdown link (`[Text](url)`), it becomes an
-`<wa-button href="…">`. Plain anchor attributes are missing:
-
-- **`target`** — `_blank` for "open in new tab" (very common author need).
-- **`rel`** — pairs with `target="_blank"` (`noopener noreferrer`); also
-  `nofollow`/`sponsored` for SEO.
-- **`download`** — turn a link button into a file download.
-
-All three are plain HTML pass-throughs — no JS, just attribute plumbing.
-
 ### `popover` — aligned placements + `skidding`
 
 `<wa-popover>` supports edge-aligned placements beyond the basic

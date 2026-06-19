@@ -18,6 +18,11 @@ module Markawesome
   # - loading: loading (loading state)
   # - disabled: disabled (disabled state)
   #
+  # Link-form only (emitted only when content is a markdown link):
+  # - target: _blank, _self, _parent, _top (target="_blank" also emits
+  #   rel="noopener noreferrer" automatically)
+  # - download: download (bare download attribute)
+  #
   # Link buttons: %%%brand\n[Text](url)\n%%%
   # Regular buttons: %%%brand large pill\nText\n%%%
   class ButtonTransformer < BaseTransformer
@@ -29,7 +34,9 @@ module Markawesome
       pill: %w[pill],
       caret: %w[caret],
       loading: %w[loading],
-      disabled: %w[disabled]
+      disabled: %w[disabled],
+      target: %w[_blank _self _parent _top],
+      download: %w[download]
     }.freeze
 
     ICON_SLOTS = { default: 'start', slots: %w[start end] }.freeze
@@ -105,7 +112,9 @@ module Markawesome
           # Fix whitespace issues like in badges
           button_html = button_html.gsub(%r{(</\w+>)\s+}, '\1&nbsp;')
 
-          "<wa-button#{attrs_string} href=\"#{link_url}\">#{icon_html}#{button_html}</wa-button>"
+          link_attrs_string = link_pass_through_attrs(attributes)
+
+          "<wa-button#{attrs_string} href=\"#{link_url}\"#{link_attrs_string}>#{icon_html}#{button_html}</wa-button>"
         else
           # It's a regular button
           button_html = markdown_to_html(content).strip
@@ -116,6 +125,17 @@ module Markawesome
 
           "<wa-button#{attrs_string}>#{icon_html}#{button_html}</wa-button>"
         end
+      end
+
+      # Plain anchor pass-throughs, meaningful only on link-form buttons.
+      # Auto-emit rel="noopener noreferrer" with target="_blank" to guard
+      # against reverse tabnabbing.
+      def link_pass_through_attrs(attributes)
+        link_attrs = []
+        link_attrs << "target=\"#{attributes[:target]}\"" if attributes[:target]
+        link_attrs << 'rel="noopener noreferrer"' if attributes[:target] == '_blank'
+        link_attrs << 'download' if attributes[:download]
+        link_attrs.empty? ? '' : " #{link_attrs.join(' ')}"
       end
     end
   end

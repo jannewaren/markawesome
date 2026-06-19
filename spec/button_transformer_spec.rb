@@ -629,5 +629,88 @@ RSpec.describe Markawesome::ButtonTransformer do
         expect(result).to eq(expected)
       end
     end
+
+    context 'with link target, rel, and download attributes' do
+      it 'emits target and auto rel on link button' do
+        input = "%%%brand _blank\n[Open](https://example.com)\n%%%"
+        expected = '<wa-button variant="brand" href="https://example.com" target="_blank" rel="noopener noreferrer">Open</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'auto-emits rel from _blank alone' do
+        input = "%%%_blank\n[Open](https://example.com)\n%%%"
+        expected = '<wa-button href="https://example.com" target="_blank" rel="noopener noreferrer">Open</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'does not emit rel for non-blank target' do
+        input = "%%%_self\n[Open](https://example.com)\n%%%"
+        expected = '<wa-button href="https://example.com" target="_self">Open</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'uses rightmost-wins target which suppresses rel' do
+        input = "%%%_blank _self\n[Open](https://example.com)\n%%%"
+        expected = '<wa-button href="https://example.com" target="_self">Open</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'emits bare download on link button' do
+        input = "%%%brand download\n[Get file](/files/report.pdf)\n%%%"
+        expected = '<wa-button variant="brand" href="/files/report.pdf" download>Get file</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines target and download' do
+        input = "%%%_blank download\n[Download](https://cdn.example.com/x.zip)\n%%%"
+        expected = '<wa-button href="https://cdn.example.com/x.zip" target="_blank" rel="noopener noreferrer" download>Download</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines component attrs, icon, target, and download' do
+        input = "%%%brand large icon:download _blank download\n[Get it](https://example.com/x.zip)\n%%%"
+        expected = '<wa-button variant="brand" size="large" href="https://example.com/x.zip" target="_blank" rel="noopener noreferrer" download>' \
+                   '<wa-icon slot="start" name="download"></wa-icon>Get it</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'ignores target on non-link button' do
+        input = "%%%brand _blank\nClick me\n%%%"
+        expected = '<wa-button variant="brand">Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'ignores download on non-link button' do
+        input = "%%%download\nClick me\n%%%"
+        expected = '<wa-button>Click me</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'works with alternative :::wa-button syntax' do
+        input = ":::wa-button brand _blank download\n[Get it](https://example.com/x.zip)\n:::"
+        expected = '<wa-button variant="brand" href="https://example.com/x.zip" target="_blank" rel="noopener noreferrer" download>Get it</wa-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
   end
 end

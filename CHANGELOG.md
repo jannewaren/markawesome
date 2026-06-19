@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2026-06-19
+
+### Added
+
+- `ButtonTransformer` link-form buttons now accept `target` (`_blank`, `_self`, `_parent`, `_top`) and a boolean `download` flag. When `target="_blank"` is set, `rel="noopener noreferrer"` is emitted automatically to guard against reverse tabnabbing. These attributes are emitted **only** on link-form buttons (markup wrapping a markdown link, e.g. `%%%brand _blank\n[Text](url)\n%%%`); written on a regular (non-link) button they are parsed but dropped, consistent with the existing unrecognized-token behavior. They are also absent from the plain-markdown degradation path (`render_as_markdown`), since a plain `[text](url)` can't express them. A `download:filename` value form is a possible future enhancement.
+
 ## [0.11.0] - 2026-06-16
 
 Aligns generated markup with Web Awesome 3.8.0 (latest). See `ROADMAP.md` for the remaining enhancement backlog from the same audit.
