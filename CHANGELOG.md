@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.0] - 2026-06-24
+
+### Added
+
+- New `TooltipTransformer` producing Web Awesome `<wa-tooltip>` — inline contextual help on hover/focus for glossary terms and inline definitions. Declarative, zero-JS, and static-site-safe: the tooltip is attached to a focusable anchor `<span>` via an auto-generated `for`/`id` pair, so authors write only the trigger term and the tip text.
+  - **Inline syntax** (primary): `(((anchor term >>> tip text)))`. The `(((` delimiter is unused by any other transformer, is not Markdown- or Liquid-special, and never appears in normal prose; the `>>>` separator matches the popover/dialog/details convention (anchor first, tip after `>>>`).
+  - **Block alternative**: `:::wa-tooltip placement? distance:N?` / anchor / `>>>` / tip / `:::`, for consistency with every other component's `:::wa-*` form.
+  - **Attributes** (order-independent leading tokens): `placement` (`top` default, `bottom`, `left`, `right`) and `distance:N`. Mirrors `PopoverTransformer`'s surface minus `link`/`without-arrow` (WA `<wa-tooltip>` has no `without-arrow` boolean — arrow size is CSS-only).
+  - **Tip content** is plain text (HTML-escaped), with literal `\n` rendered as `<br>` — the same surface as the popover's *inline* form. Tooltips hold brief text, so there is no Markdown body.
+  - **Emitted markup**: a focusable `<span id="tooltip-…" tabindex="0" class="ma-tooltip-anchor" style="text-decoration: underline dotted; cursor: help;">` anchor followed by `<wa-tooltip for="tooltip-…" placement="…" [distance="…"]>`. The anchor is focusable so keyboard/AT users get the tip (tooltips fire on focus too); `ma-tooltip-anchor` is a styling hook (mirrors popover's `ma-popover-trigger`).
+  - **IDs** are auto-wired via `tooltip-<first 8 of MD5(anchor+tip)>`, with `-2`/`-3` dedup suffixes for repeated identical tooltips — the same scheme as `PopoverTransformer`. Runs immediately after `PopoverTransformer` (early, after `LayoutTransformer`) so inline tooltips inside cards/callouts/details are transformed before Kramdown escapes `(((`/`>>>`.
+  - **Plain-markdown degradation** (`render_as_markdown`, used for `.md` endpoints / llms.txt): both forms degrade to `**anchor** (tip)`, mirroring the popover inline degradation.
+- Aligned placements (`top-start`, …), `show-delay`/`hide-delay`, and a rich-content block form are explicit future follow-ups, not part of v1.
+
 ## [0.14.0] - 2026-06-24
 
 ### Added

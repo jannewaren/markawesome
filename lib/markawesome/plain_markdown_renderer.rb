@@ -26,7 +26,7 @@ module Markawesome
       #
       # @param component [Symbol] one of :accordion, :callout, :badge, :button,
       #   :card, :carousel, :comparison, :copy_button, :details, :dialog, :icon,
-      #   :image_dialog, :layout, :popover, :tabs, :tag.
+      #   :image_dialog, :layout, :popover, :tabs, :tag, :tooltip.
       # @yield [content, options] Proc that receives the full source content
       #   and the renderer options; returns the content with that component
       #   syntax replaced.
@@ -45,6 +45,7 @@ module Markawesome
     PIPELINE = %i[
       layout
       popover
+      tooltip
       badge
       button
       callout
@@ -64,6 +65,7 @@ module Markawesome
     TRANSFORMER_MAP = {
       layout: LayoutTransformer,
       popover: PopoverTransformer,
+      tooltip: TooltipTransformer,
       badge: BadgeTransformer,
       button: ButtonTransformer,
       callout: CalloutTransformer,

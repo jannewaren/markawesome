@@ -23,10 +23,11 @@ committed work — it's a prioritized backlog to pull from.
 These are components we already transform, but where Web Awesome exposes
 attributes we don't yet surface in our Markdown syntax.
 
-### `icon` — surface `animation`, `family`, `variant`, `label` *(biggest single gap)*
+### ~~`icon` — surface `animation`, `family`, `variant`, `label`~~ — ✅ shipped in 0.13.0
 
-Our icon transformer only emits `name`. Web Awesome's `<wa-icon>` supports
-several declarative attributes we never expose:
+Our icon transformer historically only emitted `name`. Web Awesome's
+`<wa-icon>` supports several declarative attributes we now expose on the
+standalone `:::wa-icon` block (shipped in markawesome **0.13.0**):
 
 - **`animation`** (added in WA 3.2) — `spin`, `beat`, `fade`, `bounce`,
   `flip`, `pulse`, etc. Pure CSS animation, ideal for static "loading"-style
@@ -34,12 +35,16 @@ several declarative attributes we never expose:
 - **`family`** — selects the icon family (e.g. `classic`, `sharp`, `duotone`,
   `brands`). Without it authors are locked to the default family.
 - **`variant`** — Pro weights (`thin`, `light`, `regular`, `solid`). We
-  hard-code `variant="solid"` in some callers but never let authors choose.
+  hard-code `variant="solid"` in some callers but now also let authors choose.
 - **`label`** — accessible label for standalone meaningful icons (a11y). When
   absent, screen readers get nothing useful.
 
-**Why first:** highest leverage. Icons appear inside callouts, buttons, tags,
-badges and on their own, so a richer icon syntax pays off everywhere.
+These are bare enumerated tokens after the icon name (order-independent,
+rightmost-wins); the block body becomes the icon's accessible `label`.
+`CalloutTransformer` reuses the same family/variant/animation tokens on the
+callout line. The inline `$$$name` form stays name-only (mid-prose,
+decorative). This was the highest-leverage gap — icons appear inside callouts,
+buttons, tags, badges and on their own.
 
 ### `copy-button` — `tooltip`
 
@@ -83,12 +88,18 @@ attributes we emit are all declarative and static-safe.
 > `--wa-accordion-divider-color` custom property** — we deliberately do not
 > expose a divider-color attribute, it's no longer a supported knob.
 
-### 2. `tooltip`
+### ~~2. `tooltip`~~ — ✅ shipped in 0.15.0
 
-Inline contextual help on hover/focus. Zero JavaScript, and we can
-auto-generate the `for`/`id` wiring between the tooltip and its anchor so
-authors just write the trigger and the tip text. Great for glossary terms and
-inline definitions.
+Inline contextual help on hover/focus. Zero JavaScript, and we auto-generate
+the `for`/`id` wiring between the tooltip and its anchor so authors just write
+the trigger and the tip text. Great for glossary terms and inline definitions.
+Shipped in markawesome **0.15.0** as `TooltipTransformer`: inline
+`(((anchor >>> tip)))` form (primary) plus a `:::wa-tooltip` block alternative,
+with `placement` (`top` default, `bottom`, `left`, `right`) and `distance:N`
+leading tokens. The anchor is a focusable `<span tabindex="0">` so keyboard/AT
+users get the tip; the tip is plain text (HTML-escaped, `\n` → `<br>`). Aligned
+placements, `show-delay`/`hide-delay`, and a rich-content body are future
+follow-ups, not v1.
 
 ### 3. `video` / `video-playlist`
 

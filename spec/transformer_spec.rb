@@ -71,6 +71,15 @@ RSpec.describe Markawesome::Transformer do
       expect(result).to include('<wa-comparison')
     end
 
+    it 'processes tooltip syntax' do
+      input = '(((CSS >>> Cascading Style Sheets)))'
+      result = described_class.process(input)
+      expect(result).to include('<span id="tooltip-')
+      expect(result).to include('class="ma-tooltip-anchor"')
+      expect(result).to include('<wa-tooltip for="tooltip-')
+      expect(result).to include('Cascading Style Sheets</wa-tooltip>')
+    end
+
     context 'with image dialog option' do
       it 'transforms images to dialogs when enabled' do
         input = '![Test](test.png)'
