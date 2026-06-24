@@ -68,17 +68,20 @@ individual tab disabled.
 Recent Web Awesome components that genuinely fit Markdown authoring — declarative,
 content-driven, no JS glue needed.
 
-### 1. `accordion` / `accordion-item` *(top pick)*
+### ~~1. `accordion` / `accordion-item`~~ — ✅ shipped in 0.14.0
 
-Added in WA 3.7. Multi-section collapsible container — the natural fit for FAQs,
-docs sections, and "show more" content. We already support single `details`;
-accordion is the grouped, mutually-exclusive-capable version. Highest-value new
-component for a docs/content site.
+Multi-section collapsible container (WA 3.7) — the natural fit for FAQs, docs
+sections, and "show more" content. The grouped, mutually-exclusive-capable
+sibling of `details`. Shipped in markawesome **0.14.0** as `AccordionTransformer`:
+`//////` container fence / `///` item fence (or the `:::wa-accordion` alternative),
+with `appearance`/`mode`/`icon-placement`/`heading:N` container tokens and
+`expanded`/`disabled`/`icon:` item flags. Still **experimental** in WA, but the
+attributes we emit are all declarative and static-safe.
 
-> _3.9.0 note:_ still experimental. 3.9.0 fixed an accordion/accordion-item SSR
-> hydration race (irrelevant to a static Jekyll build) and **removed the
-> `--wa-accordion-divider-color` custom property** — don't plan to expose a
-> divider-color attribute, it's no longer a supported knob.
+> _3.9.0 note:_ 3.9.0 fixed an accordion/accordion-item SSR hydration race
+> (irrelevant to a static Jekyll build) and **removed the
+> `--wa-accordion-divider-color` custom property** — we deliberately do not
+> expose a divider-color attribute, it's no longer a supported knob.
 
 ### 2. `tooltip`
 

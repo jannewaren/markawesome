@@ -4,6 +4,7 @@
 # This file makes it easy to require all transformers at once
 
 require_relative 'transformers/base_transformer'
+require_relative 'transformers/accordion_transformer'
 require_relative 'transformers/badge_transformer'
 require_relative 'transformers/button_transformer'
 require_relative 'transformers/callout_transformer'

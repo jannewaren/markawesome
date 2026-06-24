@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0] - 2026-06-24
+
+### Added
+
+- New `AccordionTransformer` producing Web Awesome `<wa-accordion>` / `<wa-accordion-item>` — a multi-section collapsible container for FAQs, docs sections, and "show more" content (the grouped, mutually-exclusive-capable sibling of `details`). The `/` delimiter is the container/item marker: container fence `//////` (6×), item fence `///` (3×) with an explicit `///` close, mirroring tabs (`++++++`/`+++`). An alternative `:::wa-accordion … :::` form is also accepted.
+  - **Container line** (bare tokens, order-independent, rightmost-wins): `appearance` (`outlined` default, `filled`, `filled-outlined`, `plain`), `mode` (`multiple`, `single`, `single-collapsible`), `icon-placement` (`start`, `end`), and a value-form `heading:N` → `heading-level="N"` where `N` is `1`–`6` or `none` (out-of-range values fall back to omitting the attribute). `appearance` is always emitted (defaulting to `outlined`); `mode`, `icon-placement`, and `heading-level` are emitted only when specified.
+  - **Item header** (`/// [expanded] [disabled] [icon:name] Label`): leading `expanded`/`disabled` flags become the matching boolean attributes; `icon:name` becomes a `<wa-icon slot="icon" name="…">` first child; the remaining text becomes the HTML-escaped `label`. Item bodies are full markdown and may contain other components.
+  - **Plain-markdown degradation** (`render_as_markdown`, used for `.md` endpoints / llms.txt): each item degrades to a `### Label` heading followed by its body, mirroring tabs.
+- `wa-accordion` is **experimental** in Web Awesome (added in 3.7), but `expanded`, `disabled`, and the `mode`/`appearance`/`icon-placement`/`heading-level` attributes are all declarative and static-site-safe — no JavaScript required. The interactive `expandAll()`/`collapseAll()` controls and rich/HTML `label` slot are out of scope for v1; item labels are plain text. The `--wa-accordion-divider-color` custom property removed in WA 3.9.0 is intentionally not exposed.
+
 ## [0.13.0] - 2026-06-20
 
 ### Added

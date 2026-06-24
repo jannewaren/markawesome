@@ -32,6 +32,10 @@ module Markawesome
       content = TagTransformer.transform(content)
       content = TabsTransformer.transform(content)
 
+      # Accordion runs last so item bodies may contain other already-transformed
+      # components (same reason tabs runs near the end).
+      content = AccordionTransformer.transform(content)
+
       CodeBlockProtector.restore(content, tokens)
     end
   end

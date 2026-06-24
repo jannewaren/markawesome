@@ -24,8 +24,8 @@ module Markawesome
       # plugin during boot to override the default rendering for a single
       # component without forking the gem.
       #
-      # @param component [Symbol] one of :callout, :badge, :button, :card,
-      #   :carousel, :comparison, :copy_button, :details, :dialog, :icon,
+      # @param component [Symbol] one of :accordion, :callout, :badge, :button,
+      #   :card, :carousel, :comparison, :copy_button, :details, :dialog, :icon,
       #   :image_dialog, :layout, :popover, :tabs, :tag.
       # @yield [content, options] Proc that receives the full source content
       #   and the renderer options; returns the content with that component
@@ -58,6 +58,7 @@ module Markawesome
       icon
       tag
       tabs
+      accordion
     ].freeze
 
     TRANSFORMER_MAP = {
@@ -75,7 +76,8 @@ module Markawesome
       dialog: DialogTransformer,
       icon: IconTransformer,
       tag: TagTransformer,
-      tabs: TabsTransformer
+      tabs: TabsTransformer,
+      accordion: AccordionTransformer
     }.freeze
 
     def self.process(content, options = {})
