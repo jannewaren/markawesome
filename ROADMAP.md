@@ -46,11 +46,17 @@ callout line. The inline `$$$name` form stays name-only (mid-prose,
 decorative). This was the highest-leverage gap — icons appear inside callouts,
 buttons, tags, badges and on their own.
 
-### `copy-button` — `tooltip`
+### ~~`copy-button` — `tooltip`~~ — ✅ shipped in 0.16.0
 
 WA 3.6 refactored `<wa-copy-button>` onto a real internal button and added a
-**`tooltip`** attribute: `full` (label + tooltip), `copy` (tooltip only),
-`none`. We should expose this so authors can control the hover affordance.
+**`tooltip`** attribute controlling *when* the built-in tooltip appears.
+Shipped in markawesome **0.16.0** as a `tooltip:full|copy|none` token on the
+copy-button line (e.g. `<<<top tooltip:copy`): `full` (WA default — tooltip on
+hover/focus plus copy feedback), `copy` (silent on hover/focus; tooltip only
+for copy feedback), `none` (no tooltip in any state). The earlier shorthand here
+("full = label + tooltip, copy = tooltip only") was imprecise — the real
+distinction is hover/focus visibility. The capture is enum-anchored, so invalid
+values are dropped and fall back to WA's default.
 
 ### `popover` — aligned placements + `skidding`
 

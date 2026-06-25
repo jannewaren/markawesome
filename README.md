@@ -20,7 +20,7 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 | **Card** | `===` | `:::wa-card` | `<wa-card>content</wa-card>` |
 | **Carousel** | `~~~~~~` | `:::wa-carousel` | `<wa-carousel>` with carousel items |
 | **Comparison** | `\|\|\|` or `\|\|\|25` | `:::wa-comparison` or `:::wa-comparison 25` | `<wa-comparison>` with before/after slots |
-| **Copy Button** | `<<<` | `:::wa-copy-button` | `<wa-copy-button value="content">content</wa-copy-button>` |
+| **Copy Button** | `<<<placement? tooltip:full\|copy\|none?` | `:::wa-copy-button placement? tooltip:full\|copy\|none?` | `<wa-copy-button value="content" tooltip-placement="top" tooltip="copy"></wa-copy-button>` |
 | **Details** | `^^^appearance? icon-placement?` | `:::wa-details appearance? icon-placement?` | `<wa-details>content</wa-details>` |
 | **Dialog** | `???params?` | `:::wa-dialog params?` | `<wa-dialog>` with trigger button and content |
 | **Icon** | `$$$icon-name` | `:::wa-icon icon-name` | `<wa-icon name="icon-name"></wa-icon>` |

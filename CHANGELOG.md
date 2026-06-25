@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.0] - 2026-06-25
+
+### Added
+
+- `CopyButtonTransformer` now accepts a `tooltip:full|copy|none` token controlling Web Awesome's `<wa-copy-button>` **`tooltip`** attribute (added in WA 3.6) — the *mode* of the built-in hover affordance, distinct from the existing `tooltip-placement`:
+  - **`full`** (WA default) — the tooltip shows on hover **and** focus, and is reused to display the brief copy-success/error feedback. Emitting `tooltip="full"` is explicit-but-redundant.
+  - **`copy`** — the tooltip stays **silent on hover/focus** and appears **only briefly to confirm a successful or failed copy** (feedback-only, no hover hint).
+  - **`none`** — no tooltip in any state.
+- The token is a `key:value` form (like `distance:N`, `icon:name`), order-independent with the other copy-button tokens. The capture is **enum-anchored** (`full|copy|none`), so invalid values such as `tooltip:bogus` simply don't match and are dropped, falling back to WA's default — consistent with the "unknown tokens dropped" convention. Emit order stays deterministic: `tooltip` follows `tooltip-placement`.
+- The plain-markdown degradation path (`render_as_markdown`) is unaffected — the wrapper and all params are discarded, leaving only the copied content.
+
 ## [0.15.0] - 2026-06-24
 
 ### Added

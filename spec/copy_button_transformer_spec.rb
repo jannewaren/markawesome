@@ -182,6 +182,66 @@ RSpec.describe Markawesome::CopyButtonTransformer do
       end
     end
 
+    context 'with tooltip mode' do
+      it 'supports full mode' do
+        input = "<<<tooltip:full\nCopy this\n<<<"
+        expected = '<wa-copy-button value="Copy this" tooltip="full"></wa-copy-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'supports copy mode' do
+        input = "<<<tooltip:copy\nCopy this\n<<<"
+        expected = '<wa-copy-button value="Copy this" tooltip="copy"></wa-copy-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'supports none mode' do
+        input = "<<<tooltip:none\nCopy this\n<<<"
+        expected = '<wa-copy-button value="Copy this" tooltip="none"></wa-copy-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'combines tooltip mode with placement in deterministic order' do
+        input = "<<<top tooltip:copy\nCopy this\n<<<"
+        expected = '<wa-copy-button value="Copy this" tooltip-placement="top" tooltip="copy"></wa-copy-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'produces the same result regardless of token order' do
+        input1 = "<<<top tooltip:copy\nCopy this\n<<<"
+        input2 = "<<<tooltip:copy top\nCopy this\n<<<"
+
+        result1 = described_class.transform(input1)
+        result2 = described_class.transform(input2)
+
+        expect(result1).to eq(result2)
+      end
+
+      it 'drops an invalid tooltip mode' do
+        input = "<<<tooltip:bogus\nCopy this\n<<<"
+        expected = '<wa-copy-button value="Copy this"></wa-copy-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+
+      it 'supports tooltip mode with alternative syntax' do
+        input = ":::wa-copy-button tooltip:copy\nCopy this\n:::"
+        expected = '<wa-copy-button value="Copy this" tooltip="copy"></wa-copy-button>'
+
+        result = described_class.transform(input)
+        expect(result).to eq(expected)
+      end
+    end
+
     context 'with custom labels' do
       it 'supports copy-label' do
         input = "<<<copy-label=\"Click to copy\"\nCopy this\n<<<"

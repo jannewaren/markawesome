@@ -10,6 +10,7 @@ module Markawesome
   #
   # Params: space-separated tokens, any order (rightmost-wins for conflicts)
   # Placement: top, right, bottom, left
+  # Tooltip mode: tooltip:full|copy|none (when the built-in tooltip appears)
   # Duration: numeric value (feedback-duration in milliseconds)
   # Flags: disabled
   # Labels: copy-label="text", success-label="text", error-label="text"
@@ -37,6 +38,8 @@ module Markawesome
       disabled: %w[disabled]
     }.freeze
 
+    TOOLTIP_MODES = %w[full copy none].freeze
+
     def self.transform(content)
       # Define both regex patterns - capture params as a single string
       primary_regex = /^<<<(.*?)\n(.*?)\n<<</m
@@ -57,6 +60,10 @@ module Markawesome
 
         # Extract numeric feedback-duration
         attributes[:feedback_duration] = ::Regexp.last_match(1) if params_string =~ /\b(\d+)\b/
+
+        # Extract tooltip mode (enum-anchored: invalid values simply don't match and are dropped)
+        tooltip_mode_regex = /\btooltip:(#{TOOLTIP_MODES.join('|')})\b/
+        attributes[:tooltip] = ::Regexp.last_match(1) if params_string =~ tooltip_mode_regex
 
         build_copy_button_html(copy_content, attributes)
       end
@@ -97,6 +104,9 @@ module Markawesome
 
         # Add tooltip placement
         attr_parts << "tooltip-placement=\"#{attributes[:placement]}\"" if attributes[:placement]
+
+        # Add tooltip mode
+        attr_parts << "tooltip=\"#{attributes[:tooltip]}\"" if attributes[:tooltip]
 
         # Add custom labels
         attr_parts << "copy-label=\"#{attributes[:copy_label]}\"" if attributes[:copy_label]

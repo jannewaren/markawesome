@@ -13,5 +13,10 @@ RSpec.describe Markawesome::CopyButtonTransformer do
       md = ":::wa-copy-button\nsome value\n:::"
       expect(described_class.render_as_markdown(md)).to eq('some value')
     end
+
+    it 'degrades to bare text even with a tooltip mode token' do
+      md = "<<<tooltip:none\nvalue to copy\n<<<"
+      expect(described_class.render_as_markdown(md)).to eq('value to copy')
+    end
   end
 end
