@@ -13,15 +13,18 @@ module Markawesome
   # Alternative block syntax: :::wa-tooltip params\nanchor\n>>>\ntip\n:::
   #
   # Params: space-separated tokens (order doesn't matter)
-  # Placement: top (default), bottom, left, right
-  # Distance: distance:N (e.g., distance:10)
+  # Placement: top (default), bottom, left, right, plus the eight aligned
+  #   variants (top-start, top-end, right-start, …) — the full wa-tooltip surface
+  # Distance: distance:N (e.g., distance:10) — offset away from the target
+  # Skidding: skidding:N (e.g., skidding:12, skidding:-4) — offset along the target
   #
   # Tip content is plain text (HTML-escaped), with literal `\n` rendered as
   # <br> — the same surface as the popover's inline form. Tooltips hold brief
   # text, so there is no markdown body.
   class TooltipTransformer < BaseTransformer
     TOOLTIP_ATTRIBUTES = {
-      placement: %w[top bottom left right]
+      placement: %w[top top-start top-end right right-start right-end
+                    bottom bottom-start bottom-end left left-start left-end]
     }.freeze
 
     # Inline regex (single-line, no newlines allowed): capture 1 = params+anchor,
@@ -43,12 +46,12 @@ module Markawesome
           tip_text = matchdata[2].strip
 
           params_string, anchor_text = parse_inline_anchor_and_params(combined)
-          placement, distance = parse_parameters(params_string)
+          placement, distance, skidding = parse_parameters(params_string)
 
           tooltip_id = generate_tooltip_id(anchor_text, tip_text, seen_ids)
 
           build_tooltip_html(tooltip_id, anchor_text, tip_text,
-                             { placement: placement, distance: distance })
+                             { placement: placement, distance: distance, skidding: skidding })
         end
       }
 
@@ -59,12 +62,12 @@ module Markawesome
           anchor_text = matchdata[2].strip
           tip_text = matchdata[3].strip
 
-          placement, distance = parse_parameters(params_string)
+          placement, distance, skidding = parse_parameters(params_string)
 
           tooltip_id = generate_tooltip_id(anchor_text, tip_text, seen_ids)
 
           build_tooltip_html(tooltip_id, anchor_text, tip_text,
-                             { placement: placement, distance: distance })
+                             { placement: placement, distance: distance, skidding: skidding })
         end
       }
 
@@ -99,17 +102,19 @@ module Markawesome
       private
 
       def parse_parameters(params_string)
-        return ['top', nil] if params_string.nil? || params_string.strip.empty?
+        return ['top', nil, nil] if params_string.nil? || params_string.strip.empty?
 
         attributes = AttributeParser.parse(params_string, TOOLTIP_ATTRIBUTES)
         placement = attributes[:placement] || 'top'
 
-        # Look for distance:N parameter (rightmost-wins)
+        # Look for distance:N / skidding:N parameters (rightmost-wins; skidding may be negative)
         tokens = params_string.strip.split(/\s+/)
         distance_token = tokens.reverse.find { |token| token.match?(/^distance:\d+$/) }
         distance = distance_token&.sub('distance:', '')
+        skidding_token = tokens.reverse.find { |token| token.match?(/^skidding:-?\d+$/) }
+        skidding = skidding_token&.sub('skidding:', '')
 
-        [placement, distance]
+        [placement, distance, skidding]
       end
 
       def generate_tooltip_id(anchor_text, tip_text, seen_ids)
@@ -147,7 +152,8 @@ module Markawesome
 
       def tooltip_param?(token)
         TOOLTIP_ATTRIBUTES.any? { |_attr, values| values.include?(token) } ||
-          token.match?(/^distance:\d+$/)
+          token.match?(/^distance:\d+$/) ||
+          token.match?(/^skidding:-?\d+$/)
       end
 
       def build_tooltip_html(tooltip_id, anchor_text, tip_text, options)
@@ -157,6 +163,7 @@ module Markawesome
         tooltip_attrs = ["for=\"#{tooltip_id}\""]
         tooltip_attrs << "placement=\"#{options[:placement]}\""
         tooltip_attrs << "distance=\"#{options[:distance]}\"" if options[:distance]
+        tooltip_attrs << "skidding=\"#{options[:skidding]}\"" if options[:skidding]
 
         anchor = build_anchor(tooltip_id, anchor_content)
 

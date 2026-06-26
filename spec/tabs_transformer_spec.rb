@@ -133,6 +133,37 @@ RSpec.describe Markawesome::TabsTransformer do
       expect(result).to include('activation="auto"')
     end
 
+    context 'with a disabled tab' do
+      it 'emits the disabled attribute and strips the leading flag from the label' do
+        markdown = "++++++\n+++ disabled Coming soon\nNot yet available.\n+++\n++++++"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-tab panel="tab-1" disabled>Coming soon</wa-tab>')
+      end
+
+      it 'leaves non-disabled sibling tabs unaffected' do
+        markdown = "++++++\n+++ Tab 1\nContent 1\n+++\n+++ disabled Tab 2\nContent 2\n+++\n++++++"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-tab panel="tab-1">Tab 1</wa-tab>')
+        expect(result).to include('<wa-tab panel="tab-2" disabled>Tab 2</wa-tab>')
+      end
+
+      it 'only treats a leading disabled token as the flag, not a label that contains the word' do
+        markdown = "++++++\n+++ Why this is disabled\nContent\n+++\n++++++"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-tab panel="tab-1">Why this is disabled</wa-tab>')
+      end
+
+      it 'works with the alternative wa-tab-group syntax' do
+        markdown = ":::wa-tab-group\n+++ disabled Coming soon\nNot yet available.\n+++\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include('<wa-tab panel="tab-1" disabled>Coming soon</wa-tab>')
+      end
+    end
+
     context 'with alternative syntax' do
       it 'transforms with wa-tab-group keyword' do
         markdown = ":::wa-tab-group\n+++ Tab 1\nContent 1\n+++\n:::"
@@ -179,6 +210,25 @@ RSpec.describe Markawesome::TabsTransformer do
         expect(result).to include('active="advanced"')
         expect(result).to include('without-scroll-controls')
       end
+    end
+  end
+
+  describe '.render_as_markdown' do
+    it 'degrades tabs to headings' do
+      markdown = "++++++\n+++ Tab 1\nContent 1\n+++\n+++ Tab 2\nContent 2\n+++\n++++++"
+      result = described_class.render_as_markdown(markdown)
+
+      expect(result).to include("### Tab 1\n\nContent 1")
+      expect(result).to include("### Tab 2\n\nContent 2")
+    end
+
+    it 'strips a leading disabled flag from the degraded heading' do
+      markdown = "++++++\n+++ Tab 1\nContent 1\n+++\n+++ disabled Coming soon\nNot yet available.\n+++\n++++++"
+      result = described_class.render_as_markdown(markdown)
+
+      expect(result).to include("### Tab 1\n\nContent 1")
+      expect(result).to include("### Coming soon\n\nNot yet available.")
+      expect(result).not_to include('disabled')
     end
   end
 end

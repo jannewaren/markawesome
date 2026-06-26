@@ -139,6 +139,79 @@ RSpec.describe Markawesome::PopoverTransformer do
         expect(result).to include("placement='top'")
       end
 
+      it 'supports aligned placements' do
+        input = <<~MARKDOWN
+          &&&bottom-start
+          Hover
+          >>>
+          Content.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("placement='bottom-start'")
+      end
+
+      it 'supports the skidding parameter' do
+        input = <<~MARKDOWN
+          &&&skidding:12
+          Hover
+          >>>
+          Content.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("skidding='12'")
+      end
+
+      it 'supports a negative skidding value' do
+        input = <<~MARKDOWN
+          &&&skidding:-4
+          Hover
+          >>>
+          Content.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("skidding='-4'")
+      end
+
+      it 'emits skidding after distance' do
+        input = <<~MARKDOWN
+          &&&distance:8 skidding:12
+          Hover
+          >>>
+          Content.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to match(/distance='8' skidding='12'/)
+      end
+
+      it 'combines aligned placement, distance and skidding' do
+        input = <<~MARKDOWN
+          &&&bottom-end without-arrow distance:8 skidding:12
+          Hover
+          >>>
+          Content.
+          &&&
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("placement='bottom-end'")
+        expect(result).to include('without-arrow')
+        expect(result).to include("distance='8'")
+        expect(result).to include("skidding='12'")
+      end
+
       it 'generates unique IDs for different popovers' do
         input = <<~MARKDOWN
           &&&
@@ -469,6 +542,34 @@ RSpec.describe Markawesome::PopoverTransformer do
         expect(result).to include('without-arrow')
         expect(result).to include("distance='5'")
         expect(result).to include('>API keys</button>')
+      end
+
+      it 'supports aligned placement' do
+        result = described_class.transform('&&&bottom-start Peppol >>> Description&&&')
+
+        expect(result).to include("placement='bottom-start'")
+        expect(result).to include('>Peppol</button>')
+      end
+
+      it 'supports skidding parameter' do
+        result = described_class.transform('&&&skidding:12 Peppol >>> Description&&&')
+
+        expect(result).to include("skidding='12'")
+        expect(result).to include('>Peppol</button>')
+      end
+
+      it 'supports a negative skidding value' do
+        result = described_class.transform('&&&skidding:-4 Peppol >>> Description&&&')
+
+        expect(result).to include("skidding='-4'")
+        expect(result).to include('>Peppol</button>')
+      end
+
+      it 'treats a leading skidding token as a param, not trigger text' do
+        result = described_class.transform('&&&bottom-start skidding:12 Peppol >>> Description&&&')
+
+        expect(result).to include('>Peppol</button>')
+        expect(result).to include("placement='bottom-start' skidding='12'")
       end
 
       it 'handles multi-word trigger text' do

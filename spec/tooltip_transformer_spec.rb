@@ -66,6 +66,41 @@ RSpec.describe Markawesome::TooltipTransformer do
         expect(result).to include('>API</span>')
       end
 
+      it 'supports aligned placement' do
+        result = described_class.transform('(((bottom-start Term >>> Definition)))')
+
+        expect(result).to include('placement="bottom-start"')
+        expect(result).to include('>Term</span>')
+      end
+
+      it 'supports the skidding parameter' do
+        result = described_class.transform('(((skidding:12 Term >>> Definition)))')
+
+        expect(result).to include('skidding="12"')
+        expect(result).to include('>Term</span>')
+      end
+
+      it 'supports a negative skidding value' do
+        result = described_class.transform('(((skidding:-4 API >>> Application Programming Interface)))')
+
+        expect(result).to include('skidding="-4"')
+        expect(result).to include('>API</span>')
+      end
+
+      it 'treats leading placement and skidding tokens as params, not anchor text' do
+        result = described_class.transform('(((right-end skidding:-4 API >>> Application Programming Interface)))')
+
+        expect(result).to include('placement="right-end"')
+        expect(result).to include('skidding="-4"')
+        expect(result).to include('>API</span>')
+      end
+
+      it 'emits skidding after distance' do
+        result = described_class.transform('(((distance:8 skidding:12 Term >>> Definition)))')
+
+        expect(result).to match(/distance="8" skidding="12"/)
+      end
+
       it 'handles multi-word anchor text' do
         result = described_class.transform('(((API authentication >>> Verifying who is calling)))')
 
@@ -234,6 +269,50 @@ RSpec.describe Markawesome::TooltipTransformer do
 
         expect(result).to include('placement="right"')
         expect(result).to include('distance="8"')
+      end
+
+      it 'supports aligned placement' do
+        input = <<~MARKDOWN
+          :::wa-tooltip right-end
+          Term
+          >>>
+          Definition
+          :::
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('placement="right-end"')
+      end
+
+      it 'supports the skidding parameter' do
+        input = <<~MARKDOWN
+          :::wa-tooltip skidding:12
+          Term
+          >>>
+          Definition
+          :::
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('skidding="12"')
+      end
+
+      it 'combines aligned placement, distance and skidding' do
+        input = <<~MARKDOWN
+          :::wa-tooltip right-end distance:8 skidding:-4
+          Term
+          >>>
+          Definition
+          :::
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include('placement="right-end"')
+        expect(result).to include('distance="8"')
+        expect(result).to include('skidding="-4"')
       end
 
       it 'escapes HTML in anchor and tip' do

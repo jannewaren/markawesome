@@ -12,6 +12,8 @@ module Markawesome
   #   - activation: auto (default), manual
   #   - active: panel name to show initially (e.g., "general", "tab-2")
   #   - no-scroll-controls: disables scroll arrows
+  # Per-tab flag (leading token on the `+++ ` item header, mirroring accordion):
+  #   - disabled: this tab renders but cannot be selected (e.g., "+++ disabled Coming soon")
   class TabsTransformer < BaseTransformer
     COMPONENT_ATTRIBUTES = {
       placement: %w[top bottom start end],
@@ -66,7 +68,8 @@ module Markawesome
       transform_proc = proc do |_params_string, tabs_block, _third|
         tab_contents = tabs_block.scan(/^\+\+\+ ([^\n]+)\n(.*?)\n\+\+\+/m)
         tab_contents.map do |title, panel_content|
-          "### #{title.strip}\n\n#{panel_content.strip}"
+          label, = parse_tab_header(title)
+          "### #{label}\n\n#{panel_content.strip}"
         end.join("\n\n")
       end
 
@@ -85,13 +88,28 @@ module Markawesome
 
         tab_contents.each_with_index do |(title, panel_content), index|
           tab_id = "tab-#{index + 1}"
-          tabs << "<wa-tab panel=\"#{tab_id}\">#{title.strip}</wa-tab>"
+          label, disabled = parse_tab_header(title)
+
+          tab_attrs = ["panel=\"#{tab_id}\""]
+          tab_attrs << 'disabled' if disabled
+          tabs << "<wa-tab #{tab_attrs.join(' ')}>#{label}</wa-tab>"
 
           panel_html = markdown_to_html(panel_content.strip)
           tab_panels << "<wa-tab-panel name=\"#{tab_id}\">#{panel_html}</wa-tab-panel>"
         end
 
         [tabs, tab_panels]
+      end
+
+      # Parse a tab item header. A leading `disabled` token (case-sensitive,
+      # exactly `disabled` or `disabled `-prefixed) flags the tab as disabled and
+      # is stripped from the label; otherwise the label is the stripped title,
+      # unchanged. Mirrors accordion's leading item flags.
+      def parse_tab_header(title)
+        stripped = title.to_s.strip
+        return [stripped, false] unless stripped == 'disabled' || stripped.start_with?('disabled ')
+
+        [stripped.sub(/\Adisabled\s*/, ''), true]
       end
     end
   end

@@ -11,12 +11,15 @@ module Markawesome
   # Inline syntax: &&&params? trigger text >>> popover content&&&
   #
   # Params: space-separated tokens (order doesn't matter)
-  # Placement: top (default), bottom, left, right
+  # Placement: top (default), bottom, left, right, plus the eight aligned
+  #   variants (top-start, top-end, right-start, …) — the full wa-popover surface
   # Flags: without-arrow
-  # Distance: distance:N (e.g., distance:10)
+  # Distance: distance:N (e.g., distance:10) — offset away from the target
+  # Skidding: skidding:N (e.g., skidding:12, skidding:-4) — offset along the target
   class PopoverTransformer < BaseTransformer
     POPOVER_ATTRIBUTES = {
-      placement: %w[top bottom left right],
+      placement: %w[top top-start top-end right right-start right-end
+                    bottom bottom-start bottom-end left left-start left-end],
       without_arrow: %w[without-arrow],
       trigger_style: %w[link]
     }.freeze
@@ -42,13 +45,13 @@ module Markawesome
           popover_content = matchdata[2].strip
 
           params_string, trigger_text = parse_inline_trigger_and_params(combined)
-          placement, without_arrow, distance, _link_style = parse_parameters(params_string)
+          placement, without_arrow, distance, _link_style, skidding = parse_parameters(params_string)
 
           popover_id = generate_popover_id(trigger_text, popover_content, seen_ids)
 
           build_inline_popover_html(popover_id, trigger_text, popover_content,
                                     { placement: placement, without_arrow: without_arrow,
-                                      distance: distance })
+                                      distance: distance, skidding: skidding })
         end
       }
 
@@ -57,7 +60,7 @@ module Markawesome
         trigger_text = trigger_text.strip
         popover_content = popover_content.strip
 
-        placement, without_arrow, distance, link_style = parse_parameters(params_string)
+        placement, without_arrow, distance, link_style, skidding = parse_parameters(params_string)
 
         popover_id = generate_popover_id(trigger_text, popover_content, seen_ids)
 
@@ -65,7 +68,7 @@ module Markawesome
 
         build_popover_html(popover_id, trigger_text, content_html,
                            { placement: placement, without_arrow: without_arrow,
-                             distance: distance, link_style: link_style })
+                             distance: distance, link_style: link_style, skidding: skidding })
       end
 
       # Inline patterns first to avoid conflicts with block patterns
@@ -106,19 +109,21 @@ module Markawesome
       private
 
       def parse_parameters(params_string)
-        return ['top', false, nil, false] if params_string.nil? || params_string.strip.empty?
+        return ['top', false, nil, false, nil] if params_string.nil? || params_string.strip.empty?
 
         attributes = AttributeParser.parse(params_string, POPOVER_ATTRIBUTES)
         placement = attributes[:placement] || 'top'
         without_arrow = attributes[:without_arrow] == 'without-arrow'
         link_style = attributes[:trigger_style] == 'link'
 
-        # Look for distance:N parameter
+        # Look for distance:N and skidding:N parameters (skidding may be negative)
         tokens = params_string.strip.split(/\s+/)
         distance_token = tokens.find { |token| token.match?(/^distance:\d+$/) }
         distance = distance_token&.sub('distance:', '')
+        skidding_token = tokens.find { |token| token.match?(/^skidding:-?\d+$/) }
+        skidding = skidding_token&.sub('skidding:', '')
 
-        [placement, without_arrow, distance, link_style]
+        [placement, without_arrow, distance, link_style, skidding]
       end
 
       def generate_popover_id(trigger_text, content, seen_ids)
@@ -156,42 +161,36 @@ module Markawesome
 
       def popover_param?(token)
         POPOVER_ATTRIBUTES.any? { |_attr, values| values.include?(token) } ||
-          token.match?(/^distance:\d+$/)
+          token.match?(/^distance:\d+$/) ||
+          token.match?(/^skidding:-?\d+$/)
+      end
+
+      # Build the <wa-popover> attribute list. Emission order is fixed:
+      # for, placement, without-arrow, distance, skidding.
+      def popover_attributes(popover_id, options)
+        attrs = ["for='#{popover_id}'", "placement='#{options[:placement]}'"]
+        attrs << 'without-arrow' if options[:without_arrow]
+        attrs << "distance='#{options[:distance]}'" if options[:distance]
+        attrs << "skidding='#{options[:skidding]}'" if options[:skidding]
+        attrs
       end
 
       def build_inline_popover_html(popover_id, trigger_text, content_text, options)
         trigger_content = escape_html(trigger_text)
-        content_escaped = escape_html(content_text)
-        content_escaped = content_escaped.gsub('\n', '<br>')
+        content_escaped = escape_html(content_text).gsub('\n', '<br>')
 
-        popover_attrs = ["for='#{popover_id}'"]
-        popover_attrs << "placement='#{options[:placement]}'"
-        popover_attrs << 'without-arrow' if options[:without_arrow]
-        popover_attrs << "distance='#{options[:distance]}'" if options[:distance]
-
+        attrs = popover_attributes(popover_id, options)
         trigger = build_trigger(popover_id, trigger_content, true)
 
-        "#{trigger}<wa-popover #{popover_attrs.join(' ')}>#{content_escaped}</wa-popover>"
+        "#{trigger}<wa-popover #{attrs.join(' ')}>#{content_escaped}</wa-popover>"
       end
 
       def build_popover_html(popover_id, trigger_text, content_html, options)
-        # Escape trigger text for security
         trigger_content = escape_html(trigger_text)
-
-        # Build popover attributes
-        popover_attrs = ["for='#{popover_id}'"]
-        popover_attrs << "placement='#{options[:placement]}'"
-        popover_attrs << 'without-arrow' if options[:without_arrow]
-        popover_attrs << "distance='#{options[:distance]}'" if options[:distance]
-
+        attrs = popover_attributes(popover_id, options)
         trigger = build_trigger(popover_id, trigger_content, options[:link_style])
 
-        html = []
-        html << trigger
-        html << "<wa-popover #{popover_attrs.join(' ')}>"
-        html << content_html
-        html << '</wa-popover>'
-        html.join("\n")
+        [trigger, "<wa-popover #{attrs.join(' ')}>", content_html, '</wa-popover>'].join("\n")
       end
 
       def build_trigger(popover_id, trigger_content, link_style)
