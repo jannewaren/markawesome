@@ -13,8 +13,11 @@ data fetching, or form wiring required. Each item maps to a declarative Web
 Awesome attribute or component that fits a "content comes from a static
 Markdown file" model.
 
-Items are roughly ordered by value within each section. Nothing here is
-committed work — it's a prioritized backlog to pull from.
+Items are roughly ordered by value within each section. Struck-through items
+have been implemented — either shipped to a registry (version noted) or, for the
+most recent batch, **committed to `main` and awaiting the next coordinated
+release** (staged in each repo's CHANGELOG `[Unreleased]`). The rest is a
+prioritized backlog to pull from.
 
 ---
 
@@ -58,19 +61,27 @@ for copy feedback), `none` (no tooltip in any state). The earlier shorthand here
 distinction is hover/focus visibility. The capture is enum-anchored, so invalid
 values are dropped and fall back to WA's default.
 
-### `popover` — aligned placements + `skidding`
+### ~~`popover` — aligned placements + `skidding`~~ — ✅ implemented (unreleased)
 
 `<wa-popover>` supports edge-aligned placements beyond the basic
 `top`/`bottom`/`left`/`right`: **`top-start`, `top-end`, `bottom-start`,
 `bottom-end`, `left-start`, …** plus a **`skidding`** offset along the
-anchor. We currently only accept the four primary placements. Adding the
-aligned variants gives finer control with no behavioral change.
+anchor. Implemented in `PopoverTransformer`: all twelve placements plus a
+`skidding:N` token (offset *along* the target; negatives allowed) mirroring
+`distance:N`. Committed to `main` and staged in the CHANGELOG `[Unreleased]`
+section — pending the next coordinated release.
 
-### `tabs` — per-tab `disabled`
+### ~~`tabs` — per-tab `disabled`~~ — ✅ implemented (unreleased)
 
 `<wa-tab>` accepts a **`disabled`** attribute (e.g. a "coming soon" tab that
-renders but can't be activated). Our tab syntax has no way to mark an
-individual tab disabled.
+renders but can't be activated). Implemented in `TabsTransformer` as a leading
+`disabled` token on the `+++ ` item header (e.g. `+++ disabled Coming soon`),
+mirroring the accordion item flags — the tab renders but can't be selected and
+the flag is stripped from the label. Committed to `main` and staged in the
+CHANGELOG `[Unreleased]` section — pending the next coordinated release.
+
+With these two, the **"missing declarative attributes" section is fully
+complete** — every attribute gap we audited against WA 3.9.0 is now covered.
 
 ---
 
@@ -113,12 +124,14 @@ Added in WA 3.6/3.7 (Pro). Declarative, accessible media embedding — a clean
 upgrade over raw `<iframe>`/`<video>` in Markdown. The Pro package is already
 installed in the production site, so the components are available there.
 
-### 4. `format-date` / `relative-time`
+### ~~4. `format-date` / `relative-time`~~ — ✅ implemented (unreleased)
 
 Declarative timestamp rendering: absolute formatted dates and
-"3 days ago"-style relative times. Perfect for blog post dates, changelog
-entries, and "last updated" stamps driven by a static date value in the
-Markdown.
+"3 days ago"-style relative times. Implemented as `DateTransformer`: an inline
+`[[[ <date> <tokens> ]]]` form plus `:::wa-format-date` / `:::wa-relative-time`
+block alternatives, with `style:`/`time:` presets, granular overrides, locale,
+and a relative `sync` flag. Committed to `main` and staged in the CHANGELOG
+`[Unreleased]` section — pending the next coordinated release.
 
 ### 5. `tree`
 
