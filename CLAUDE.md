@@ -6,6 +6,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Markawesome is a framework-agnostic Ruby gem that transforms custom Markdown syntax into [Web Awesome](https://webawesome.com/) HTML components (`<wa-callout>`, `<wa-button>`, `<wa-badge>`, etc.). It serves as the transformation engine for the [jekyll-webawesome](https://github.com/jannewaren/jekyll-webawesome) plugin but can be used with any static site generator.
 
+## The markawesome ecosystem — keep the syntax in sync
+
+The Markawesome-flavoured Markdown syntax spans **five repositories that must
+stay in lockstep**:
+
+| Repo | Role | Stack | Registry |
+|------|------|-------|----------|
+| `markawesome` | **Authors** the syntax (engine) | Ruby | RubyGems |
+| `markawesome-js` | **Authors** the syntax (engine) | TypeScript / Node | npm |
+| `jekyll-webawesome` | **Uses** it (Jekyll integration) | Ruby | RubyGems |
+| `eleventy-plugin-webawesome` | **Uses** it (Eleventy integration) | Node | npm |
+| `markawesome-vscode` | **Produces** it (snippets/completions/validation) | TypeScript | VS Code Marketplace |
+
+**This repo's role:** **authors** the syntax — the Ruby engine. A syntax change may
+start here, but must be mirrored in `markawesome-js` (byte-for-byte) and reflected
+in `markawesome-vscode`.
+
+**Sync rule:** any change to the Markawesome Markdown syntax must land in **both
+engines** (`markawesome` *and* `markawesome-js`) so the Ruby and Node worlds accept
+identical input, **and** in `markawesome-vscode` so the editor emits it. The VS Code
+extension is shared across both worlds, so it may only produce syntax that **both**
+engines support. Confirm the engines still agree via `markawesome-js`'s
+`test/parity-corpus.test.ts` plus the Ruby specs in `markawesome/spec/`.
+
 ## Commands
 
 ```bash
@@ -81,3 +105,14 @@ gem is released. Follow this order:
 > published to RubyGems but never pushed to the repo leaves clones diverged: the
 > version bump and any code in that release become invisible to other machines,
 > and the next release collides on the version number.
+
+## Releases are tagged to match the published version
+
+Every version published to a registry gets a matching **GitHub Release**, so the
+repo's releases line up 1:1 with what's installable:
+
+1. Tag the released commit `vX.Y.Z` — the same version as `lib/markawesome/version.rb`.
+2. Push the commit and the tag.
+3. `gh release create vX.Y.Z` with notes drawn from `CHANGELOG.md`.
+
+The GitHub Release tag **must equal** the version published to RubyGems.
