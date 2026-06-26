@@ -111,7 +111,7 @@ follow-ups, not v1.
 
 Added in WA 3.6/3.7 (Pro). Declarative, accessible media embedding — a clean
 upgrade over raw `<iframe>`/`<video>` in Markdown. The Pro package is already
-installed in the `kaikuu` site, so the components are available there.
+installed in the production site, so the components are available there.
 
 ### 4. `format-date` / `relative-time`
 
