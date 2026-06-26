@@ -53,6 +53,7 @@ module Markawesome
       card
       carousel
       comparison
+      video
       copy_button
       details
       image_dialog
@@ -74,6 +75,7 @@ module Markawesome
       card: CardTransformer,
       carousel: CarouselTransformer,
       comparison: ComparisonTransformer,
+      video: VideoTransformer,
       copy_button: CopyButtonTransformer,
       details: DetailsTransformer,
       image_dialog: ImageDialogTransformer,

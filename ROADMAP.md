@@ -118,11 +118,20 @@ users get the tip; the tip is plain text (HTML-escaped, `\n` → `<br>`). Aligne
 placements, `show-delay`/`hide-delay`, and a rich-content body are future
 follow-ups, not v1.
 
-### 3. `video` / `video-playlist`
+### ~~3. `video` / `video-playlist`~~ — ✅ implemented (unreleased)
 
 Added in WA 3.6/3.7 (Pro). Declarative, accessible media embedding — a clean
-upgrade over raw `<iframe>`/`<video>` in Markdown. The Pro package is already
-installed in the production site, so the components are available there.
+upgrade over raw `<iframe>`/`<video>` in Markdown. Implemented as
+`VideoTransformer`: a `;;;` fence wraps a single `<wa-video>` and a `;;;;;;`
+container wraps bare `;;;` items into a `<wa-video-playlist>` (mirroring the
+carousel `~~~`/`~~~~~~` structure), plus `:::wa-video` / `:::wa-video-playlist`
+block alternatives. The body's first markdown link supplies `title`/`src` and the
+first image supplies `poster`; tokens cover `controls:none|standard|full`,
+`preload:auto|metadata|none`, and the boolean flags `autoplay`, `autoplay-muted`,
+`autoplay-on-visible`, `loop`, `muted`. The playlist's `controls` preset is
+forwarded to every child. Captions (`<track>`) and multi-format `<source>`
+children are documented v1 follow-ups. Committed to `main` and staged in the
+CHANGELOG `[Unreleased]` section — pending the next coordinated release.
 
 ### ~~4. `format-date` / `relative-time`~~ — ✅ implemented (unreleased)
 

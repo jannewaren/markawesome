@@ -20,6 +20,7 @@ module Markawesome
       content = CardTransformer.transform(content)
       content = CarouselTransformer.transform(content)
       content = ComparisonTransformer.transform(content)
+      content = VideoTransformer.transform(content)
       content = CopyButtonTransformer.transform(content)
       content = DetailsTransformer.transform(content)
 
