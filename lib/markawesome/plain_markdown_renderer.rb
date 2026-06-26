@@ -46,6 +46,7 @@ module Markawesome
       layout
       popover
       tooltip
+      date
       badge
       button
       callout
@@ -66,6 +67,7 @@ module Markawesome
       layout: LayoutTransformer,
       popover: PopoverTransformer,
       tooltip: TooltipTransformer,
+      date: DateTransformer,
       badge: BadgeTransformer,
       button: ButtonTransformer,
       callout: CalloutTransformer,

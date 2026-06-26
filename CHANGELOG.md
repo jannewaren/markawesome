@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- New `DateTransformer` producing Web Awesome's two declarative timestamp components — `<wa-format-date>` (an absolute, locale-formatted date such as "June 26, 2026") and `<wa-relative-time>` ("3 days ago", optionally live-ticking). The date value is baked into the markup at build time; both components are pure declarative wrappers over the browser's `Intl.DateTimeFormat` / `Intl.RelativeTimeFormat`, with no data fetching — ideal for blog post dates, changelog stamps, and "last updated".
+  - **Inline syntax** (primary): `[[[ <date> <tokens> ]]]` — triple square brackets, single-line, transformed before Kramdown (runs right after `TooltipTransformer`). `[[[` collides with no other delimiter and survives Kramdown + Jekyll/Liquid.
+  - **Block alternative**: `:::wa-format-date <date> <tokens>` / `:::wa-relative-time <date> <tokens>` with an empty body closed by `:::`. The selector name chooses the mode directly.
+  - **Mode**: absolute (`<wa-format-date>`) is the default; a bare `relative` token in the inline form switches to `<wa-relative-time>`.
+  - **Date token**: the token matching ISO 8601 `YYYY-MM-DD` (optionally `THH:MM[:SS][.s][Z|±HH:MM]`) is passed verbatim (escaped) into `date="…"`. If omitted, `date` is dropped and the component shows the viewer's **current** time (runtime-now). Datetimes use the `T` separator (a space would break tokenization).
+  - **format-date formatting**: `style:short|medium|long|full` and `time:short|medium|long|full` presets expand to Web Awesome's granular attributes, with granular overrides (`weekday`, `era`, `year`, `month`, `day`, `hour`, `minute`, `second`, `hour-format`, `time-zone-name`, `time-zone`, `lang`/`locale` → `lang`) winning per key (rightmost-wins). Enum values are validated; invalid values and unknown tokens are silently dropped. A bare date with no style/time/granular field defaults to `style:long`. Deterministic emission order: `date weekday era year month day hour minute second time-zone-name time-zone hour-format lang`.
+  - **relative-time formatting**: `format` (`long|short|narrow`, default `long` omitted), `numeric` (`auto|always`, default `auto` omitted), `sync` (boolean live-update flag), and `lang`/`locale` → `lang`. Date/style tokens are ignored in relative mode. Deterministic emission order: `date format numeric sync lang`.
+  - **Plain-markdown degradation** (`render_as_markdown`, used for `.md` endpoints / llms.txt): each timestamp degrades to its raw date string (empty for a runtime-now timestamp), since plain text has no locale formatting.
+- **Static-site caveat**: like `<wa-icon>`, both timestamp components render generated text into shadow DOM with no light-DOM fallback — with Web Awesome's JS disabled they show nothing. This matches our existing generated-content model (documented alongside the `<wa-tag with-remove>` caveat); no fallback text is emitted.
+
 ## [0.16.0] - 2026-06-25
 
 ### Added

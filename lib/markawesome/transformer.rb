@@ -13,6 +13,7 @@ module Markawesome
       content = LayoutTransformer.transform(content)
       content = PopoverTransformer.transform(content)
       content = TooltipTransformer.transform(content)
+      content = DateTransformer.transform(content)
       content = BadgeTransformer.transform(content)
       content = ButtonTransformer.transform(content)
       content = CalloutTransformer.transform(content)
