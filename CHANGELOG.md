@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-06-26
+
 ### Added
 
 - New `VideoTransformer` producing Web Awesome's two media components — `<wa-video>` (a single embedded video with custom controls) and `<wa-video-playlist>` (a playlist wrapping multiple `<wa-video>` children). Both are Web Awesome **Pro** (experimental); the markup emitted is declarative and static-site-safe.
