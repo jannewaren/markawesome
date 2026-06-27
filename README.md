@@ -29,6 +29,13 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 | **Tab Group** | `++++++` | `:::wa-tabs` | `<wa-tab-group><wa-tab>content</wa-tab></wa-tab-group>` |
 | **Tag** | `@@@brand` | `:::wa-tag brand` | `<wa-tag variant="brand">content</wa-tag>` |
 
+> **Note on `<wa-tag>` `with-remove`:** the `with-remove` attribute renders a
+> remove (×) button, but Web Awesome only *fires* a `wa-remove` event — it does
+> not remove the tag for you. On a page with no JavaScript beyond the Web Awesome
+> library, the button is inert. To make it functional, add your own `wa-remove`
+> listener (e.g. a single global handler that removes `event.target`). The markup
+> we emit is valid either way.
+
 ## Layout Utilities
 
 Layout utilities use `::::` (quadruple colon) syntax to wrap content in CSS layout containers. Inner content is not markdown-converted, so component `:::` syntax inside layouts works normally.

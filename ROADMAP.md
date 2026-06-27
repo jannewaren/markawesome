@@ -13,17 +13,18 @@ Markdown file" model.
 > The **"missing declarative attributes" audit against WA 3.9.0 is fully
 > addressed** — every component we transform now surfaces the declarative
 > attributes WA exposes for it. The `tree` component has landed (see
-> `CHANGELOG.md` `[Unreleased]`), so what remains below is a single
-> documentation task. (Shipped history lives in `CHANGELOG.md`.)
+> `CHANGELOG.md` `[Unreleased]`), and the `<wa-tag with-remove>` static-site
+> caveat is now documented in the README, so **nothing actionable remains** —
+> only the out-of-scope list below. (Shipped history lives in `CHANGELOG.md`.)
 
 ---
 
-## Documentation task
+## Documentation task — done
 
 `<wa-tag>` with `with-remove` renders a remove button that **does nothing**
-without a JavaScript `wa-remove` listener — a dead end on a static site. We
-should document this (or omit `with-remove` from the static-safe surface)
-rather than imply it works.
+without a JavaScript `wa-remove` listener. We chose to **keep** the attribute
+(the emitted markup is valid Web Awesome) and document the caveat in the README
+rather than omit it from the static-safe surface.
 
 ---
 

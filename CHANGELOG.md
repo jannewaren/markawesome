@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
   - **Plain-markdown degradation** (`render_as_markdown`, used for `.md` endpoints / llms.txt): the tree degrades to a clean nested bullet list (2-space indent per depth, tokens and fence stripped).
   - Inline markdown / links in labels are a documented v1 follow-up; nesting a tree inside a markdown-converted body (accordion item, card) is not supported in v1 — the same pipeline constraint other components already have. Deep expand-on-load (beyond the top level) needs Web Awesome's interactive JS, so it is out of scope for the static surface.
 
+### Documentation
+
+- Documented the `<wa-tag with-remove>` static-site caveat in the README: the attribute renders a remove (×) button, but Web Awesome only *fires* a `wa-remove` event and does not remove the tag itself, so on a page with no authored JavaScript the button is inert. We **keep** the attribute (the emitted markup is valid Web Awesome) and document the one-line listener needed to make it functional, rather than dropping it from the static-safe surface. This also makes the existing 0.17.0 reference to "the `<wa-tag with-remove>` caveat" accurate.
+
 ## [0.17.0] - 2026-06-26
 
 ### Added
