@@ -39,6 +39,10 @@ module Markawesome
       # components (same reason tabs runs near the end).
       content = AccordionTransformer.transform(content)
 
+      # Tree runs after accordion; its body is a plain nested list (never a
+      # markdown-converted body), so ordering relative to accordion is moot.
+      content = TreeTransformer.transform(content)
+
       CodeBlockProtector.restore(content, tokens)
     end
   end

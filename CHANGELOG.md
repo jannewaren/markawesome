@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Added
+
+- New `TreeTransformer` producing Web Awesome's `<wa-tree>` / `<wa-tree-item>` from a **nested Markdown bullet list** — the first transformer that maps indentation (rather than flat item fences) onto a component. Ideal for file/directory layouts, taxonomies, and nested navigation.
+  - **Static-only scope**: Web Awesome's tree is fundamentally a *selection* control, and selection is interactive (needs JS). We deliberately emit a **display/navigation-only** tree — visual hierarchy via nesting, initial expand state, and leading folder/file icons, all declarative and static-safe. `selection`, `lazy`, `selected`, and selection events are skipped entirely.
+  - **Primary syntax**: a single `||||||` (6 pipes) open fence wrapping a normal nested Markdown list, closed by `||||||` (modeled on `LayoutTransformer`'s single-fence shape, not accordion's container+item fences). `|` is unused by any other transformer, and the transform runs before Markdown so there is no table collision. **Block alternative**: `:::wa-tree … :::`.
+  - **Fence token**: `open` (alias `expanded`) marks every branch node `expanded`. **Web Awesome runtime caveat** (verified against the WA 3.9.0 kit): `<wa-tree-item>` only honors a static `expanded` on items that are *visible at load*, so in practice `open` expands the **top-level** branches and deeper branches stay collapsed until their parent is opened (WA strips `expanded` from nested items at init). The attribute is still emitted on every branch on purpose — it's harmless (WA ignores the nested ones), records authorial intent, and is forward-compatible if WA ever honors nested initial-expand.
+  - **Per-node leading tokens** on each list item (stripped from the label, like the accordion item flags): `expanded` (force one branch open — subject to the same top-level-only WA caveat above) and `icon:name` (a leading content `<wa-icon name="name">` with no `slot`, e.g. `icon:folder`). The remaining text is the label.
+  - **Indentation parser**: list lines (`-`/`*`/`+`) are kept and their leading-whitespace width measured (a tab counts as four columns); nesting is built by comparing actual indent values, so 2-space and 4-space lists both work as long as children are strictly more indented than parents. Blank and non-list lines are skipped.
+  - **Labels are plain text** (HTML-escaped), so colon-bearing labels like `cbc:ID` and `<`/`>` are safe. `expanded` is emitted only on nodes that **have children** AND (the fence is `open` OR the node carries its own `expanded` flag); leaves never get `expanded`. Runs last in the pipeline (after accordion).
+  - **Plain-markdown degradation** (`render_as_markdown`, used for `.md` endpoints / llms.txt): the tree degrades to a clean nested bullet list (2-space indent per depth, tokens and fence stripped).
+  - Inline markdown / links in labels are a documented v1 follow-up; nesting a tree inside a markdown-converted body (accordion item, card) is not supported in v1 — the same pipeline constraint other components already have. Deep expand-on-load (beyond the top level) needs Web Awesome's interactive JS, so it is out of scope for the static surface.
+
 ## [0.17.0] - 2026-06-26
 
 ### Added

@@ -62,6 +62,7 @@ module Markawesome
       tag
       tabs
       accordion
+      tree
     ].freeze
 
     TRANSFORMER_MAP = {
@@ -83,7 +84,8 @@ module Markawesome
       icon: IconTransformer,
       tag: TagTransformer,
       tabs: TabsTransformer,
-      accordion: AccordionTransformer
+      accordion: AccordionTransformer,
+      tree: TreeTransformer
     }.freeze
 
     def self.process(content, options = {})
