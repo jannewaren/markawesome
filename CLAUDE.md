@@ -91,7 +91,7 @@ gem is released. Follow this order:
    (`cd examples && bundle exec jekyll serve`) and verify the rendered
    components in a browser. Confirm the change actually renders (measure/inspect
    the live DOM), not just that the HTML attribute is present. The Web Awesome
-   version is **pinned to 3.9.0** in the CDN URLs in the examples layout
+   version is **pinned to 3.10.0** in the CDN URLs in the examples layout
    (`jekyll-webawesome/examples/_layouts/default.html`), so validate against that
    exact version; bump the pin deliberately when moving to a new WA release.
 5. **Release markawesome.** Bump `lib/markawesome/version.rb`, finalize the

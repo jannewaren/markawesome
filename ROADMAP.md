@@ -126,16 +126,6 @@ We already transform `<wa-icon>` (`$$$name` and `:::wa-icon …`) and expose
 As always: specs + CHANGELOG here, mirror in `markawesome-js` (+ parity corpus),
 and extend `markawesome-vscode` completions/validation for the new values.
 
-### 5. Bump the pinned Web Awesome version to 3.10.0 in the example sites
-
-_Repos: `jekyll-webawesome`, `eleventy-plugin-webawesome`_
-
-The example layouts currently pin the CDN to `webawesome@3.9.0` (see the "done"
-pin item below). Bump both pins to `3.10.0` so the new `<wa-random-content>`
-component and the new `<wa-icon>` attributes can be **visually validated on the
-live DOM** per the release workflow in `CLAUDE.md` (items 3–4 above can't be
-verified end-to-end otherwise). This is a prerequisite for closing items 3 and 4.
-
 ### Considered but out of scope (post-3.8.0)
 
 - `<wa-tree>` `leaf-multiple` selection value (3.9.0) — selection is an
@@ -170,6 +160,16 @@ native + utilities stylesheets and the autoloader), with the tailspin theme /
 vogue palette / indigo brand and the FA Pro kit code set explicitly on `<html>`.
 The kit script is dropped and the WA version is now explicit and deterministic;
 bump the pin deliberately when moving to a new WA release.
+
+**Bumped to 3.10.0 (July 2, 2026).** Both example pins were subsequently moved
+from `webawesome@3.9.0` to `webawesome@3.10.0` (the June 30, 2026 release) in
+`jekyll-webawesome/examples/_layouts/default.html` and
+`eleventy-plugin-webawesome/examples/_includes/base.njk`, and re-validated live
+in the browser: all 695 `wa-*` elements on the Jekyll example page upgrade
+(`:defined`) and render with correct dimensions, only `webawesome@3.10.0` assets
+load, and the console is clean. This unblocks the live end-to-end validation
+needed to close the remaining 3.10.0 uptake items above (`<wa-random-content>`
+and the new `<wa-icon>` attributes).
 
 ---
 
