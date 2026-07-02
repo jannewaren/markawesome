@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "webawesome": {
+      "source": "/Users/janne.waren/pp/toimii/node_modules/@awesome.me/webawesome-pro/dist/skills/webawesome",
+      "sourceType": "local",
+      "computedHash": "7f9c0fa2cefac7e0eb73beb02d8d082029355598d75d50a2081a89b54dce9261"
+    },
+    "webawesome-design": {
+      "source": "/Users/janne.waren/pp/toimii/node_modules/@awesome.me/webawesome-pro/dist/skills/webawesome-design",
+      "sourceType": "local",
+      "computedHash": "6320ec16f4952b43d583a613230143b8288596ea28874e02ef9fc3abe472e97a"
+    }
+  }
+}
