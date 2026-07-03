@@ -43,6 +43,13 @@ module Markawesome
       # markdown-converted body), so ordering relative to accordion is moot.
       content = TreeTransformer.transform(content)
 
+      # Random-content runs LAST: its options routinely wrap already-transformed
+      # components (callouts/badges/cards), and dialog/details/popover/tooltip
+      # must consume their own `>>>` upstream before our `^>>>$` item split
+      # runs. Consequence: a `......` block is the outermost container and cannot
+      # be nested inside another container body (same constraint Tree documents).
+      content = RandomContentTransformer.transform(content)
+
       CodeBlockProtector.restore(content, tokens)
     end
   end

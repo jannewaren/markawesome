@@ -26,7 +26,8 @@ module Markawesome
       #
       # @param component [Symbol] one of :accordion, :callout, :badge, :button,
       #   :card, :carousel, :comparison, :copy_button, :details, :dialog, :icon,
-      #   :image_dialog, :layout, :popover, :tabs, :tag, :tooltip.
+      #   :image_dialog, :layout, :popover, :random_content, :tabs, :tag,
+      #   :tooltip.
       # @yield [content, options] Proc that receives the full source content
       #   and the renderer options; returns the content with that component
       #   syntax replaced.
@@ -63,6 +64,7 @@ module Markawesome
       tabs
       accordion
       tree
+      random_content
     ].freeze
 
     TRANSFORMER_MAP = {
@@ -85,7 +87,8 @@ module Markawesome
       tag: TagTransformer,
       tabs: TabsTransformer,
       accordion: AccordionTransformer,
-      tree: TreeTransformer
+      tree: TreeTransformer,
+      random_content: RandomContentTransformer
     }.freeze
 
     def self.process(content, options = {})
