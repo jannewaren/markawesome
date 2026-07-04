@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-07-04
+
 ### Added
 
 - **`<wa-icon>` Web Awesome 3.10.0 attribute sync** — widens the shared icon vocabulary in `Markawesome::IconAttributes::SCHEMA` (used by both `$$$name` / `:::wa-icon …` **and**, transparently, callout icon overrides via `IconAttributes.pairs`, so the whole surface inherits it for free). Adds a **new `canvas` attribute** (`fixed`/`auto`/`square`/`roomy`; emitted only when specified — `fixed` is WA's default), a **new `semibold` variant** (alongside `thin light regular solid`), **nine new animations** (`flip-360`, `spin-snap`, `spin-snap-4`, `spin-snap-8`, `buzz`, `float`, `jello`, `swing`, `wag`), and a **full sync of the current WA family vocabulary** (`mosaic`, `pixel`, `vellum`, `slab-duo`, `slab-press-duo`, `chisel`, `etch`, `graphite`, `jelly`, `jelly-duo`, `jelly-fill`, `notdog`, `notdog-duo`, `slab`, `slab-press`, `thumbprint`, `utility`, `utility-duo`, `utility-fill`, `whiteboard` — family values are pure passthrough; whether one renders depends on the site's Font Awesome kit tier). The schema is a hard allowlist (`AttributeParser` silently drops unlisted tokens), so these values were previously unusable. **Deterministic emission order** is `family variant animation canvas` (`canvas` appended last) for byte-for-byte parity with `markawesome-js`. `auto-width` is unaffected — the engine never emitted it, and `canvas="auto"` is WA's supported replacement.
