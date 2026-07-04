@@ -19,14 +19,21 @@ RSpec.describe Markawesome::IconAttributes do
       )
     end
 
+    it 'emits canvas last in the fixed order regardless of insertion order' do
+      attributes = { canvas: 'roomy', animation: 'spin', family: 'sharp' }
+      expect(described_class.pairs(attributes)).to eq(
+        ['family="sharp"', 'animation="spin"', 'canvas="roomy"']
+      )
+    end
+
     it 'ignores keys outside the schema vocabulary' do
       expect(described_class.pairs(size: 'large', family: 'duotone')).to eq(['family="duotone"'])
     end
   end
 
   describe 'SCHEMA' do
-    it 'defines the family/variant/animation vocabularies' do
-      expect(described_class::SCHEMA.keys).to eq(%i[family variant animation])
+    it 'defines the family/variant/animation/canvas vocabularies' do
+      expect(described_class::SCHEMA.keys).to eq(%i[family variant animation canvas])
     end
   end
 end

@@ -160,6 +160,24 @@ RSpec.describe Markawesome::CalloutTransformer do
 
         expect(result).to include('<wa-icon slot="icon" name="circle-check" variant="solid"></wa-icon>')
       end
+
+      it 'forwards WA 3.10.0 family/variant/animation tokens to the icon' do
+        markdown = ":::danger jelly semibold wag\nWatch out\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include(
+          '<wa-icon slot="icon" name="circle-exclamation" family="jelly" variant="semibold" animation="wag"></wa-icon>'
+        )
+      end
+
+      it 'forwards a canvas token to the icon (emitted last)' do
+        markdown = ":::warning roomy\nHeads up\n:::"
+        result = described_class.transform(markdown)
+
+        expect(result).to include(
+          '<wa-icon slot="icon" name="triangle-exclamation" variant="solid" canvas="roomy"></wa-icon>'
+        )
+      end
     end
 
     it 'does not transform invalid callout types' do

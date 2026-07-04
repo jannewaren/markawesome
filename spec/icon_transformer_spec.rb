@@ -196,6 +196,33 @@ RSpec.describe Markawesome::IconTransformer do
         expect(result).to eq('<wa-icon name="star" animation="spin"></wa-icon>')
       end
 
+      it 'adds a canvas attribute' do
+        result = described_class.transform(":::wa-icon star roomy\n:::")
+        expect(result).to eq('<wa-icon name="star" canvas="roomy"></wa-icon>')
+      end
+
+      it 'adds the semibold variant (WA 3.10.0)' do
+        result = described_class.transform(":::wa-icon star semibold\n:::")
+        expect(result).to eq('<wa-icon name="star" variant="semibold"></wa-icon>')
+      end
+
+      it 'adds a WA 3.10.0 family' do
+        result = described_class.transform(":::wa-icon star jelly\n:::")
+        expect(result).to eq('<wa-icon name="star" family="jelly"></wa-icon>')
+      end
+
+      it 'adds a WA 3.10.0 animation' do
+        result = described_class.transform(":::wa-icon star wag\n:::")
+        expect(result).to eq('<wa-icon name="star" animation="wag"></wa-icon>')
+      end
+
+      it 'emits family, variant, animation, and canvas in deterministic order' do
+        result = described_class.transform(":::wa-icon star sharp semibold wag roomy\n:::")
+        expect(result).to eq(
+          '<wa-icon name="star" family="sharp" variant="semibold" animation="wag" canvas="roomy"></wa-icon>'
+        )
+      end
+
       it 'combines family, variant, animation, and label in deterministic order' do
         result = described_class.transform(":::wa-icon star spin solid sharp\nFeatured\n:::")
         expect(result).to eq(

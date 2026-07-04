@@ -7,13 +7,14 @@ require_relative '../icon_attributes'
 module Markawesome
   # Transforms icon syntax into wa-icon elements
   # Primary syntax: $$$icon-name (name only, decorative)
-  # Alternative syntax: :::wa-icon icon-name [family] [variant] [animation]\n[label]\n:::
+  # Alternative syntax: :::wa-icon icon-name [family] [variant] [animation] [canvas]\n[label]\n:::
   #
   # Examples:
   # $$$settings -> <wa-icon name="settings"></wa-icon>
   # $$$home -> <wa-icon name="home"></wa-icon>
   # $$$user-circle -> <wa-icon name="user-circle"></wa-icon>
   # :::wa-icon star spin\n::: -> <wa-icon name="star" animation="spin"></wa-icon>
+  # :::wa-icon star roomy\n::: -> <wa-icon name="star" canvas="roomy"></wa-icon>
   # :::wa-icon heart solid\nFavorite\n::: ->
   #   <wa-icon name="heart" variant="solid" label="Favorite"></wa-icon>
   class IconTransformer < BaseTransformer
