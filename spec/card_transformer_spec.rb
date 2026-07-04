@@ -145,6 +145,39 @@ RSpec.describe Markawesome::CardTransformer do
         result = described_class.transform(input)
         expect(result).to include('<wa-card orientation="horizontal" with-media>')
         expect(result).to include('<img slot="media" src="image.jpg" alt="Image">')
+        # Horizontal cards wrap the body in a single <div> so Web Awesome's
+        # per-body-child `height: 100%` rule targets one wrapper, not each block.
+        expect(result).to include('<div><p>This is a horizontal card with side-by-side layout.</p>')
+      end
+
+      it 'wraps a multi-block horizontal body in one <div> so it does not overflow' do
+        input = <<~MARKDOWN
+          ===horizontal
+          ![Image](image.jpg)
+          # Heading
+          Body paragraph.
+          ===
+        MARKDOWN
+
+        result = described_class.transform(input)
+        # Both blocks live inside the single wrapper; without it Web Awesome
+        # stretches each to full card height and the paragraph spills out.
+        expect(result).to include('<div><h1 id="heading">Heading</h1>')
+        expect(result).to include('<p>Body paragraph.</p>')
+        expect(result).to include('</div></wa-card>')
+      end
+
+      it 'does not wrap a vertical card body in a <div>' do
+        input = <<~MARKDOWN
+          ===
+          # Heading
+          Body paragraph.
+          ===
+        MARKDOWN
+
+        result = described_class.transform(input)
+        expect(result).not_to include('<div><h1')
+        expect(result).to include('<h1 id="heading">Heading</h1>')
       end
 
       it 'defaults to vertical orientation when not specified' do

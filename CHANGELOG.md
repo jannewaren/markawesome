@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Fixed
+
+- **Horizontal cards no longer overflow with multi-block bodies.** A `===horizontal` card whose body has more than one block (e.g. a `#` heading plus a paragraph) now wraps the body in a single `<div>`, so Web Awesome's `:host([orientation='horizontal']) .body slot::slotted(*) { height: 100% }` rule — which it applies to **every** direct body child — targets the one wrapper instead of each block. Previously each block was stretched to the full card height and the extra ones spilled out below the card. Vertical cards are unchanged (no wrapper is emitted). Parity locked by the new `card-horizontal-body-wrap` case in `markawesome-js`'s `test/parity-corpus.test.ts`.
+
 ## [0.18.0] - 2026-07-04
 
 ### Added

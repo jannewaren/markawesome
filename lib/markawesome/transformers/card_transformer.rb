@@ -138,8 +138,7 @@ module Markawesome
 
         # Main content
         if parts[:content] && !parts[:content].empty?
-          content_html = markdown_to_html(parts[:content])
-          html_parts << content_html
+          html_parts << body_content_html(parts[:content], orientation)
         end
 
         # Footer slot
@@ -148,6 +147,17 @@ module Markawesome
         end
 
         "<wa-card#{attr_string}>#{html_parts.join}</wa-card>"
+      end
+
+      # Horizontal cards wrap the body in a single <div> so Web Awesome's
+      # `:host([orientation='horizontal']) .body slot::slotted(*) { height: 100% }`
+      # rule — which it applies to EVERY direct body child — targets one wrapper
+      # instead of each block. Without the wrapper a multi-block body (e.g. a
+      # heading plus a paragraph) has each child stretched to the full card
+      # height, so the extra ones overflow below it.
+      def body_content_html(content, orientation)
+        content_html = markdown_to_html(content)
+        orientation == 'horizontal' ? "<div>#{content_html}</div>" : content_html
       end
     end
   end
