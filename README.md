@@ -4,6 +4,8 @@ A framework-agnostic Ruby library that transforms custom Markdown syntax into [W
 
 Used as the transformation engine for the [jekyll-webawesome](https://github.com/jannewaren/jekyll-webawesome) plugin.
 
+> **🔗 See it live — [hosted examples site](https://jannewaren.github.io/jekyll-webawesome/).** Every supported component shown side by side: the Markawesome markdown on the left, the live Web Awesome component it renders on the right. The clearest way to see what this project does.
+
 ## Features
 
 - 🎯 **Framework Agnostic** - Works with any static site generator or Ruby application
