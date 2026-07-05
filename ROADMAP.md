@@ -1,9 +1,9 @@
 # Roadmap
 
-This is the **shared roadmap for the whole Markawesome ecosystem** — the five
+This is the **shared roadmap for the whole Markawesome ecosystem** — the six
 repositories that must stay in lockstep (`markawesome`, `markawesome-js`,
-`jekyll-webawesome`, `eleventy-plugin-webawesome`, `markawesome-vscode`; see
-`CLAUDE.md`). Each item below is tagged with the repo(s) it touches. Shipped
+`jekyll-webawesome`, `eleventy-plugin-webawesome`, `markawesome-vscode`,
+`markawesome-skill`; see `CLAUDE.md`). Each item below is tagged with the repo(s) it touches. Shipped
 history lives in each repo's `CHANGELOG.md`.
 
 ---

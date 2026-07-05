@@ -8,7 +8,7 @@ Markawesome is a framework-agnostic Ruby gem that transforms custom Markdown syn
 
 ## The markawesome ecosystem — keep the syntax in sync
 
-The Markawesome-flavoured Markdown syntax spans **five repositories that must
+The Markawesome-flavoured Markdown syntax spans **six repositories that must
 stay in lockstep**:
 
 | Repo | Role | Stack | Registry |
@@ -18,6 +18,7 @@ stay in lockstep**:
 | `jekyll-webawesome` | **Uses** it (Jekyll integration) | Ruby | RubyGems |
 | `eleventy-plugin-webawesome` | **Uses** it (Eleventy integration) | Node | npm |
 | `markawesome-vscode` | **Produces** it (snippets/completions/validation) | TypeScript | VS Code Marketplace |
+| `markawesome-skill` | **Teaches** it (AI authoring skill) | Markdown | npm |
 
 **This repo's role:** **authors** the syntax — the Ruby engine. A syntax change may
 start here, but must be mirrored in `markawesome-js` (byte-for-byte) and reflected
