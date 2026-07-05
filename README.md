@@ -55,7 +55,7 @@ Layout utilities use `::::` (quadruple colon) syntax to wrap content in CSS layo
 
 All layouts support these key:value attributes:
 
-- `gap:SIZE` — Sets spacing (`0`, `3xs`, `2xs`, `xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`)
+- `gap:SIZE` — Sets spacing (`0`, `3xs`, `2xs`, `xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`)
 - `align:VALUE` — Align items (`start`, `end`, `center`, `stretch`, `baseline`)
 - `justify:VALUE` — Justify content (`start`, `end`, `center`, `space-between`, `space-around`, `space-evenly`)
 
