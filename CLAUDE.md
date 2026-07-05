@@ -71,6 +71,42 @@ Inner Markdown content is converted to HTML via `markdown_to_html()` (wraps Kram
 - Tests call individual transformer `.transform()` methods directly, not the full pipeline
 - Uses `expect` syntax only (monkey patching disabled)
 
+## Web Awesome manifest coverage — keeping the enum lists honest
+
+Our transformers accept curated enum values (e.g. `BADGE_ATTRIBUTES[:variant]`)
+hand-transcribed from Web Awesome's docs. `spec/webawesome_manifest_coverage_spec.rb`
+guards those constants against Web Awesome's machine-readable **Custom Elements
+Manifest**, pinned to a single WA release (`WA_VERSION`, currently **3.10.0**). For
+each `(constant → wa-tag/attribute)` mapping it fails on **DRIFT** (a value we
+accept that WA no longer lists) and **GAP** (a WA value we don't expose, gated by
+`INTENTIONALLY_OMITTED`, which starts empty). Entries WA can't describe as an inline
+enum are surfaced as `skip`s.
+
+The fixture `spec/fixtures/webawesome-enums.json` is a **derived artifact — never
+hand-edit it.** It is a distilled slice of WA's `custom-elements.json`, byte-identical
+to `markawesome-js`'s copy (`diff` them to confirm), produced only by the generator.
+
+### Refreshing when Web Awesome releases a new version
+
+When WA ships e.g. 3.11.0:
+
+1. Regenerate the fixture: `bundle exec rake wa:manifest[3.11.0]` (in **zsh**, quote
+   it: `bundle exec rake 'wa:manifest[3.11.0]'`). This fetches that version's manifest
+   from unpkg and overwrites `spec/fixtures/webawesome-enums.json` in place. Do the
+   same in `markawesome-js` (`npm run update-wa-manifest 3.11.0`) so both fixtures stay
+   byte-identical.
+2. Bump `WA_VERSION` to `'3.11.0'` in the spec (and in `markawesome-js`'s test).
+3. Re-run the specs. **Green ⇒ nothing enum-relevant changed, done.** **Red is the
+   point** — the git diff of `webawesome-enums.json` shows exactly what moved:
+   - **GAP** (WA added a value) → implement the new option in *both* engines (and,
+     per the six-repo lockstep rule, `markawesome-vscode` + `markawesome-skill`), or
+     record it in `INTENTIONALLY_OMITTED` with a one-line reason.
+   - **DRIFT** (WA removed/renamed a value) → update/remove it from the transformer
+     constants in both engines.
+4. Commit the regenerated fixture and any transformer changes together.
+
+The human decision is only *how to react to the diff*; extraction stays mechanical.
+
 ## Development & Release Workflow (markawesome + jekyll-webawesome)
 
 markawesome (this transformation engine) and jekyll-webawesome (the Jekyll

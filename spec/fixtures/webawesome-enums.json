@@ -1,0 +1,908 @@
+{
+  "_meta": {
+    "webAwesomeVersion": "3.10.0",
+    "source": "@awesome.me/webawesome@3.10.0/dist/custom-elements.json",
+    "allTags": [
+      "wa-accordion",
+      "wa-accordion-item",
+      "wa-animated-image",
+      "wa-animation",
+      "wa-avatar",
+      "wa-badge",
+      "wa-breadcrumb",
+      "wa-breadcrumb-item",
+      "wa-button",
+      "wa-button-group",
+      "wa-callout",
+      "wa-card",
+      "wa-carousel",
+      "wa-carousel-item",
+      "wa-checkbox",
+      "wa-checkbox-group",
+      "wa-color-picker",
+      "wa-comparison",
+      "wa-copy-button",
+      "wa-details",
+      "wa-dialog",
+      "wa-divider",
+      "wa-drawer",
+      "wa-dropdown",
+      "wa-dropdown-item",
+      "wa-format-bytes",
+      "wa-format-date",
+      "wa-format-number",
+      "wa-icon",
+      "wa-include",
+      "wa-input",
+      "wa-intersection-observer",
+      "wa-known-date",
+      "wa-markdown",
+      "wa-mutation-observer",
+      "wa-number-input",
+      "wa-option",
+      "wa-page",
+      "wa-popover",
+      "wa-popup",
+      "wa-progress-bar",
+      "wa-progress-ring",
+      "wa-qr-code",
+      "wa-radio",
+      "wa-radio-group",
+      "wa-random-content",
+      "wa-rating",
+      "wa-relative-time",
+      "wa-resize-observer",
+      "wa-scroller",
+      "wa-select",
+      "wa-skeleton",
+      "wa-slider",
+      "wa-spinner",
+      "wa-split-panel",
+      "wa-switch",
+      "wa-tab",
+      "wa-tab-group",
+      "wa-tab-panel",
+      "wa-tag",
+      "wa-textarea",
+      "wa-time-input",
+      "wa-tooltip",
+      "wa-tree",
+      "wa-tree-item",
+      "wa-zoomable-frame"
+    ]
+  },
+  "wa-accordion": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined",
+      "plain"
+    ],
+    "icon-placement": [
+      "start",
+      "end"
+    ],
+    "mode": [
+      "single",
+      "single-collapsible",
+      "multiple"
+    ]
+  },
+  "wa-avatar": {
+    "loading": [
+      "eager",
+      "lazy"
+    ],
+    "shape": [
+      "circle",
+      "square",
+      "rounded"
+    ]
+  },
+  "wa-badge": {
+    "appearance": [
+      "accent",
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "attention": [
+      "none",
+      "pulse",
+      "bounce"
+    ],
+    "variant": [
+      "brand",
+      "neutral",
+      "success",
+      "warning",
+      "danger"
+    ]
+  },
+  "wa-breadcrumb-item": {
+    "target": [
+      "_blank",
+      "_parent",
+      "_self",
+      "_top"
+    ]
+  },
+  "wa-button": {
+    "appearance": [
+      "accent",
+      "filled",
+      "outlined",
+      "filled-outlined",
+      "plain"
+    ],
+    "formenctype": [
+      "application/x-www-form-urlencoded",
+      "multipart/form-data",
+      "text/plain"
+    ],
+    "formmethod": [
+      "post",
+      "get"
+    ],
+    "formtarget": [
+      "_self",
+      "_blank",
+      "_parent",
+      "_top"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "target": [
+      "_blank",
+      "_parent",
+      "_self",
+      "_top"
+    ],
+    "type": [
+      "button",
+      "submit",
+      "reset"
+    ],
+    "variant": [
+      "neutral",
+      "brand",
+      "success",
+      "warning",
+      "danger"
+    ]
+  },
+  "wa-button-group": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ]
+  },
+  "wa-callout": {
+    "appearance": [
+      "accent",
+      "filled",
+      "outlined",
+      "plain",
+      "filled-outlined"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "variant": [
+      "brand",
+      "neutral",
+      "success",
+      "warning",
+      "danger"
+    ]
+  },
+  "wa-card": {
+    "appearance": [
+      "accent",
+      "filled",
+      "outlined",
+      "filled-outlined",
+      "plain"
+    ],
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ]
+  },
+  "wa-carousel": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ]
+  },
+  "wa-checkbox": {
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-checkbox-group": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-color-picker": {
+    "format": [
+      "hex",
+      "rgb",
+      "hsl",
+      "hsv"
+    ],
+    "placement": [
+      "top",
+      "top-start",
+      "top-end",
+      "bottom",
+      "bottom-start",
+      "bottom-end",
+      "right",
+      "right-start",
+      "right-end",
+      "left",
+      "left-start",
+      "left-end"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-copy-button": {
+    "tooltip": [
+      "full",
+      "copy",
+      "none"
+    ],
+    "tooltip-placement": [
+      "top",
+      "right",
+      "bottom",
+      "left"
+    ]
+  },
+  "wa-details": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined",
+      "plain"
+    ],
+    "icon-placement": [
+      "start",
+      "end"
+    ]
+  },
+  "wa-divider": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ]
+  },
+  "wa-drawer": {
+    "placement": [
+      "top",
+      "end",
+      "bottom",
+      "start"
+    ]
+  },
+  "wa-dropdown": {
+    "placement": [
+      "top",
+      "top-start",
+      "top-end",
+      "bottom",
+      "bottom-start",
+      "bottom-end",
+      "right",
+      "right-start",
+      "right-end",
+      "left",
+      "left-start",
+      "left-end"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-dropdown-item": {
+    "type": [
+      "normal",
+      "checkbox"
+    ],
+    "variant": [
+      "danger",
+      "default"
+    ]
+  },
+  "wa-format-bytes": {
+    "display": [
+      "long",
+      "short",
+      "narrow"
+    ],
+    "unit": [
+      "byte",
+      "bit"
+    ]
+  },
+  "wa-format-date": {
+    "day": [
+      "numeric",
+      "2-digit"
+    ],
+    "era": [
+      "narrow",
+      "short",
+      "long"
+    ],
+    "hour": [
+      "numeric",
+      "2-digit"
+    ],
+    "hour-format": [
+      "auto",
+      "12",
+      "24"
+    ],
+    "minute": [
+      "numeric",
+      "2-digit"
+    ],
+    "month": [
+      "numeric",
+      "2-digit",
+      "narrow",
+      "short",
+      "long"
+    ],
+    "second": [
+      "numeric",
+      "2-digit"
+    ],
+    "time-zone-name": [
+      "short",
+      "long"
+    ],
+    "weekday": [
+      "narrow",
+      "short",
+      "long"
+    ],
+    "year": [
+      "numeric",
+      "2-digit"
+    ]
+  },
+  "wa-format-number": {
+    "currency-display": [
+      "symbol",
+      "narrowSymbol",
+      "code",
+      "name"
+    ],
+    "type": [
+      "currency",
+      "decimal",
+      "percent"
+    ]
+  },
+  "wa-icon": {
+    "flip": [
+      "x",
+      "y",
+      "both"
+    ]
+  },
+  "wa-include": {
+    "mode": [
+      "cors",
+      "no-cors",
+      "same-origin"
+    ]
+  },
+  "wa-input": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "autocapitalize": [
+      "off",
+      "none",
+      "on",
+      "sentences",
+      "words",
+      "characters"
+    ],
+    "enterkeyhint": [
+      "enter",
+      "done",
+      "go",
+      "next",
+      "previous",
+      "search",
+      "send"
+    ],
+    "inputmode": [
+      "none",
+      "text",
+      "decimal",
+      "numeric",
+      "tel",
+      "search",
+      "email",
+      "url"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "step": [
+      "any"
+    ],
+    "type": [
+      "date",
+      "datetime-local",
+      "email",
+      "number",
+      "password",
+      "search",
+      "tel",
+      "text",
+      "time",
+      "url"
+    ]
+  },
+  "wa-known-date": {
+    "size": [
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-number-input": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "enterkeyhint": [
+      "enter",
+      "done",
+      "go",
+      "next",
+      "previous",
+      "search",
+      "send"
+    ],
+    "inputmode": [
+      "numeric",
+      "decimal"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "step": [
+      "any"
+    ]
+  },
+  "wa-page": {
+    "navigation-placement": [
+      "start",
+      "end"
+    ],
+    "view": [
+      "mobile",
+      "desktop"
+    ]
+  },
+  "wa-popover": {
+    "placement": [
+      "top",
+      "top-start",
+      "top-end",
+      "right",
+      "right-start",
+      "right-end",
+      "bottom",
+      "bottom-start",
+      "bottom-end",
+      "left",
+      "left-start",
+      "left-end"
+    ]
+  },
+  "wa-popup": {
+    "arrow-placement": [
+      "start",
+      "end",
+      "center",
+      "anchor"
+    ],
+    "auto-size": [
+      "horizontal",
+      "vertical",
+      "both"
+    ],
+    "boundary": [
+      "viewport",
+      "scroll"
+    ],
+    "flip-fallback-strategy": [
+      "best-fit",
+      "initial"
+    ],
+    "placement": [
+      "top",
+      "top-start",
+      "top-end",
+      "bottom",
+      "bottom-start",
+      "bottom-end",
+      "right",
+      "right-start",
+      "right-end",
+      "left",
+      "left-start",
+      "left-end"
+    ],
+    "sync": [
+      "width",
+      "height",
+      "both"
+    ]
+  },
+  "wa-qr-code": {
+    "error-correction": [
+      "L",
+      "M",
+      "Q",
+      "H"
+    ]
+  },
+  "wa-radio": {
+    "appearance": [
+      "default",
+      "button"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-radio-group": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-random-content": {
+    "animation": [
+      "none",
+      "fade",
+      "fade-up",
+      "fade-down",
+      "fade-left",
+      "fade-right"
+    ],
+    "mode": [
+      "random",
+      "unique",
+      "sequence"
+    ]
+  },
+  "wa-rating": {
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-relative-time": {
+    "format": [
+      "long",
+      "short",
+      "narrow"
+    ],
+    "numeric": [
+      "always",
+      "auto"
+    ]
+  },
+  "wa-scroller": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ]
+  },
+  "wa-select": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "placement": [
+      "top",
+      "bottom"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-skeleton": {
+    "effect": [
+      "pulse",
+      "sheen",
+      "none"
+    ]
+  },
+  "wa-slider": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "tooltip-placement": [
+      "top",
+      "right",
+      "bottom",
+      "left"
+    ]
+  },
+  "wa-split-panel": {
+    "orientation": [
+      "horizontal",
+      "vertical"
+    ],
+    "primary": [
+      "start",
+      "end"
+    ]
+  },
+  "wa-switch": {
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-tab-group": {
+    "activation": [
+      "auto",
+      "manual"
+    ],
+    "placement": [
+      "top",
+      "bottom",
+      "start",
+      "end"
+    ]
+  },
+  "wa-tag": {
+    "appearance": [
+      "accent",
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "variant": [
+      "brand",
+      "neutral",
+      "success",
+      "warning",
+      "danger"
+    ]
+  },
+  "wa-textarea": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "autocapitalize": [
+      "off",
+      "none",
+      "on",
+      "sentences",
+      "words",
+      "characters"
+    ],
+    "enterkeyhint": [
+      "enter",
+      "done",
+      "go",
+      "next",
+      "previous",
+      "search",
+      "send"
+    ],
+    "inputmode": [
+      "none",
+      "text",
+      "decimal",
+      "numeric",
+      "tel",
+      "search",
+      "email",
+      "url"
+    ],
+    "resize": [
+      "none",
+      "vertical",
+      "horizontal",
+      "both",
+      "auto"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "wa-time-input": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "size": [
+      "small",
+      "medium",
+      "large"
+    ],
+    "step": [
+      "any"
+    ]
+  },
+  "wa-tooltip": {
+    "placement": [
+      "top",
+      "top-start",
+      "top-end",
+      "right",
+      "right-start",
+      "right-end",
+      "bottom",
+      "bottom-start",
+      "bottom-end",
+      "left",
+      "left-start",
+      "left-end"
+    ]
+  },
+  "wa-tree": {
+    "selection": [
+      "single",
+      "multiple",
+      "leaf",
+      "leaf-multiple"
+    ]
+  },
+  "wa-zoomable-frame": {
+    "loading": [
+      "eager",
+      "lazy"
+    ]
+  }
+}

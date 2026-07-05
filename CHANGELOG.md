@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Internal
+
+- **Web Awesome manifest coverage spec** (`spec/webawesome_manifest_coverage_spec.rb`) — a deterministic guard that checks every enum our transformers accept against a vendored slice of Web Awesome's machine-readable Custom Elements Manifest, pinned to **WA 3.10.0**. For 39 `(constant → wa-tag/attribute)` mappings across 15 components it fails on **DRIFT** (a value we accept that WA no longer lists — exempting the deliberate `callout` `info`→`brand` input alias) and **GAP** (a WA value we don't expose, gated by an `INTENTIONALLY_OMITTED` map that starts empty, so a new WA value turns the build red until adopted or recorded with a reason). 6 entries WA can't describe as an inline enum (`wa-icon` family/variant/animation/canvas are freeform/opaque types; `wa-video` is absent from WA core's manifest) are surfaced as `skip`s, not silently dropped. The fixture `spec/fixtures/webawesome-enums.json` is a **derived artifact** regenerated with `rake wa:manifest[X.Y.Z]` (`script/update_wa_manifest.rb`) — never hand-edited, and byte-identical to `markawesome-js`'s copy. Dev-only (not packaged in the gem); no version bump. See CLAUDE.md → "Web Awesome manifest coverage" for the WA-bump workflow.
+
 ## [0.18.1] - 2026-07-04
 
 ### Fixed
