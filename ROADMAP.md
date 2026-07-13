@@ -10,25 +10,15 @@ history lives in each repo's `CHANGELOG.md`.
 
 ## Planned — cross-project
 
-### 1. Reach engine parity + add a reverse mode in `markawesome-js`
+### 1. Add a "Web Awesome HTML → Markawesome" mode
 
 _Repo: `markawesome-js`_
 
-a) **Port the "Markawesome → plain Markdown" renderer.** Ruby `markawesome` has
-   `Markawesome::PlainMarkdownRenderer` (each transformer's `render_as_markdown`),
-   which degrades every Web Awesome component to its closest GFM equivalent — used
-   to serve per-page `.md` endpoints and to generate `llms.txt` content that LLM
-   consumers can read without understanding `<wa-*>` tags. `markawesome-js` only
-   exports `process` (Markawesome → HTML) and has no plain-Markdown path. Port it
-   so both engines expose the same degrade-to-Markdown capability, and cover it in
-   the parity corpus.
-
-b) **Add a full "Web Awesome HTML → Markawesome" mode.** A reverse transform that
-   parses existing `<wa-*>` markup back into Markawesome shorthand, so hand-written
-   or legacy WA HTML can be adopted into the Markawesome authoring flow. This is a
-   **new capability neither engine has today**; design it in `markawesome-js`
-   first, then decide whether Ruby `markawesome` mirrors it (the sync rule applies
-   to any syntax it emits).
+A reverse transform that parses existing `<wa-*>` markup back into Markawesome
+shorthand, so hand-written or legacy WA HTML can be adopted into the Markawesome
+authoring flow. This is a **new capability neither engine has today**; design it in
+`markawesome-js` first, then decide whether Ruby `markawesome` mirrors it (the sync
+rule applies to any syntax it emits).
 
 ### 2. Add an "annotate with explanatory comments" mode to `markawesome-vscode`
 
@@ -44,16 +34,31 @@ existing commands in `src/commands/transformCommands.ts`.
 
 ---
 
-## Web Awesome 3.10.0 uptake — done (unreleased)
+## Plain-Markdown renderer parity in `markawesome-js` — done
+
+_Repo: `markawesome-js`_
+
+Ruby `markawesome` has `Markawesome::PlainMarkdownRenderer` (each transformer's
+`render_as_markdown`), which degrades every Web Awesome component to its closest GFM
+equivalent — used to serve per-page `.md` endpoints and to generate `llms.txt` content
+that LLM consumers can read without understanding `<wa-*>` tags. `markawesome-js` now
+mirrors it: `src/plain-markdown-renderer.ts`, exported as `plainMarkdown` from
+`src/index.ts`, byte-for-byte compatible with the Ruby renderer and covered both by
+`test/plain-markdown-renderer.test.ts` (mirroring `spec/plain_markdown/renderer_spec.rb`)
+and by the shared `test/parity-corpus.test.ts`. Both engines expose the same
+degrade-to-Markdown capability.
+
+---
+
+## Web Awesome 3.10.0 uptake — done (shipped)
 
 _Captured from the [Web Awesome changelog](https://webawesome.com/docs/resources/changelog)
 for releases **after 3.9.0** (which we've already fully addressed — see the "done"
 audit below). The relevant post-3.9.0 surface is **3.10.0** (June 30th, 2026): one
 new static-safe component and a batch of new `<wa-icon>` attributes/values. **Both
-items below are implemented** across the engines + editor and reflected in the
-integration example sites; they sit under each repo's `## [Unreleased]` CHANGELOG
-pending the next release (bundled together — no interim publish). The other
-post-3.8.0 additions are form controls or interactive/selection features and stay
+items below shipped** in markawesome **0.18.0** (2026-07-04) and its sibling releases
+across the engines + editor, and are reflected in the integration example sites. The
+other post-3.8.0 additions are form controls or interactive/selection features and stay
 out of scope (see the note at the end of this section)._
 
 ### 3. New component: `<wa-random-content>` (rotating / random content) — done
@@ -70,8 +75,8 @@ child(ren) on its own, and (with `autoplay`) can rotate them client-side.
 The declarative surface (`mode`, `items`, `animation`, `autoplay`,
 `autoplay-interval`) and the final shorthand — a `......` outer fence with `>>>`
 option separators, each option wrapped in a single `<div>` so WA sees exactly one
-selectable element child — are documented in each engine's `CHANGELOG.md`
-`## [Unreleased]` entry.
+selectable element child — are documented in each engine's `CHANGELOG.md` 0.18.0
+entry.
 
 ### 4. `<wa-icon>` enhancements from WA 3.10.0 — done
 
