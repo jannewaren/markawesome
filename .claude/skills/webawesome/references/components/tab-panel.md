@@ -8,7 +8,9 @@ Tab panels hold the content shown for a single tab inside a tab group.
 
 This component must be used as a child of [`<wa-tab-group>`](https://webawesome.com/docs/components/tab-group). Please see the [Tab Group docs](https://webawesome.com/docs/components/tab-group) to see examples of this component in action.
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -17,7 +19,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/tab-panel/tab-panel.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/tab-panel/tab-panel.js';
 ```
 
 \*\*npm\*\*
@@ -44,28 +46,27 @@ To import this component for React 18 or below, use the following code:
 import WaTabPanel from '@awesome.me/webawesome/dist/react/tab-panel/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | The tab panel's content. |
 
-- `(default)` — The tab panel's content.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`active\` active | \`boolean\` When true, the tab panel will be shown. Type Default false | |
+| \`name\` name | \`string\` The tab panel's name. Type Default '' | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `name` | `name` | The tab panel's name. | `string` | `''` |
-| `active` | `active` | When true, the tab panel will be shown. | `boolean` | `false` |
-
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
 | \`--padding\` | The tab panel's padding. |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
+| \`base\` | Deprecated. Style the host element instead. | \`::part(base)\` |

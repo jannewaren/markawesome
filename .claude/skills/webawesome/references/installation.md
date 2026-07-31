@@ -13,9 +13,18 @@ You can load Web Awesome via CDN or by installing it locally. If you’re using 
 The CDN is the fastest way to get started with Web Awesome. Just copy and paste the following into the `<head>` of your HTML to get started!
 
 ```html
-<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.10.0/styles/webawesome.css" />
-<script type="module" src="https://ka-f.webawesome.com/webawesome@3.10.0/webawesome.loader.js"></script>
+<!-- Required: default theme + autoloader -->
+<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.11.0/styles/themes/default.css" />
+<script type="module" src="https://ka-f.webawesome.com/webawesome@3.11.0/webawesome.loader.js"></script>
+
+<!-- Recommended: utility classes ("CSS Utilities") -->
+<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.11.0/styles/utilities.css" />
+
+<!-- Optional: CSS reset ("Native Styles") -->
+<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.11.0/styles/native.css" />
 ```
+
+Prefer one line? `styles/webawesome.css` pulls in the theme, utility classes, and native styles together.
 
 Now you can [use any Web Awesome component](https://webawesome.com/docs/components)! Try putting a button on the page:
 
@@ -23,9 +32,7 @@ Now you can [use any Web Awesome component](https://webawesome.com/docs/componen
 <wa-button variant="brand">Click me!</wa-button>
 ```
 
-**Using Web Awesome Pro?**
-
-Get personalized installation instructions from [your workspaces](https://webawesome.com/workspaces) instead.
+**Using Web Awesome Pro?** Visit [your workspaces](https://webawesome.com/workspaces) for personalized installation docs.
 
 ## Installing with npm
 
@@ -48,9 +55,7 @@ import '@awesome.me/webawesome/dist/components/input/input.js';
 
 Once a component has been imported, you can use it in your HTML normally. Components are cherry picked to ensure you're getting the smallest possible bundle. You can find each component import in the "Importing" section of its documentation.
 
-**Using Web Awesome Pro?**
-
-Get personalized installation instructions from [your workspaces](https://webawesome.com/workspaces) instead.
+**Using Web Awesome Pro?** Visit [your workspaces](https://webawesome.com/workspaces) for personalized installation docs.
 
 ## Get the Download (Advanced)
 
@@ -89,14 +94,14 @@ If you're self-hosting Web Awesome, you'll need to set up your pages to referenc
 
 <!-- Option 2: pick and choose styles -->
 
-<!-- theme (required) -->
+<!-- Required: theme -->
 <link rel="stylesheet" href="/dist/styles/themes/default.css" />
 
-<!-- native styles (optional) -->
-<link rel="stylesheet" href="/dist/styles/native.css" />
-
-<!-- CSS utilities (optional) -->
+<!-- Recommended: utility classes ("CSS Utilities") -->
 <link rel="stylesheet" href="/dist/styles/utilities.css" />
+
+<!-- Optional: CSS reset ("Native Styles") -->
+<link rel="stylesheet" href="/dist/styles/native.css" />
 ```
 
 If you choose to use a theme other than the default theme, be sure to add the corresponding class (e.g. `.wa-theme-awesome`) to your `<html>` element so that the class is applied.
@@ -148,7 +153,7 @@ Font Awesome users can provide their kit code to unlock Pro and Pro+ icon packs.
 
 <!-- Option 2: the setKitCode() method -->
 <script type="module">
-  import { setKitCode } from 'https://ka-f.webawesome.com/webawesome@3.10.0/webawesome.loader.js';
+  import { setKitCode } from 'https://ka-f.webawesome.com/webawesome@3.11.0/webawesome.loader.js';
   setKitCode('YOUR_KIT_CODE_HERE');
 </script>
 ```

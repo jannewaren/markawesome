@@ -85,9 +85,7 @@ Panel tokens apply to components with larger, contained surface areas, like [cal
     This is a simple callout with an icon.
   </wa-callout>
   <wa-card>Here's a basic, no-nonsense card.</wa-card>
-  <wa-details summary="Details">
-    <code>wa-details</code>, at your service.
-  </wa-details>
+  <wa-details summary="Details"> <code>wa-details</code>, at your service. </wa-details>
 </div>
 ```
 

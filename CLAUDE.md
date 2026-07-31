@@ -76,7 +76,7 @@ Inner Markdown content is converted to HTML via `markdown_to_html()` (wraps Kram
 Our transformers accept curated enum values (e.g. `BADGE_ATTRIBUTES[:variant]`)
 hand-transcribed from Web Awesome's docs. `spec/webawesome_manifest_coverage_spec.rb`
 guards those constants against Web Awesome's machine-readable **Custom Elements
-Manifest**, pinned to a single WA release (`WA_VERSION`, currently **3.10.0**). For
+Manifest**, pinned to a single WA release (`WA_VERSION`, currently **3.11.0**). For
 each `(constant → wa-tag/attribute)` mapping it fails on **DRIFT** (a value we
 accept that WA no longer lists) and **GAP** (a WA value we don't expose, gated by
 `INTENTIONALLY_OMITTED`, which starts empty). Entries WA can't describe as an inline
@@ -128,8 +128,8 @@ gem is released. Follow this order:
    (`cd examples && bundle exec jekyll serve`) and verify the rendered
    components in a browser. Confirm the change actually renders (measure/inspect
    the live DOM), not just that the HTML attribute is present. The Web Awesome
-   version is **pinned to 3.10.0** in the CDN URLs in the examples layout
-   (`jekyll-webawesome/examples/_layouts/default.html`), so validate against that
+   version is **pinned to 3.11.0** in the CDN URLs in the examples head include
+   (`jekyll-webawesome/examples/_includes/head.html`), so validate against that
    exact version; bump the pin deliberately when moving to a new WA release.
 5. **Release markawesome.** Bump `lib/markawesome/version.rb`, finalize the
    CHANGELOG, `gem build markawesome.gemspec`, and `gem push` to RubyGems.

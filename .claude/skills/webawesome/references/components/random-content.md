@@ -39,7 +39,9 @@ Randomly picks and displays one or more of its slotted children, hiding the rest
 </div>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -48,7 +50,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/random-content/random-content.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/random-content/random-content.js';
 ```
 
 \*\*npm\*\*
@@ -75,36 +77,35 @@ To import this component for React 18 or below, use the following code:
 import WaRandomContent from '@awesome.me/webawesome/dist/react/random-content/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `(default)` — The pool of children to choose from. Only direct element children are eligible; unselected children are hidden with the `hidden` attribute.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `items` | `items` | Number of children to show simultaneously. Clamped to [1, childCount]. | `number` | `1` |
-| `mode` | `mode` | Selection strategy: `unique` (default), `random`, or `sequence`. | `'random' \| 'unique' \| 'sequence'` | `'unique'` |
-| `autoplay` | `autoplay` | Rotate the content automatically. Set the cadence with `autoplay-interval`. | `boolean` | `false` |
-| `autoplayInterval` | `autoplay-interval` | Autoplay cadence in milliseconds. | `number` | `3000` |
-| `animation` | `animation` | Entrance animation for newly shown children. | `'none' \| 'fade' \| 'fade-up' \| 'fade-down' \| 'fade-left' \| 'fade-right'` | `'none'` |
-
-## Methods
-
-| Name | Description | Arguments |
-| --- | --- | --- |
-| `randomize()` | Selects a new set of children using the current mode. Returns the elements now shown. | — |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `wa-content-change` | Emitted whenever the displayed selection changes, including on first render, on `randomize()`, and on each autoplay tick. |
+| (default) | \`hidden\` The pool of children to choose from. Only direct element children are eligible; unselected children are with the hidden attribute. |
 
-## CSS Custom Properties
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`animation\` animation | \`'none' \\| 'fade' \\| 'fade-up' \\| 'fade-down' \\| 'fade-left' \\| 'fade-right'\` Entrance animation for newly shown children. Type Default 'none' | |
+| \`autoplay\` autoplay | \`autoplay-interval\` Rotate the content automatically. Set the cadence with . Type boolean Default false | |
+| \`autoplayInterval\` autoplay-interval | \`number\` Autoplay cadence in milliseconds. Type Default 3000 | |
+| \`items\` items | \`number\` Number of children to show simultaneously. Clamped to \[1, childCount\]. Type Default 1 | |
+| \`mode\` mode | \`unique\` Selection strategy: (default), random, or sequence. Type 'random' \\| 'unique' \\| 'sequence' Default 'unique' | |
+
+### Methods
+
+| Name | Description | Arguments |
+| --- | --- | --- |
+| \`randomize()\` | Selects a new set of children using the current mode. Returns the elements now shown. | |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`wa-content-change\` | \`randomize()\` Emitted whenever the displayed selection changes, including on first render, on , and on each autoplay tick. |
+
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
@@ -134,7 +135,7 @@ Slot virtually any HTML — text, badges, cards, images, or other components —
 </div>
 ```
 
-### Setting the Number of Items
+### Number of Items
 
 Set `items` to show more than one child at a time. The value is clamped to the number of available children.
 

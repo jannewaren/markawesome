@@ -10,7 +10,9 @@ Progress bars show how far along an ongoing operation is as a horizontal fill. U
 <wa-progress-bar value="40"></wa-progress-bar>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -19,7 +21,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/progress-bar/progress-bar.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/progress-bar/progress-bar.js';
 ```
 
 \*\*npm\*\*
@@ -46,58 +48,73 @@ To import this component for React 18 or below, use the following code:
 import WaProgressBar from '@awesome.me/webawesome/dist/react/progress-bar/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | A label to show inside the progress indicator. |
 
-- `(default)` — A label to show inside the progress indicator.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`indeterminate\` indeterminate | \`boolean\` When true, percentage is ignored, the label is hidden, and the progress bar is drawn in an indeterminate state. Type Default false | |
+| \`label\` label | \`string\` A custom label for assistive devices. Type Default '' | |
+| \`value\` value | \`number\` The current progress as a percentage, 0 to 100. Type Default 0 | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `value` | `value` | The current progress as a percentage, 0 to 100. | `number` | `0` |
-| `indeterminate` | `indeterminate` | When true, percentage is ignored, the label is hidden, and the progress bar is drawn in an indeterminate state. | `boolean` | `false` |
-| `label` | `label` | A custom label for assistive devices. | `string` | `''` |
-
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
 | \`--indicator-color\` | \`var(--wa-color-brand-fill-loud)\` The color of the indicator. Default |
 | \`--track-color\` | \`var(--wa-color-neutral-fill-normal)\` The color of the track. Default |
-| \`--track-height\` | \`1rem\` The color of the track. Default |
+| \`--track-height\` | \`1rem\` The height of the track. Default |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
 | \`indicator\` | The progress bar's indicator. | \`::part(indicator)\` |
 | \`label\` | The progress bar's label. | \`::part(label)\` |
+| \`progress-bar\` | The component's outer wrapper. | \`::part(progress-bar)\` |
+| \`base\` | \`progress-bar\` Deprecated. Use the part instead. | \`::part(base)\` |
 
 ## Examples
 
-### Labels
+### Label
 
-Use the `label` attribute to label the progress bar and tell assistive devices how to announce it.
+Use the `label` attribute to tell assistive devices how to announce the progress bar.
 
 ```html
 <wa-progress-bar value="50" label="Upload progress"></wa-progress-bar>
 ```
 
-### Custom Height
+### Indeterminate
 
-Use the `--track-height` custom property to set the progress bar's height.
+Add the `indeterminate` attribute when an operation is pending but its progress can't be measured. In this state, `value` is ignored and the label, if present, isn't shown.
 
 ```html
-<wa-progress-bar value="50" style="--track-height: 6px;"></wa-progress-bar>
+<wa-progress-bar indeterminate></wa-progress-bar>
+```
+
+### Customizing
+
+Set the `--track-height` custom property to change the bar's thickness, and `--track-color` / `--indicator-color` to recolor it.
+
+```html
+<wa-progress-bar
+  value="60"
+  style="
+    --track-height: 1.5rem;
+    --track-color: var(--wa-color-neutral-fill-quiet);
+    --indicator-color: var(--wa-color-success-fill-loud);
+  "
+></wa-progress-bar>
 ```
 
 ### Showing Values
 
-Use the default slot to show a value.
+Use the default slot to show a value inside the bar.
 
 ```html
 <div class="wa-stack">
@@ -132,12 +149,4 @@ Use the default slot to show a value.
     progressBar.textContent = `${value}%`;
   });
 </script>
-```
-
-### Indeterminate
-
-The `indeterminate` attribute can be used to inform the user that the operation is pending, but its status cannot currently be determined. In this state, `value` is ignored and the label, if present, will not be shown.
-
-```html
-<wa-progress-bar indeterminate></wa-progress-bar>
 ```

@@ -4,7 +4,7 @@ description: Web Awesome is a UI component library built with web components. Us
 license: MIT / Commercial (for Web Awesome Pro)
 metadata:
   author: Web Awesome
-  version: "3.10.0"
+  version: "3.11.0"
   homepage: https://webawesome.com
   repository: https://github.com/shoelace-style/webawesome
 compatibility: Works in modern browsers. Requires no build tools when using CDN. Works with bundlers like Webpack and Vite when installed via npm.
@@ -117,6 +117,8 @@ dates - through three separate day, month, and year fields shown in the locale's
 decrementing. Use them for quantities, measurements, and other numeric form fields. ([docs](https://webawesome.com/docs/components/number-input))
 - [`<wa-option>`](references/components/option.md) - Options represent the individual choices inside a select or similar form control. Each option holds a value
 and the label shown to the user. ([docs](https://webawesome.com/docs/components/option))
+- [`<wa-otp-input>`](references/components/otp-input.md) - OTP inputs collect one-time passcodes, PINs, and other fixed-length codes, one character per segment.
+Use them for SMS verification, two-factor authentication, and invite codes. ([docs](https://webawesome.com/docs/components/otp-input))
 - [`<wa-radio>`](references/components/radio.md) - Radios represent a single option within a mutually exclusive set. Use them inside a radio group when users
 must pick exactly one choice from a small list. ([docs](https://webawesome.com/docs/components/radio))
 - [`<wa-radio-group>`](references/components/radio-group.md) - Radio groups wrap a set of radios so they function as a single form control with one shared value. They
@@ -204,6 +206,7 @@ Use them to share links, contact info, or Wi-Fi credentials that visitors can sc
 understand the current location and navigate back to parent pages. ([docs](https://webawesome.com/docs/components/breadcrumb))
 - [`<wa-breadcrumb-item>`](references/components/breadcrumb-item.md) - Breadcrumb items represent individual links inside a breadcrumb, typically one per level of the site
 hierarchy. ([docs](https://webawesome.com/docs/components/breadcrumb-item))
+- [`<wa-pagination>`](references/components/pagination.md) - Pagination splits long lists of content into pages, letting users navigate between them. ([docs](https://webawesome.com/docs/components/pagination))
 - [`<wa-tab>`](references/components/tab.md) - Tabs label and activate an individual panel inside a tab group. ([docs](https://webawesome.com/docs/components/tab))
 - [`<wa-tab-group>`](references/components/tab-group.md) - Tab groups organize related content into a single container that displays one panel at a time, with tabs for
 switching between them. ([docs](https://webawesome.com/docs/components/tab-group))
@@ -216,6 +219,10 @@ collapse. ([docs](https://webawesome.com/docs/components/tree-item))
 ### Pro Components
 
 These components require [Web Awesome Pro](https://webawesome.com/purchase).
+
+#### Data
+
+- [`<wa-data-grid>`](references/components/data-grid.md) [Pro] - Data grids display tabular data with sorting, selection, pagination, and virtualization for large datasets. ([docs](https://webawesome.com/docs/components/data-grid))
 
 #### Data Viz
 
@@ -257,8 +264,8 @@ need to remain visible, such as in scheduling interfaces or embedded inside anot
 
 #### Media
 
-- [`<wa-video>`](references/components/video.md) [Pro] - Videos are used to embed and play video content with custom controls, and captions. ([docs](https://webawesome.com/docs/components/video))
-- [`<wa-video-playlist>`](references/components/video-playlist.md) [Pro] - Video playlist wraps multiple videos into a playlist with navigation controls and a sidebar. ([docs](https://webawesome.com/docs/components/video-playlist))
+- [`<wa-video>`](references/components/video.md) [Pro] - Videos are used to embed and play video content with custom controls and captions. ([docs](https://webawesome.com/docs/components/video))
+- [`<wa-video-playlist>`](references/components/video-playlist.md) [Pro] - Video playlists wrap multiple `<wa-video>` elements into a playlist with navigation controls. ([docs](https://webawesome.com/docs/components/video-playlist))
 
 ## Building Full Pages with `<wa-page>`
 

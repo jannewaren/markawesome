@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "webAwesomeVersion": "3.10.0",
-    "source": "@awesome.me/webawesome@3.10.0/dist/custom-elements.json",
+    "webAwesomeVersion": "3.11.0",
+    "source": "@awesome.me/webawesome@3.11.0/dist/custom-elements.json",
     "allTags": [
       "wa-accordion",
       "wa-accordion-item",
@@ -40,7 +40,9 @@
       "wa-mutation-observer",
       "wa-number-input",
       "wa-option",
+      "wa-otp-input",
       "wa-page",
+      "wa-pagination",
       "wa-popover",
       "wa-popup",
       "wa-progress-bar",
@@ -65,6 +67,8 @@
       "wa-tag",
       "wa-textarea",
       "wa-time-input",
+      "wa-toast",
+      "wa-toast-item",
       "wa-tooltip",
       "wa-tree",
       "wa-tree-item",
@@ -550,6 +554,34 @@
       "any"
     ]
   },
+  "wa-otp-input": {
+    "appearance": [
+      "outlined",
+      "filled",
+      "filled-outlined",
+      "contained"
+    ],
+    "case": [
+      "preserve",
+      "upper",
+      "lower"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "type": [
+      "numeric",
+      "alpha",
+      "alphanumeric"
+    ]
+  },
   "wa-page": {
     "navigation-placement": [
       "start",
@@ -558,6 +590,17 @@
     "view": [
       "mobile",
       "desktop"
+    ]
+  },
+  "wa-pagination": {
+    "appearance": [
+      "outlined",
+      "filled",
+      "plain"
+    ],
+    "format": [
+      "standard",
+      "compact"
     ]
   },
   "wa-popover": {
@@ -873,6 +916,35 @@
     ],
     "step": [
       "any"
+    ]
+  },
+  "wa-toast": {
+    "placement": [
+      "top-start",
+      "top-center",
+      "top-end",
+      "bottom-start",
+      "bottom-center",
+      "bottom-end"
+    ]
+  },
+  "wa-toast-item": {
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
+    ],
+    "variant": [
+      "brand",
+      "success",
+      "warning",
+      "danger",
+      "neutral"
     ]
   },
   "wa-tooltip": {

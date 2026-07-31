@@ -15,7 +15,9 @@ Animated images display GIFs and WEBPs with controls to play and pause them on d
 
 This component uses `<canvas>` to draw freeze frames, so images are subject to [cross-origin restrictions](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image).
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -24,7 +26,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/animated-image/animated-image.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/animated-image/animated-image.js';
 ```
 
 \*\*npm\*\*
@@ -51,49 +53,47 @@ To import this component for React 18 or below, use the following code:
 import WaAnimatedImage from '@awesome.me/webawesome/dist/react/animated-image/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `play-icon` — Optional play icon to use instead of the default. Works best with `<wa-icon>`.
-- `pause-icon` — Optional pause icon to use instead of the default. Works best with `<wa-icon>`.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `src` | `src` | The path to the image to load. | `string` | — |
-| `alt` | `alt` | A description of the image used by assistive devices. | `string` | — |
-| `play` | `play` | Plays the animation. When this attribute is remove, the animation will pause. | `boolean` | — |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `wa-load` | Emitted when the image loads successfully. |
-| `wa-error` | Emitted when the image fails to load. |
+| \`pause-icon\` | \`\` Optional play icon to use instead of the default. Works best with . |
 
-## CSS Custom Properties
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`alt\` alt | \`string\` A description of the image used by assistive devices. Type | |
+| \`play\` play | \`boolean\` Plays the animation. When this attribute is remove, the animation will pause. Type | |
+| \`src\` src | \`string\` The path to the image to load. Type | |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`wa-error\` | Emitted when the image fails to load. |
+| \`wa-load\` | Emitted when the image loads successfully. |
+
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
 | \`--control-box-size\` | The size of the icon box. |
 | \`--icon-size\` | The size of the play/pause icons. |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
 | \`control-box\` | The container that surrounds the pause/play icons and provides their background. | \`::part(control-box)\` |
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 
 -   [`<wa-icon>`](https://webawesome.com/docs/components/icon)
 
-## SSR
+### SSR
 
 Learn more about [Server-Side Rendering (SSR)](https://webawesome.com/docs/ssr).
 
@@ -101,7 +101,7 @@ Due to browser limitations, `<wa-animated-image>` can't render during SSR. As a 
 
 ## Examples
 
-### WEBP Images
+### Image Formats
 
 Both GIF and WEBP images are supported.
 
@@ -112,7 +112,7 @@ Both GIF and WEBP images are supported.
 ></wa-animated-image>
 ```
 
-### Setting a Width & Height
+### Width & Height
 
 To set a custom size, apply a width and/or height to the host element.
 

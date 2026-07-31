@@ -6,44 +6,15 @@ Stable [Media](https://webawesome.com/docs/components/?category=media) [Since 2.
 
 QR codes encode a URL or other short text into a scannable image, rendered client-side using the Canvas API. Use them to share links, contact info, or Wi-Fi credentials that visitors can scan with a phone.
 
-QR codes are useful for providing small pieces of information to users who can quickly scan them with a smartphone. Most smartphones have built-in QR code scanners, so simply pointing the camera at a QR code will decode it and allow the user to visit a website, dial a phone number, read a message, etc.
-
 ```html
-<div class="qr-overview">
-  <wa-qr-code value="https://webawesome.com/" label="Scan this code to visit Web Awesome on the web!"></wa-qr-code>
-
-  <wa-divider></wa-divider>
-
-  <wa-input maxlength="255" with-clear label="Value">
-    <wa-icon slot="start" name="link"></wa-icon>
-  </wa-input>
-</div>
-
-<script>
-  const container = document.querySelector('.qr-overview');
-  const qrCode = container.querySelector('wa-qr-code');
-  const input = container.querySelector('wa-input');
-
-  customElements.whenDefined('wa-qr-code').then(() => {
-    qrCode.updateComplete.then(() => {
-      input.value = qrCode.value;
-      input.addEventListener('input', () => (qrCode.value = input.value));
-    });
-  });
-</script>
-
-<style>
-  .qr-overview {
-    max-width: 256px;
-  }
-
-  .qr-overview wa-input {
-    margin-top: 1rem;
-  }
-</style>
+<wa-qr-code value="https://webawesome.com/" label="Scan to visit Web Awesome"></wa-qr-code>
 ```
 
-## Importing
+QR codes are useful for providing small pieces of information to users who can quickly scan them with a smartphone. Most smartphones have built-in QR code scanners, so pointing the camera at a QR code will decode it and allow the user to visit a website, dial a phone number, read a message, etc.
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand â€” no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -52,7 +23,7 @@ If you're using the autoloader or a hosted project, components load on demand â€
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/qr-code/qr-code.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/qr-code/qr-code.js';
 ```
 
 \*\*npm\*\*
@@ -79,23 +50,24 @@ To import this component for React 18 or below, use the following code:
 import WaQrCode from '@awesome.me/webawesome/dist/react/qr-code/index.js';
 ```
 
-## Attributes & Properties
+### Attributes & Properties
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `value` | `value` | The QR code's value. | `string` | `''` |
-| `label` | `label` | The label for assistive devices to announce. If unspecified, the value will be used instead. | `string` | `''` |
-| `size` | `size` | The size of the QR code, in pixels. | `number` | `128` |
-| `fill` | `fill` | The fill color. This can be any valid CSS color, but not a CSS custom property. | `string` | `''` |
-| `background` | `background` | The background color. This can be any valid CSS color or `transparent`. It cannot be a CSS custom property. | `string` | `''` |
-| `radius` | `radius` | The edge radius of each module. Must be between 0 and 0.5. | `number` | `0` |
-| `errorCorrection` | `error-correction` | The level of error correction to use. [Learn more](https://www.qrcode.com/en/about/error_correction.html) | `'L' \| 'M' \| 'Q' \| 'H'` | `'H'` |
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`background\` background | \`transparent\` The background color. This can be any valid CSS color or . It cannot be a CSS custom property. Type string Default '' | |
+| \`errorCorrection\` error-correction | \`'L' \\| 'M' \\| 'Q' \\| 'H'\` The level of error correction to use. Learn more Type Default 'H' | |
+| \`fill\` fill | \`string\` The fill color. This can be any valid CSS color, but not a CSS custom property. Type Default '' | |
+| \`label\` label | \`string\` The label for assistive devices to announce. If unspecified, the value will be used instead. Type Default '' | |
+| \`radius\` radius | \`number\` The edge radius of each module. Must be between 0 and 0.5. Type Default 0 | |
+| \`size\` size | \`number\` The size of the QR code, in pixels. Type Default 128 | |
+| \`value\` value | \`string\` The QR code's value. Type Default '' | |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
+| \`qr-code\` | The component's outer wrapper. | \`::part(qr-code)\` |
+| \`base\` | \`qr-code\` Deprecated. Use the part instead. | \`::part(base)\` |
 
 ## Examples
 
@@ -127,7 +99,7 @@ A _quiet zone_ is the blank space around a QR code that helps scanners detect it
 ></wa-qr-code>
 ```
 
-#### Corner Color
+### Corner Color
 
 You can change the color of the corners to be different from the main element with the `--corner-color` custom property.
 
@@ -164,7 +136,7 @@ QR codes can be rendered with various levels of [error correction](https://www.q
 </style>
 ```
 
-### Images
+### Image
 
 Use the `image` attribute to add a logo or image to the center of the QR code. When using an image, the error correction level will automatically be set to `H` to ensure the code remains scannable.
 
@@ -202,6 +174,45 @@ The higher the `image-coverage` value, the harder it will be for QR readers to s
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
+  }
+</style>
+```
+
+### Generating from a Value
+
+Bind an input to the `value` property to build a live generator that updates the code as the user types.
+
+```html
+<div class="qr-generator">
+  <wa-qr-code value="https://webawesome.com/" label="Scan this code to visit Web Awesome on the web!"></wa-qr-code>
+
+  <wa-divider></wa-divider>
+
+  <wa-input maxlength="255" with-clear label="Value">
+    <wa-icon slot="start" name="link"></wa-icon>
+  </wa-input>
+</div>
+
+<script>
+  const container = document.querySelector('.qr-generator');
+  const qrCode = container.querySelector('wa-qr-code');
+  const input = container.querySelector('wa-input');
+
+  customElements.whenDefined('wa-qr-code').then(() => {
+    qrCode.updateComplete.then(() => {
+      input.value = qrCode.value;
+      input.addEventListener('input', () => (qrCode.value = input.value));
+    });
+  });
+</script>
+
+<style>
+  .qr-generator {
+    max-width: 256px;
+  }
+
+  .qr-generator wa-input {
+    margin-top: 1rem;
   }
 </style>
 ```

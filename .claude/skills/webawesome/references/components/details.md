@@ -13,7 +13,9 @@ Details display a brief summary and expand to reveal additional content. Use the
 </wa-details>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -22,7 +24,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/details/details.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/details/details.js';
 ```
 
 \*\*npm\*\*
@@ -49,44 +51,42 @@ To import this component for React 18 or below, use the following code:
 import WaDetails from '@awesome.me/webawesome/dist/react/details/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `(default)` — The details' main content.
-- `summary` — The details' summary. Alternatively, you can use the `summary` attribute.
-- `expand-icon` — Optional expand icon to use instead of the default. Works best with `<wa-icon>`.
-- `collapse-icon` — Optional collapse icon to use instead of the default. Works best with `<wa-icon>`.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `open` | `open` | Indicates whether or not the details is open. You can toggle this attribute to show and hide the details, or you can use the `show()` and `hide()` methods and this attribute will reflect the details' open state. | `boolean` | `false` |
-| `summary` | `summary` | The summary to show in the header. If you need to display HTML, use the `summary` slot instead. | `string` | — |
-| `name` | `name` | Groups related details elements. When one opens, others with the same name will close. | `string` | — |
-| `disabled` | `disabled` | Disables the details so it can't be toggled. | `boolean` | `false` |
-| `appearance` | `appearance` | The element's visual appearance. | `'filled' \| 'outlined' \| 'filled-outlined' \| 'plain'` | `'outlined'` |
-| `iconPlacement` | `icon-placement` | The location of the expand/collapse icon. | `'start' \| 'end'` | `'end'` |
-
-## Methods
-
-| Name | Description | Arguments |
-| --- | --- | --- |
-| `show()` | Shows the details. | — |
-| `hide()` | Hides the details | — |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `wa-show` | Emitted when the details opens. |
-| `wa-after-show` | Emitted after the details opens and all animations are complete. |
-| `wa-hide` | Emitted when the details closes. |
-| `wa-after-hide` | Emitted after the details closes and all animations are complete. |
+| (default) | The details' main content. |
+| \`collapse-icon\` | \`\` Optional expand icon to use instead of the default. Works best with . |
+| \`summary\` | \`summary\` The details' . Alternatively, you can use the summary attribute. |
 
-## CSS Custom Properties
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`appearance\` appearance | \`'filled' \\| 'outlined' \\| 'filled-outlined' \\| 'plain'\` The element's visual appearance. Type Default 'outlined' | |
+| \`disabled\` disabled | \`boolean\` Disables the details so it can't be toggled. Type Default false | |
+| \`iconPlacement\` icon-placement | \`'start' \\| 'end'\` The location of the expand/collapse icon. Type Default 'end' | |
+| \`name\` name | \`string\` Groups related details elements. When one opens, others with the same name will close. Type | |
+| \`open\` open | \`show()\` Indicates whether or not the details is open. You can toggle this attribute to show and hide the details, or you can use the and hide() methods and this attribute will reflect the details' open state. Type boolean Default false | |
+| \`summary\` summary | \`summary\` The to show in the header. If you need to display HTML, use the summary slot instead. Type string | |
+
+### Methods
+
+| Name | Description | Arguments |
+| --- | --- | --- |
+| \`hide()\` | Hides the details | |
+| \`show()\` | Shows the details. | |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`wa-after-hide\` | Emitted after the details closes and all animations are complete. |
+| \`wa-after-show\` | Emitted after the details opens and all animations are complete. |
+| \`wa-hide\` | Emitted when the details closes. |
+| \`wa-show\` | Emitted when the details opens. |
+
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
@@ -94,23 +94,24 @@ silently ignored and the element falls back to the default slot):
 | \`--show-duration\` | \`var(--wa-transition-normal)\` The show duration to use when applying built-in animation classes. Default |
 | \`--spacing\` | The amount of space around and between the details' content. Expects a single value. |
 
-## Custom States
+### Custom States
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| `animating` | Applied when the details is animating expand/collapse. | `:state(animating)` |
+| \`animating\` | Applied when the details is animating expand/collapse. | \`:state(animating)\` |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | \`\` The inner element used to render the component. Styles you apply to the component are automatically applied to this part, so you usually don't need to deal with it unless you need to set the display property. | \`::part(base)\` |
 | \`content\` | The details content. | \`::part(content)\` |
+| \`details\` | \`display\` The component's outer wrapper. Styles you apply to the component are automatically applied to this part, so you usually don't need to deal with it unless you need to set the property. | \`::part(details)\` |
 | \`header\` | The header that wraps both the summary and the expand/collapse icon. | \`::part(header)\` |
 | \`icon\` | The container that wraps the expand/collapse icons. | \`::part(icon)\` |
 | \`summary\` | The container that wraps the summary. | \`::part(summary)\` |
+| \`base\` | \`details\` Deprecated. Use the part instead. | \`::part(base)\` |
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 
@@ -140,7 +141,7 @@ Use the `disabled` attribute to prevent the details from expanding.
 </wa-details>
 ```
 
-### Customizing the Summary Icon
+### Expand & Collapse Icons
 
 Use the `expand-icon` and `collapse-icon` slots to change the expand and collapse icons, respectively. To disable the animation, override the `rotate` property on the `icon` part as shown below.
 
@@ -161,7 +162,7 @@ Use the `expand-icon` and `collapse-icon` slots to change the expand and collaps
 </style>
 ```
 
-### Icon Position
+### Icon Placement
 
 The default position for the expand and collapse icons is at the end of the summary. Set the `icon-placement` attribute to `start` to place the icon at the start of the summary.
 

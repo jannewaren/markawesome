@@ -6,20 +6,22 @@ Stable [Helpers](https://webawesome.com/docs/components/?category=helpers) [Sinc
 
 Popovers display contextual content and interactive elements in a floating panel anchored to a trigger. Use them for rich tooltips, menus, or any content that appears on demand without navigating away.
 
-Popovers display interactive content when their anchor element is clicked. Unlike [tooltips](https://webawesome.com/docs/components/tooltip), popovers can contain links, buttons, and form controls. They appear without an overlay and will close when you click outside or press Escape. Only one popover can be open at a time.
-
 ```html
 <wa-popover for="popover__overview">
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <p>This popover contains interactive content that users can engage with directly.</p>
-    <wa-button appearance="filled" variant="primary" size="s">Take Action</wa-button>
+    <wa-button appearance="filled" variant="brand" size="s">Take Action</wa-button>
   </div>
 </wa-popover>
 
 <wa-button appearance="filled" id="popover__overview">Show popover</wa-button>
 ```
 
-## Importing
+Unlike [tooltips](https://webawesome.com/docs/components/tooltip), popovers can contain links, buttons, and form controls. They appear without an overlay and close when you click outside or press Escape. Only one popover can be open at a time.
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -28,7 +30,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/popover/popover.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/popover/popover.js';
 ```
 
 \*\*npm\*\*
@@ -55,41 +57,40 @@ To import this component for React 18 or below, use the following code:
 import WaPopover from '@awesome.me/webawesome/dist/react/popover/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `(default)` — The popover's content. Interactive elements such as buttons and links are supported.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `placement` | `placement` | The preferred placement of the popover. Note that the actual placement may vary as needed to keep the popover inside of the viewport. | `\| 'top' \| 'top-start' \| 'top-end' \| 'right' \| 'right-start' \| 'right-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end'` | `'top'` |
-| `open` | `open` | Shows or hides the popover. | `boolean` | `false` |
-| `distance` | `distance` | The distance in pixels from which to offset the popover away from its target. | `number` | `8` |
-| `skidding` | `skidding` | The distance in pixels from which to offset the popover along its target. | `number` | `0` |
-| `for` | `for` | The ID of the popover's anchor element. This must be an interactive/focusable element such as a button. | `string \| null` | `null` |
-| `withoutArrow` | `without-arrow` | Removes the arrow from the popover. | `boolean` | `false` |
-
-## Methods
-
-| Name | Description | Arguments |
-| --- | --- | --- |
-| `show()` | Shows the popover. | — |
-| `hide()` | Hides the popover. | — |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `wa-show` | Emitted when the popover begins to show. Canceling this event will stop the popover from showing. |
-| `wa-after-show` | Emitted after the popover has shown and all animations are complete. |
-| `wa-hide` | Emitted when the popover begins to hide. Canceling this event will stop the popover from hiding. |
-| `wa-after-hide` | Emitted after the popover has hidden and all animations are complete. |
+| (default) | The popover's content. Interactive elements such as buttons and links are supported. |
 
-## CSS Custom Properties
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`distance\` distance | \`number\` The distance in pixels from which to offset the popover away from its target. Type Default 8 | |
+| \`for\` for | \`string \\| null\` The ID of the popover's anchor element. This must be an interactive/focusable element such as a button. Type Default null | |
+| \`open\` open | \`boolean\` Shows or hides the popover. Type Default false | |
+| \`placement\` placement | \`'top' \\| 'top-start' \\| 'top-end' \\| 'right' \\| 'right-start' \\| 'right-end' \\| 'bottom' \\| 'bottom-start' \\| 'bottom-end' \\| 'left' \\| 'left-start' \\| 'left-end'\` The preferred placement of the popover. Note that the actual placement may vary as needed to keep the popover inside of the viewport. Type Default 'top' | |
+| \`skidding\` skidding | \`number\` The distance in pixels from which to offset the popover along its target. Type Default 0 | |
+| \`withoutArrow\` without-arrow | \`boolean\` Removes the arrow from the popover. Type Default false | |
+
+### Methods
+
+| Name | Description | Arguments |
+| --- | --- | --- |
+| \`hide()\` | Hides the popover. | |
+| \`show()\` | Shows the popover. | |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`wa-after-hide\` | Emitted after the popover has hidden and all animations are complete. |
+| \`wa-after-show\` | Emitted after the popover has shown and all animations are complete. |
+| \`wa-hide\` | Emitted when the popover begins to hide. Canceling this event will stop the popover from hiding. |
+| \`wa-show\` | Emitted when the popover begins to show. Canceling this event will stop the popover from showing. |
+
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
@@ -98,13 +99,13 @@ silently ignored and the element falls back to the default slot):
 | \`--max-width\` | \`25rem\` The maximum width of the popover's body content. Default |
 | \`--show-duration\` | \`var(--wa-transition-fast)\` The speed of the show animation. Default |
 
-## Custom States
+### Custom States
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| `open` | Applied when the popover is open. | `:state(open)` |
+| \`open\` | Applied when the popover is open. | \`:state(open)\` |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
@@ -114,7 +115,7 @@ silently ignored and the element falls back to the default slot):
 | \`popup\_\_arrow\` | \`arrow\` The popup's exported part. Use this to target the popover's arrow. | \`::part(popup\_\_arrow)\` |
 | \`popup\_\_popup\` | \`popup\` The 's exported popup part. Use this to target the popover's popup container. | \`::part(popup\_\_popup)\` |
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 
@@ -122,7 +123,7 @@ This component automatically imports the following elements. Sub-dependencies, i
 
 ## Examples
 
-### Assigning an Anchor
+### Anchor
 
 Use [`<wa-button>`](https://webawesome.com/docs/components/button) or `<button>` elements as popover anchors. Connect the popover to its anchor by setting the `for` attribute to match the anchor's `id`.
 
@@ -138,7 +139,8 @@ Use [`<wa-button>`](https://webawesome.com/docs/components/button) or `<button>`
 <wa-popover for="popover__anchor-native-button"> I'm anchored to a native button. </wa-popover>
 ```
 
-Make sure the anchor element exists in the DOM before the popover connects. If it doesn't exist, the popover won't attach and you'll see a console warning.
+**The anchor must exist in the DOM before the popover connects.**  
+Otherwise the popover won't attach and you'll see a console warning.
 
 ### Opening & Closing
 
@@ -149,7 +151,7 @@ Use `data-popover="close"` on any button inside a popover to close it automatica
 ```html
 <wa-popover for="popover__opening">
   <p>The button below has <code>data-popover="close"</code> so clicking it will close the popover.</p>
-  <wa-button appearance="filled" data-popover="close" variant="primary">Dismiss</wa-button>
+  <wa-button appearance="filled" data-popover="close" variant="brand">Dismiss</wa-button>
 </wa-popover>
 
 <wa-button appearance="filled" id="popover__opening">Show popover</wa-button>
@@ -203,7 +205,7 @@ Use the `--arrow-size` custom property to change the size of the popover's arrow
 </div>
 ```
 
-### Setting a Maximum Width
+### Max Width
 
 Use the `--max-width` custom property to control the maximum width of the popover.
 
@@ -214,7 +216,7 @@ Use the `--max-width` custom property to control the maximum width of the popove
 </wa-popover>
 ```
 
-### Setting Focus
+### Initial Focus
 
 Use the [`autofocus`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus) global attribute to move focus to a specific form control when the popover opens.
 
@@ -222,7 +224,7 @@ Use the [`autofocus`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_a
 <wa-popover for="popover__autofocus">
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <wa-textarea autofocus placeholder="What's on your mind?" size="s" resize="none" rows="2"></wa-textarea>
-    <wa-button appearance="filled" variant="primary" size="s" data-popover="close"> Submit </wa-button>
+    <wa-button appearance="filled" variant="brand" size="s" data-popover="close"> Submit </wa-button>
   </div>
 </wa-popover>
 

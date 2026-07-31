@@ -6,8 +6,6 @@ Stable [Navigation](https://webawesome.com/docs/components/?category=navigation)
 
 Breadcrumbs display a trail of links that show users where they are in a site's hierarchy. They help users understand the current location and navigate back to parent pages.
 
-Breadcrumbs are usually placed before a page's main content with the current page shown last to indicate the user's position in the navigation.
-
 ```html
 <wa-breadcrumb>
   <wa-breadcrumb-item>Catalog</wa-breadcrumb-item>
@@ -17,7 +15,11 @@ Breadcrumbs are usually placed before a page's main content with the current pag
 </wa-breadcrumb>
 ```
 
-## Importing
+Breadcrumbs are usually placed before a page's main content with the current page shown last to indicate the user's position in the navigation.
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -26,7 +28,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/breadcrumb/breadcrumb.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/breadcrumb/breadcrumb.js';
 ```
 
 \*\*npm\*\*
@@ -53,27 +55,27 @@ To import this component for React 18 or below, use the following code:
 import WaBreadcrumb from '@awesome.me/webawesome/dist/react/breadcrumb/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | One or more breadcrumb items to display. |
+| \`separator\` | \`
 
-- `(default)` — One or more breadcrumb items to display.
-- `separator` — The separator to use between breadcrumb items. Works best with `<wa-icon>`.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`label\` label | \`string\` The label to use for the breadcrumb control. This will not be shown on the screen, but it will be announced by screen readers and other assistive devices to provide more context for users. Type Default '' | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `label` | `label` | The label to use for the breadcrumb control. This will not be shown on the screen, but it will be announced by screen readers and other assistive devices to provide more context for users. | `string` | `''` |
-
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
+| \`breadcrumb\` | The component's outer wrapper. | \`::part(breadcrumb)\` |
+| \`base\` | \`breadcrumb\` Deprecated. Use the part instead. | \`::part(base)\` |
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 
@@ -81,7 +83,7 @@ This component automatically imports the following elements. Sub-dependencies, i
 
 ## Examples
 
-### Breadcrumb Links
+### Links
 
 By default, breadcrumb items are rendered as buttons so you can use them to navigate single-page applications. In this case, you'll need to add event listeners to handle clicks.
 
@@ -119,7 +121,7 @@ Use the `start` and `end` slots to add presentational elements like [`<wa-icon>`
 </wa-breadcrumb>
 ```
 
-### Custom Separators
+### Separator
 
 Use the `separator` slot to change the separator that goes between breadcrumb items. Icons work well, but you can also use text or an image.
 
@@ -150,20 +152,20 @@ Use the `separator` slot to change the separator that goes between breadcrumb it
 </wa-breadcrumb>
 ```
 
-### Custom Colors
+### Colors
 
 Breadcrumb labels match the color set on [`<wa-breadcrumb-item>`](https://webawesome.com/docs/components/breadcrumb-item). Content in the `start`, `end`, and `separator` slots can be styled using CSS parts.
 
 ```html
 <style>
   .redcrumbs wa-breadcrumb-item {
-    color: firebrick;
+    color: var(--wa-color-red-40);
   }
   .redcrumbs wa-breadcrumb-item:last-of-type {
-    color: crimson;
+    color: var(--wa-color-red-60);
   }
   .redcrumbs wa-breadcrumb-item::part(separator) {
-    color: pink;
+    color: var(--wa-color-red-80);
   }
   .redcrumbs wa-breadcrumb-item::part(start),
   .redcrumbs wa-breadcrumb-item::part(end) {
@@ -180,7 +182,7 @@ Breadcrumb labels match the color set on [`<wa-breadcrumb-item>`](https://webawe
 </wa-breadcrumb>
 ```
 
-### With Dropdowns
+### Dropdowns
 
 Dropdown menus can be placed in the default slot to provide additional options.
 
@@ -199,26 +201,5 @@ Dropdown menus can be placed in the default slot to provide additional options.
   </wa-breadcrumb-item>
   <wa-breadcrumb-item>Our Services</wa-breadcrumb-item>
   <wa-breadcrumb-item>Digital Media</wa-breadcrumb-item>
-</wa-breadcrumb>
-```
-
-Alternatively, you can place dropdown menus in a `start` or `end` slot.
-
-```html
-<wa-breadcrumb>
-  <wa-breadcrumb-item>Homepage</wa-breadcrumb-item>
-  <wa-breadcrumb-item>Our Services</wa-breadcrumb-item>
-  <wa-breadcrumb-item>Digital Media</wa-breadcrumb-item>
-  <wa-breadcrumb-item>
-    Web Design
-    <wa-dropdown slot="end">
-      <wa-button slot="trigger" size="s" appearance="filled" pill>
-        <wa-icon label="More options" name="ellipsis" variant="solid"></wa-icon>
-      </wa-button>
-      <wa-dropdown-item type="checkbox" checked>Web Design</wa-dropdown-item>
-      <wa-dropdown-item type="checkbox">Web Development</wa-dropdown-item>
-      <wa-dropdown-item type="checkbox">Marketing</wa-dropdown-item>
-    </wa-dropdown>
-  </wa-breadcrumb-item>
 </wa-breadcrumb>
 ```

@@ -32,6 +32,34 @@ human-readable descriptions already exist in `src/data/components.json` (surface
 today by `hoverProvider`), so the mode can reuse them; it fits alongside the
 existing commands in `src/commands/transformCommands.ts`.
 
+### 5. New component: `<wa-pagination>` (WA 3.11.0)
+
+_Repos: `markawesome`, `markawesome-js`, `markawesome-vscode`, `markawesome-skill`_
+
+`<wa-pagination>` (experimental, added in WA 3.11.0) splits a long list into
+numbered pages with previous/next controls. It is the **only** one of 3.11.0's new
+components that fits our static-site model, because of its **`href-template`**
+attribute: given a template, it renders each page control as a real link, so the
+component works with **zero authored JavaScript** — exactly the bar the rest of the
+engine meets. Without `href-template` it emits a `wa-page-change` event and needs a
+listener, which is out of scope.
+
+The obvious authoring shape is the explicit block form only —
+`:::wa-pagination total:100 page-size:10 page:3 href-template:/blog/page/{page}/`
+— since the terse-glyph space is nearly exhausted (see the `......` note in the
+3.10.0 section below). Attributes worth exposing: `total`, `page-size`, `page`,
+`href-template`, `format` (`standard`/`compact`), `appearance`
+(`outlined`/`filled`/`plain`), `with-edges`, `with-summary`, `hide-single-page`,
+`sibling-count`, `boundary-count`, `label`. The four icon slots
+(`previous-icon`/`next-icon`/`first-icon`/`last-icon`) can wait.
+
+**Open question before building it:** who actually owns paging in each host? Jekyll
+and Eleventy both generate paginated collections in *templates*, not in page bodies,
+so this may be more useful as an integration-level include in `jekyll-webawesome` /
+`eleventy-plugin-webawesome` than as body Markdown. Decide that first — the engines
+should only grow syntax that authors will genuinely reach for in a `.md` file.
+Note the component is **experimental**, so its API may still move.
+
 ---
 
 ## Plain-Markdown renderer parity in `markawesome-js` — done
@@ -47,6 +75,49 @@ mirrors it: `src/plain-markdown-renderer.ts`, exported as `plainMarkdown` from
 `test/plain-markdown-renderer.test.ts` (mirroring `spec/plain_markdown/renderer_spec.rb`)
 and by the shared `test/parity-corpus.test.ts`. Both engines expose the same
 degrade-to-Markdown capability.
+
+---
+
+## Web Awesome 3.11.0 audit — done (except the pagination item above)
+
+_Repos: all six_
+
+WA **3.11.0** (July 30th, 2026) was audited against the whole ecosystem. The
+manifest fixture was refreshed in both engines (`rake wa:manifest[3.11.0]` /
+`npm run update-wa-manifest 3.11.0`, `WA_VERSION` → `3.11.0`) and the diff was
+**purely additive** — four new tags, **zero DRIFT and zero GAP** — so no
+transformer enum constant changed. Verified separately: `IconAttributes` still
+matches WA's `IconAnimation`/`IconCanvas` exactly, and every slot the engines
+emit (`footer`, `icon`, `summary`) plus the `<wa-page>` slots the example shells
+use still exist.
+
+**What did change:**
+
+- **`::part(base)` → `::part(base), ::part(button)`** in the image-dialog trigger
+  styling, in both engines. 3.11.0 gives every component a part named after itself
+  and softly deprecates the generic `base` part; WA's manifest now marks `wa-button`'s
+  `base` as *"Deprecated. Use the `button` part instead."* We emit both selectors so
+  the trigger stays chrome-less on 3.10-pinned sites (no `button` part) and on 3.11+
+  sites once `base` is dropped. Previously untested in either engine; now locked by
+  specs/tests on both sides.
+- **Example-site CDN pins bumped to 3.11.0** in `jekyll-webawesome` and
+  `eleventy-plugin-webawesome`, with the docs/skill pin references following.
+
+### Considered but out of scope (3.11.0)
+
+- `<wa-toast>` / `<wa-toast-item>` moving **Pro → Core** — good news for consumers
+  (stackable notifications are now free), but toasts are created imperatively via
+  `.create()`; nothing to author in Markdown.
+- `<wa-otp-input>` — a form control, out of scope per the list at the bottom of this
+  file. `<wa-data-grid>` — Pro, experimental, and driven entirely by JS-supplied data.
+- `<wa-carousel>` `addSlide()` / `removeSlide()` — imperative methods for live data;
+  our carousel is authored from static slides.
+- `<wa-include src="#my-id">` (include a single element by id) — there is no include
+  transformer to extend, and includes are the host SSG's job.
+- Default `<table>` styles dropping `font-variant-numeric: tabular-nums` (now opt-in
+  via the `wa-tabular-nums` class) — no repo relied on it. Worth knowing if a site's
+  numeric Markdown tables suddenly look less aligned; the fix is a class on the host's
+  own table styling, not engine output.
 
 ---
 

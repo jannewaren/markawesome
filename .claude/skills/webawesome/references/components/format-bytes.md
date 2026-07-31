@@ -24,7 +24,9 @@ Formats a number of bytes as a human-readable string with the appropriate unit, 
 </script>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand â€” no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -33,7 +35,7 @@ If you're using the autoloader or a hosted project, components load on demand â€
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/format-bytes/format-bytes.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/format-bytes/format-bytes.js';
 ```
 
 \*\*npm\*\*
@@ -60,17 +62,17 @@ To import this component for React 18 or below, use the following code:
 import WaFormatBytes from '@awesome.me/webawesome/dist/react/format-bytes/index.js';
 ```
 
-## Attributes & Properties
+### Attributes & Properties
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `value` | `value` | The number to format in bytes. | `number` | `0` |
-| `unit` | `unit` | The type of unit to display. | `'byte' \| 'bit'` | `'byte'` |
-| `display` | `display` | Determines how to display the result, e.g. "100 bytes", "100 b", or "100b". | `'long' \| 'short' \| 'narrow'` | `'short'` |
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`display\` display | \`'long' \\| 'short' \\| 'narrow'\` Determines how to display the result, e.g. "100 bytes", "100 b", or "100b". Type Default 'short' | |
+| \`unit\` unit | \`'byte' \\| 'bit'\` The type of unit to display. Type Default 'byte' | |
+| \`value\` value | \`number\` The to format in bytes. Type number Default 0 | |
 
 ## Examples
 
-### Formatting Bytes
+### Bytes
 
 Set the `value` attribute to a number to get the value in bytes.
 
@@ -81,7 +83,7 @@ Set the `value` attribute to a number to get the value in bytes.
 <wa-format-bytes value="1200000000"></wa-format-bytes>
 ```
 
-### Formatting Bits
+### Bits
 
 To get the value in bits, set the `unit` attribute to `bit`.
 

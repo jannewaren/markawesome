@@ -6,7 +6,7 @@ Frameworks Vue 3
 
 Vue [plays nice](https://custom-elements-everywhere.com/#vue) with custom elements, so you can use Web Awesome in your Vue apps with ease.
 
-These instructions are for Vue 3 and above. If you're using Vue 2, please see the [Vue 2 instructions](https://webawesome.com/frameworks/vue-2).
+These instructions are for Vue 3 and above. If you're using Vue 2, please see the [Vue 2 instructions](https://webawesome.com/docs/frameworks/vue-2).
 
 ## Installation
 
@@ -16,9 +16,9 @@ To add Web Awesome to your Vue app, install the package from npm.
 npm install @awesome.me/webawesome
 ```
 
-Next, import the Web Awesome stylesheet, import the components you need, and then start using Web Awesome!
+Then import the Web Awesome stylesheet and the components you need:
 
-```jsx
+```js
 // main.js or main.ts
 import '@awesome.me/webawesome/dist/styles/webawesome.css';
 import '@awesome.me/webawesome/dist/components/button/button.js';
@@ -26,13 +26,11 @@ import '@awesome.me/webawesome/dist/components/button/button.js';
 
 ## Configuration
 
-If you haven't configured your Vue.js project to work with custom elements/web components, follow [the instructions here](https://vuejs.org/guide/extras/web-components.html#using-custom-elements-in-vue) based on your project type to ensure your project will not throw an error when it encounters a custom element.
-
-Now you can start using Web Awesome components in your app!
+If you haven't configured your Vue project to recognize custom elements, follow [Vue's guide](https://vuejs.org/guide/extras/web-components.html#using-custom-elements-in-vue) for your project type so it doesn't error on Web Awesome's `wa-*` tags.
 
 ## Types
 
-Once you have configured your application for custom elements, you should be able to use Shoelace in your application without it causing any errors. Unfortunately, this doesn't register the custom elements to behave like components built using Vue. To provide autocomplete information and type safety for your components, you can import the Shoelace Vue types into your `tsconfig.json` to get better integration in your standard Vue and JSX templates.
+Configuring custom elements stops the errors, but it doesn't give the `wa-*` tags Vue's component typing. For autocomplete and type safety, add the Web Awesome Vue types to your `tsconfig.json`:
 
 ```json
 {
@@ -44,7 +42,7 @@ Once you have configured your application for custom elements, you should be abl
 
 ## Usage
 
-### QR Code Generator Example
+### Basic Usage
 
 ```html
 <template>
@@ -83,10 +81,10 @@ When binding complex data such as objects and arrays, use the `.prop` modifier t
 
 ### Two-Way Binding
 
-One caveat is there's currently [varying levels of support for v-model on custom elements](https://github.com/vuejs/vue/issues/7830), but you can still achieve two-way binding manually.
+One caveat: [v-model support on custom elements varies](https://github.com/vuejs/vue/issues/7830), but you can still bind two ways manually.
 
 ```html
-<!-- ❌ This _sometimes_ work (some things have changed internally in v-model in Vue 3) -->
+<!-- ❌ This _sometimes_ works (v-model internals changed in Vue 3) -->
 <wa-input v-model="name"></wa-input>
 <!-- ✅ This should always work, but it's a bit longer -->
 <wa-input :value="name" @input="name = $event.target.value"></wa-input>
@@ -107,6 +105,48 @@ Here is an example:
 </wa-drawer>
 ```
 
-For more on slots and limitations with Web Components, check out the Vue documentation here: [https://vuejs.org/guide/extras/web-components#slots](https://vuejs.org/guide/extras/web-components#slots)
+For more on slots and their limitations with web components, see [Vue's documentation](https://vuejs.org/guide/extras/web-components#slots).
 
-Are you using Web Awesome with Vue? [Help us improve this page!](https://github.com/shoelace-style/webawesome/blob/next/packages/webawesome/docs/docs/frameworks/vue.md)
+**Web Awesome is ready to use.**  
+Want server-side rendering too?
+
+Add SSR
+
+## Server-Side Rendering
+
+SSR in Vue varies widely depending on your setup. For a working reference, see the example below.
+
+### See It in Action
+
+[Example Repository
+
+A Vite + Vue SSR project using Web Awesome.
+
+](https://github.com/KonnorRogers/webawesome-vite-vue-ssr)
+
+Other plugins and meta-frameworks like Vike and vite-plugin-ssr are still experimental, so they aren't documented here yet.
+
+## Next Steps
+
+[Components
+
+Start building your interface.
+
+](https://webawesome.com/docs/components)[CSS Utilities
+
+Lay out and style without custom CSS.
+
+](https://webawesome.com/docs/utilities)[Theming
+
+Match Web Awesome to your brand.
+
+](https://webawesome.com/docs/themes)[Vue 3 Docs
+
+The official Vue 3 documentation.
+
+](https://vuejs.org)
+
+**Using Web Awesome with Vue 3?**  
+Found a bug or have a suggestion? Help make things more awesome!
+
+Share feedback

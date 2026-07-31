@@ -6,10 +6,6 @@ Stable [Feedback](https://webawesome.com/docs/components/?category=feedback) [Si
 
 Skeletons show placeholder shapes where content will appear once it finishes loading, reducing perceived wait time and preventing layout shift.
 
-These are simple containers for scaffolding layouts that mimic what users will see when content has finished loading. This prevents large areas of empty space during asynchronous operations.
-
-Skeletons try not to be opinionated, as there are endless possibilities for designing layouts. Therefore, you'll likely use more than one skeleton to create the effect you want. If you find yourself using them frequently, consider creating a template that renders them with the desired arrangement and styles.
-
 ```html
 <div class="skeleton-overview">
   <header>
@@ -56,7 +52,11 @@ Skeletons try not to be opinionated, as there are endless possibilities for desi
 </style>
 ```
 
-## Importing
+A single skeleton stands in for one line or shape. Because layouts vary endlessly, you'll usually combine several to mirror the content that's loading. If you reach for the same arrangement often, wrap it in a template that renders the skeletons with your spacing and styles.
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand â€” no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -65,7 +65,7 @@ If you're using the autoloader or a hosted project, components load on demand â€
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/skeleton/skeleton.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/skeleton/skeleton.js';
 ```
 
 \*\*npm\*\*
@@ -92,20 +92,20 @@ To import this component for React 18 or below, use the following code:
 import WaSkeleton from '@awesome.me/webawesome/dist/react/skeleton/index.js';
 ```
 
-## Attributes & Properties
+### Attributes & Properties
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `effect` | `effect` | Determines which effect the skeleton will use. | `'pulse' \| 'sheen' \| 'none'` | `'none'` |
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`effect\` effect | \`'pulse' \\| 'sheen' \\| 'none'\` Determines which effect the skeleton will use. Type Default 'none' | |
 
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
 | \`--color\` | The color of the skeleton. |
 | \`--sheen-color\` | The sheen color when the skeleton is in its loading state. |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
@@ -113,9 +113,15 @@ import WaSkeleton from '@awesome.me/webawesome/dist/react/skeleton/index.js';
 
 ## Examples
 
-### Effects
+### Effect
 
-There are two built-in effects, `sheen` and `pulse`. Effects are intentionally subtle, as they can be distracting when used extensively. The default is `none`, which displays a static, non-animated skeleton.
+Set the `effect` attribute to choose how the skeleton animates while content loads. Effects are intentionally subtle, since motion across many skeletons at once can distract.
+
+| Effect | Behavior | Best for |
+| --- | --- | --- |
+| \`none\` default | Static, non-animated placeholder | Dense layouts where motion would be noisy |
+| \`sheen\` | A light sweeps across the indicator | Signaling that content is actively loading |
+| \`pulse\` | The indicator fades in and out | \`sheen\` A calmer alternative to |
 
 ```html
 <div class="skeleton-effects">
@@ -142,7 +148,7 @@ There are two built-in effects, `sheen` and `pulse`. Effects are intentionally s
 
 ### Paragraphs
 
-Use multiple skeletons and some clever styles to simulate paragraphs.
+Stack several skeletons and vary their widths to stand in for a block of text.
 
 ```html
 <div class="skeleton-paragraphs">
@@ -174,7 +180,7 @@ Use multiple skeletons and some clever styles to simulate paragraphs.
 
 ### Avatars
 
-Set a matching width and height to make a circle, square, or rounded avatar skeleton.
+Set a matching width and height to stand in for a circle, square, or rounded avatar.
 
 ```html
 <div class="skeleton-avatars">
@@ -201,9 +207,9 @@ Set a matching width and height to make a circle, square, or rounded avatar skel
 </style>
 ```
 
-### Custom Shapes
+### Shapes
 
-Set a `border-radius` on the `indicator` part to make circles, squares, and rectangles. For more complex shapes, you can apply `clip-path` to the `indicator` part. [Try Clippy](https://bennettfeely.com/clippy/) if you need help generating custom shapes.
+Set a `border-radius` on the `indicator` part to make circles, squares, and rectangles. For more complex shapes, apply a `clip-path` to the `indicator` part. [Try Clippy](https://bennettfeely.com/clippy/) if you need help generating custom shapes.
 
 ```html
 <div class="skeleton-shapes">
@@ -263,10 +269,10 @@ Set a `border-radius` on the `indicator` part to make circles, squares, and rect
 </style>
 ```
 
-### Custom Colors
+### Colors
 
-Set the `--color` and `--sheen-color` custom properties to adjust the skeleton's color.
+Set the `--color` and `--sheen-color` custom properties to tune the skeleton to your surface. `--sheen-color` is the highlight that sweeps across when `effect="sheen"`.
 
 ```html
-<wa-skeleton effect="sheen" style="--color: tomato; --sheen-color: #ffb094;"></wa-skeleton>
+<wa-skeleton effect="sheen" style="--color: var(--wa-color-brand-fill-loud); --sheen-color: var(--wa-color-brand-fill-quiet);"></wa-skeleton>
 ```

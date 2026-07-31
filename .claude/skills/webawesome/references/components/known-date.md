@@ -12,15 +12,18 @@ Known Date collects a date the user already knows — a birthday, a passport iss
 <wa-known-date label="When was your passport issued?"></wa-known-date>
 ```
 
-For dates the user needs help finding (scheduling, ranges, browsing), use [`<wa-date-input>`](https://webawesome.com/docs/components/date-input) instead. Known Date is intentionally simple: no popup calendar, no auto-advance between fields, and no clever parsing.
+**Need a calendar, ranges, or browsing?**  
+Use [`<wa-date-input>`](https://webawesome.com/docs/components/date-input) instead. Known Date is intentionally simple: no popup calendar, no auto-advance between fields, and no clever parsing.
 
 ## Form Submission
 
 The hidden form value is canonical ISO 8601 (`YYYY-MM-DD`), regardless of the locale used to render the fields:
 
--   A complete, real calendar date is submitted as `YYYY-MM-DD`.
--   A partial entry (one or two fields filled) submits no value — the form data omits the entry entirely.
--   An invalid combination such as 30 February submits no value.
+| Entry | Form value |
+| --- | --- |
+| Complete, valid date | \`YYYY-MM-DD\` (e.g. 2007-03-27) |
+| Partial (one or two fields) | (empty) — omitted from form data |
+| Invalid date (e.g. 30 February) | (empty) |
 
 ```html
 <form id="kd-form-demo">
@@ -60,7 +63,9 @@ The hidden form value is canonical ISO 8601 (`YYYY-MM-DD`), regardless of the lo
 </script>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -69,7 +74,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/known-date/known-date.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/known-date/known-date.js';
 ```
 
 \*\*npm\*\*
@@ -96,74 +101,74 @@ To import this component for React 18 or below, use the following code:
 import WaKnownDate from '@awesome.me/webawesome/dist/react/known-date/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `label` — The known date's group label. Alternatively, use the `label` attribute.
-- `hint` — Text that describes how to use the known date. Alternatively, use the `hint` attribute.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `validators` | — | Validators are static because they have `observedAttributes`, essentially attributes to "watch" for changes. Whenever these attributes change, we want to be notified and update the validator. | `Validator[]` | `[]` |
-| `valueInput` | — | Hidden mirror used for native constraint validation (min/max/required + valid-date roundtrip). | `HTMLInputElement` | — |
-| `parts` | — | The three field strings. Stored verbatim so user-typed digits round-trip faithfully. | `DateParts` | `{ ...EMPTY_PARTS }` |
-| `name` | `name` | The name submitted with form data. | `string \| null` | `''` |
-| `value` | — | The committed value as an ISO `YYYY-MM-DD` string. The setter also accepts a `Date` or `null`. Reading returns an empty string when the value is blank or any field is only partially filled. | `string` | — |
-| `defaultValue` | `value` | The default value used for form reset. | `string` | — |
-| `disabled` | `disabled` | Disables the known date. | `boolean` | `false` |
-| `required` | `required` | Makes the known date required for form submission. | `boolean` | `false` |
-| `readonly` | `readonly` | Makes the fields non-editable. | `boolean` | `false` |
-| `size` | `size` | The known date's size. | `WaKnownDateSize \| 'small' \| 'medium' \| 'large'` | `'m'` |
-| `appearance` | `appearance` | The known date's visual appearance. | `WaKnownDateAppearance` | `'outlined'` |
-| `pill` | `pill` | Draws pill-style fields with rounded edges. | `boolean` | `false` |
-| `label` | `label` | The known date's label. If you need to display HTML, use the `label` slot instead. | `string` | `''` |
-| `hint` | `hint` | The known date's hint. If you need to display HTML, use the `hint` slot instead. | `string` | `''` |
-| `autocomplete` | `autocomplete` | Browser autofill family. When set to `bday`, the three fields receive `bday-day`, `bday-month`, and `bday-year` respectively. The field-agnostic directives `off` and `on` are applied to all three fields. Any other value is forwarded only to the year field. | `string` | `''` |
-| `min` | `min` | Earliest selectable date as `YYYY-MM-DD`. | `string` | `''` |
-| `max` | `max` | Latest selectable date as `YYYY-MM-DD`. | `string` | `''` |
-| `locale` | `locale` | BCP-47 locale override. When empty, the inherited `lang` attribute is used. | `string` | `''` |
-| `withLabel` | `with-label` | Only required for SSR. Set to `true` if you're slotting in a `label` element. | `boolean` | `false` |
-| `withHint` | `with-hint` | Only required for SSR. Set to `true` if you're slotting in a `hint` element. | `boolean` | `false` |
-| `valueAsDate` | — | The committed value as a `Date`, or `null` when the value is empty/invalid. | `Date \| null` | — |
-| `validationTarget` | — | Anchor native validation popups on a real visible input. The hidden mirror handles form data, but anchoring a popup on `display: none` content would render it at offset (0, 0). | `undefined \| HTMLElement` | — |
-| `form` | — | By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. | `HTMLFormElement \| null` | — |
-
-## Methods
-
-| Name | Description | Arguments |
-| --- | --- | --- |
-| `focus()` | Focuses the first empty field, or the first field when all are filled. | `options: FocusOptions` |
-| `blur()` | Removes focus from the known date. | — |
-| `formStateRestoreCallback()` | Called when the browser is trying to restore element’s state to state in which case reason is "restore", or when the browser is trying to fulfill autofill on behalf of user in which case reason is "autocomplete". In the case of "restore", state is a string, File, or FormData object previously set as the second argument to setFormValue. | `state: string \\| File \\| FormData \\| null` |
-| `setCustomValidity()` | Do not use this when creating a "Validator". This is intended for end users of components. We track manually defined custom errors so we don't clear them on accident in our validators. | `message: string` |
-| `resetValidity()` | Reset validity is a way of removing manual custom errors and native validation. | — |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `input` | Emitted as the user types in any field. |
-| `change` | Emitted when the committed value transitions to a new ISO date. |
-| `blur` | Emitted when the control loses focus. |
-| `focus` | Emitted when the control gains focus. |
-| `wa-invalid` | Emitted when the form control has been checked for validity and its constraints aren't satisfied. |
+| \`hint\` | \`hint\` Text that describes how to use the known date. Alternatively, use the attribute. |
+| \`label\` | \`label\` The known date's group . Alternatively, use the label attribute. |
 
-## Custom States
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`appearance\` appearance | \`WaKnownDateAppearance\` The known date's visual appearance. Type Default 'outlined' | |
+| \`autocomplete\` autocomplete | \`bday\` Browser autofill family. When set to , the three fields receive bday-day, bday-month, and bday-year respectively. The field-agnostic directives off and on are applied to all three fields. Any other value is forwarded only to the year field. Type string Default '' | |
+| \`defaultValue\` value | \`string\` The default value used for form reset. Type | |
+| \`disabled\` disabled | \`boolean\` Disables the known date. Type Default false | |
+| \`form\` | \`
+
+\` By default, form controls are associated with the nearest containing element. This attribute allows you to place the form control outside of a form and associate it with the form that has this id. The form must be in the same document or shadow root for this to work. Type HTMLFormElement \\| null | |
+| \`hint\` hint | \`hint\` The known date's . If you need to display HTML, use the hint slot instead. Type string Default '' | |
+| \`label\` label | \`label\` The known date's . If you need to display HTML, use the label slot instead. Type string Default '' | |
+| \`locale\` locale | \`lang\` BCP-47 locale override. When empty, the inherited attribute is used. Type string Default '' | |
+| \`max\` max | \`YYYY-MM-DD\` Latest selectable date as . Type string Default '' | |
+| \`min\` min | \`YYYY-MM-DD\` Earliest selectable date as . Type string Default '' | |
+| \`name\` name | \`string \\| null\` The name submitted with form data. Type Default '' | |
+| \`parts\` | \`DateParts\` The three field strings. Stored verbatim so user-typed digits round-trip faithfully. Type Default { ...EMPTY\_PARTS } | |
+| \`pill\` pill | \`boolean\` Draws pill-style fields with rounded edges. Type Default false | |
+| \`readonly\` readonly | \`boolean\` Makes the fields non-editable. Type Default false | |
+| \`required\` required | \`boolean\` Makes the known date required for form submission. Type Default false | |
+| \`size\` size | \`WaKnownDateSize \\| 'small' \\| 'medium' \\| 'large'\` The known date's size. Type Default 'm' | |
+| \`validationTarget\` | \`display: none\` Anchor native validation popups on a real visible input. The hidden mirror handles form data, but anchoring a popup on content would render it at offset (0, 0). Type undefined \\| HTMLElement | |
+| \`validators\` | \`observedAttributes\` Validators are static because they have , essentially attributes to "watch" for changes. Whenever these attributes change, we want to be notified and update the validator. Type Validator\[\] Default \[\] | |
+| \`value\` | \`YYYY-MM-DD\` The committed value as an ISO string. The setter also accepts a Date or null. Reading returns an empty string when the value is blank or any field is only partially filled. Type string | |
+| \`valueAsDate\` | \`Date\` The committed value as a , or null when the value is empty/invalid. Type Date \\| null | |
+| \`valueInput\` | \`HTMLInputElement\` Hidden mirror used for native constraint validation (min/max/required + valid-date roundtrip). Type | |
+| \`withHint\` with-hint | \`true\` Only required for SSR. Set to if you're slotting in a hint element. Type boolean Default false | |
+| \`withLabel\` with-label | \`true\` Only required for SSR. Set to if you're slotting in a label element. Type boolean Default false | |
+
+### Methods
+
+| Name | Description | Arguments |
+| --- | --- | --- |
+| \`blur()\` | Removes focus from the known date. | |
+| \`focus()\` | Focuses the first empty field, or the first field when all are filled. | \`options: FocusOptions\` |
+| \`formStateRestoreCallback()\` | Called when the browser is trying to restore element’s state to state in which case reason is "restore", or when the browser is trying to fulfill autofill on behalf of user in which case reason is "autocomplete". In the case of "restore", state is a string, File, or FormData object previously set as the second argument to setFormValue. | \`state: string \\| File \\| FormData \\| null\` |
+| \`resetValidity()\` | Reset validity is a way of removing manual custom errors and native validation. | |
+| \`setCustomValidity()\` | Do not use this when creating a "Validator". This is intended for end users of components. We track manually defined custom errors so we don't clear them on accident in our validators. | \`message: string\` |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`blur\` | Emitted when the control loses focus. |
+| \`change\` | Emitted when the committed value transitions to a new ISO date. |
+| \`focus\` | Emitted when the control gains focus. |
+| \`input\` | Emitted as the user types in any field. |
+| \`wa-invalid\` | Emitted when the form control has been checked for validity and its constraints aren't satisfied. |
+
+### Custom States
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| `blank` | The known date has no committed value. | `:state(blank)` |
-| `disabled` | The known date is disabled. | `:state(disabled)` |
+| \`blank\` | The known date has no committed value. | \`:state(blank)\` |
+| \`disabled\` | The known date is disabled. | \`:state(disabled)\` |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's outer wrapper (alias of the fields row). | \`::part(base)\` |
 | \`field\` | Each field block (label + input). | \`::part(field)\` |
 | \`field-day\` | Added to the day field block. | \`::part(field-day)\` |
 | \`field-input\` | \`\` The native inside a field. | \`::part(field-input)\` |
@@ -178,8 +183,10 @@ silently ignored and the element falls back to the default slot):
 | \`form-control-input\` | Alias on the fields row matching other form controls. | \`::part(form-control-input)\` |
 | \`form-control-label\` | The wrapper inside the legend that styles the visible label text. | \`::part(form-control-label)\` |
 | \`hint\` | The hint's wrapper. | \`::part(hint)\` |
-| \`label\` | Alias on the legend's inner label wrapper. | \`::part(label)\` |
+| \`known-date\` | The component's outer wrapper. | \`::part(known-date)\` |
 | \`legend\` | \`\` The element (when a label is present). | \`::part(legend)\` |
+| \`base\` | \`known-date\` Deprecated. Use the part instead. | \`::part(base)\` |
+| \`label\` | \`form-control-label\` Deprecated. Use the part instead. | \`::part(label)\` |
 
 ## Examples
 
@@ -204,11 +211,11 @@ Use the `hint` attribute (or slot) to show an example value. The hint is associa
 The three fields render in the natural order for the inherited `lang` (or the explicit `locale` attribute). The labels stay the same; only the position changes.
 
 ```html
-<wa-known-date label="UK order" lang="en-GB"></wa-known-date>
-<br />
-<wa-known-date label="US order" lang="en-US"></wa-known-date>
-<br />
-<wa-known-date label="Japanese order" lang="ja-JP"></wa-known-date>
+<div class="wa-stack">
+  <wa-known-date label="UK order" lang="en-GB"></wa-known-date>
+  <wa-known-date label="US order" lang="en-US"></wa-known-date>
+  <wa-known-date label="Japanese order" lang="ja-JP"></wa-known-date>
+</div>
 ```
 
 ### Min & Max
@@ -231,12 +238,20 @@ Set `required` to make the date input required for form submission. Like other f
 </form>
 ```
 
-### Disabled & Readonly
+### Disabled
+
+Use the `disabled` attribute to disable a date field.
 
 ```html
-<wa-known-date label="Disabled" value="2007-03-27" disabled></wa-known-date>
-<br />
-<wa-known-date label="Readonly" value="2007-03-27" readonly></wa-known-date>
+<wa-known-date label="Birthday" value="2007-03-27" disabled></wa-known-date>
+```
+
+### Readonly
+
+Use the `readonly` attribute to keep a value visible but uneditable. Unlike `disabled`, a readonly date field stays focusable and its value is still submitted with the form.
+
+```html
+<wa-known-date label="Member since" value="2007-03-27" readonly></wa-known-date>
 ```
 
 ### Autocomplete
@@ -247,28 +262,26 @@ Set `autocomplete="bday"` to enable browser autofill for birthdays. The host exp
 <wa-known-date label="Date of birth" autocomplete="bday"></wa-known-date>
 ```
 
-### Sizes
+### Size
 
 ```html
-<wa-known-date label="Extra small" size="xs"></wa-known-date>
-<br />
-<wa-known-date label="Small" size="s"></wa-known-date>
-<br />
-<wa-known-date label="Medium (default)" size="m"></wa-known-date>
-<br />
-<wa-known-date label="Large" size="l"></wa-known-date>
-<br />
-<wa-known-date label="Extra large" size="xl"></wa-known-date>
+<div class="wa-stack">
+  <wa-known-date label="Extra small" size="xs"></wa-known-date>
+  <wa-known-date label="Small" size="s"></wa-known-date>
+  <wa-known-date label="Medium (default)" size="m"></wa-known-date>
+  <wa-known-date label="Large" size="l"></wa-known-date>
+  <wa-known-date label="Extra large" size="xl"></wa-known-date>
+</div>
 ```
 
-### Appearances
+### Appearance
 
 ```html
-<wa-known-date label="Outlined (default)" appearance="outlined"></wa-known-date>
-<br />
-<wa-known-date label="Filled" appearance="filled"></wa-known-date>
-<br />
-<wa-known-date label="Filled outlined" appearance="filled-outlined"></wa-known-date>
+<div class="wa-stack">
+  <wa-known-date label="Outlined (default)" appearance="outlined"></wa-known-date>
+  <wa-known-date label="Filled" appearance="filled"></wa-known-date>
+  <wa-known-date label="Filled outlined" appearance="filled-outlined"></wa-known-date>
+</div>
 ```
 
 ### Pill

@@ -68,7 +68,7 @@ Line heights are unitless to scale proportionately with text size. For readabili
 
 ## Link Decoration
 
-Together with [`--wa-color-text-link`](?active_tab=color), these tokens add text decoration to `<a>` elements to signal their role as hyperlinks.
+Together with [`--wa-color-text-link`](https://webawesome.com/docs/tokens/color), these tokens add text decoration to `<a>` elements to signal their role as hyperlinks.
 
 | Custom Property | Description |
 | --- | --- |

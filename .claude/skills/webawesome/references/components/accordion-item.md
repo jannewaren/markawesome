@@ -8,7 +8,20 @@ Accordion items are used inside [`<wa-accordion>`](https://webawesome.com/docs/c
 
 This component must be used as a child of [`<wa-accordion>`](https://webawesome.com/docs/components/accordion). Please see the [Accordion docs](https://webawesome.com/docs/components/accordion) to see examples of this component in action.
 
-## Importing
+```html
+<wa-accordion>
+  <wa-accordion-item label="Overview">The first section.</wa-accordion-item>
+  <wa-accordion-item expanded data-anatomy-subject="true">
+    <span slot="label">Shipping &amp; returns</span>
+    Orders ship within two business days. Returns are free within 30 days.
+  </wa-accordion-item>
+  <wa-accordion-item label="Warranty">The third section.</wa-accordion-item>
+</wa-accordion>
+```
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -17,7 +30,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/accordion-item/accordion-item.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/accordion-item/accordion-item.js';
 ```
 
 \*\*npm\*\*
@@ -44,33 +57,31 @@ To import this component for React 18 or below, use the following code:
 import WaAccordionItem from '@awesome.me/webawesome/dist/react/accordion-item/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | The accordion item's body content. |
+| \`icon\` | \`
 
-- `(default)` — The accordion item's body content.
-- `label` — The accordion item's label. Alternatively, use the `label` attribute.
-- `icon` — Optional expand/collapse icon. Works best with `<wa-icon>`.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`disabled\` disabled | \`boolean\` Disables the accordion item so it can't be toggled. Type Default false | |
+| \`expanded\` expanded | \`boolean\` Expands the accordion item. Type Default false | |
+| \`label\` label | \`label\` The text shown in the header. If you need HTML, use the label slot instead. Type string Default '' | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `label` | `label` | The text label shown in the header. If you need HTML, use the `label` slot instead. | `string` | `''` |
-| `expanded` | `expanded` | Expands the accordion item. | `boolean` | `false` |
-| `disabled` | `disabled` | Disables the accordion item so it can't be toggled. | `boolean` | `false` |
-
-## Methods
+### Methods
 
 | Name | Description | Arguments |
 | --- | --- | --- |
-| `expand()` | Expands the accordion item with animation. | — |
-| `collapse()` | Collapses the accordion item with animation. | — |
-| `toggle()` | Toggles the accordion item's expanded state. | — |
-| `focus()` | Focuses the accordion item's trigger button. | `options: FocusOptions` |
+| \`collapse()\` | Collapses the accordion item with animation. | |
+| \`expand()\` | Expands the accordion item with animation. | |
+| \`focus()\` | Focuses the accordion item's trigger button. | \`options: FocusOptions\` |
+| \`toggle()\` | Toggles the accordion item's expanded state. | |
 
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
@@ -79,25 +90,26 @@ silently ignored and the element falls back to the default slot):
 | \`--show-duration\` | \`var(--wa-transition-normal)\` The duration of the expand animation. Default |
 | \`--spacing\` | \`var(--wa-space-m)\` The amount of space around and between the item's header and content. Default |
 
-## Custom States
+### Custom States
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| `animating` | Applied while the panel is animating. | `:state(animating)` |
+| \`animating\` | Applied while the panel is animating. | \`:state(animating)\` |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
+| \`accordion-item\` | The component's outer wrapper. | \`::part(accordion-item)\` |
 | \`button\` | The trigger button that toggles the panel. | \`::part(button)\` |
 | \`content\` | The content slot inside the panel. | \`::part(content)\` |
 | \`heading\` | \`heading-level="none"\` The heading element wrapping the trigger button. Omitted when . | \`::part(heading)\` |
 | \`icon\` | The container that wraps the expand/collapse icon. | \`::part(icon)\` |
 | \`label\` | The container that wraps the label. | \`::part(label)\` |
 | \`panel\` | The panel that contains the item's content. | \`::part(panel)\` |
+| \`base\` | \`accordion-item\` Deprecated. Use the part instead. | \`::part(base)\` |
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 

@@ -10,7 +10,7 @@ description: >
   composition. Pair with the `webawesome` skill, which documents individual component APIs.
 license: MIT / Commercial (for Web Awesome Pro)
 metadata:
-  version: "3.10.0"
+  version: "3.11.0"
   author: Web Awesome
   homepage: https://webawesome.com
 compatibility: Works in modern browsers. Requires no build tools when using the CDN. Works with bundlers like Webpack and Vite when installed via npm.

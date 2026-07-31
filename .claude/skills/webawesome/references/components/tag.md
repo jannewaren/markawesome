@@ -7,14 +7,16 @@ Stable [Feedback](https://webawesome.com/docs/components/?category=feedback) [Si
 Tags label, categorize, or represent selections with a compact visual marker. Use them for status indicators, filters, or removable chips.
 
 ```html
-<wa-tag variant="brand">Brand</wa-tag>
-<wa-tag variant="success">Success</wa-tag>
-<wa-tag variant="neutral">Neutral</wa-tag>
-<wa-tag variant="warning">Warning</wa-tag>
-<wa-tag variant="danger">Danger</wa-tag>
+<wa-tag>Featured</wa-tag>
 ```
 
-## Importing
+```html
+<wa-tag><wa-icon name="star"></wa-icon> Featured</wa-tag>
+```
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -23,7 +25,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/tag/tag.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/tag/tag.js';
 ```
 
 \*\*npm\*\*
@@ -50,39 +52,38 @@ To import this component for React 18 or below, use the following code:
 import WaTag from '@awesome.me/webawesome/dist/react/tag/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `(default)` — The tag's content.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `variant` | `variant` | The tag's theme variant. Defaults to `neutral` if not within another element with a variant. | `'brand' \| 'neutral' \| 'success' \| 'warning' \| 'danger'` | `'neutral'` |
-| `appearance` | `appearance` | The tag's visual appearance. | `'accent' \| 'filled' \| 'outlined' \| 'filled-outlined'` | `'filled-outlined'` |
-| `size` | `size` | The tag's size. | `'xs' \| 's' \| 'm' \| 'l' \| 'xl' \| 'small' \| 'medium' \| 'large'` | `'m'` |
-| `pill` | `pill` | Draws a pill-style tag with rounded edges. | `boolean` | `false` |
-| `withRemove` | `with-remove` | Makes the tag removable and shows a remove button. | `boolean` | `false` |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `wa-remove` | Emitted when the remove button is activated. |
+| (default) | The tag's content. |
 
-## CSS Parts
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`appearance\` appearance | \`'accent' \\| 'filled' \\| 'outlined' \\| 'filled-outlined'\` The tag's visual appearance. Type Default 'filled-outlined' | |
+| \`pill\` pill | \`boolean\` Draws a pill-style tag with rounded edges. Type Default false | |
+| \`size\` size | \`'xs' \\| 's' \\| 'm' \\| 'l' \\| 'xl' \\| 'small' \\| 'medium' \\| 'large'\` The tag's size. Type Default 'm' | |
+| \`variant\` variant | \`neutral\` The tag's theme variant. Defaults to if not within another element with a variant. Type 'brand' \\| 'neutral' \\| 'success' \\| 'warning' \\| 'danger' Default 'neutral' | |
+| \`withRemove\` with-remove | \`boolean\` Makes the tag removable and shows a remove button. Type Default false | |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`wa-remove\` | Emitted when the remove button is activated. |
+
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
 | \`content\` | The tag's content. | \`::part(content)\` |
 | \`remove-button\` | \`\` The tag's remove button, a . | \`::part(remove-button)\` |
 | \`remove-button\_\_base\` | \`base\` The remove button's exported part. | \`::part(remove-button\_\_base)\` |
+| \`base\` | Deprecated. Style the host element instead. | \`::part(base)\` |
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 
@@ -92,9 +93,21 @@ This component automatically imports the following elements. Sub-dependencies, i
 
 ## Examples
 
+### Variant
+
+Set the `variant` attribute to match the tag to its meaning.
+
+```html
+<wa-tag variant="brand">Brand</wa-tag>
+<wa-tag variant="success">Success</wa-tag>
+<wa-tag variant="neutral">Neutral</wa-tag>
+<wa-tag variant="warning">Warning</wa-tag>
+<wa-tag variant="danger">Danger</wa-tag>
+```
+
 ### Appearance
 
-Use the `size` attribute to change a tag's visual appearance. The default appearance is `filled-outlined`.
+Use the `appearance` attribute to change the tag's visual style. The default is `filled-outlined`.
 
 ```html
 <div class="wa-stack">
@@ -110,21 +123,18 @@ Use the `size` attribute to change a tag's visual appearance. The default appear
     <wa-tag variant="success" appearance="filled">Filled</wa-tag>
     <wa-tag variant="success" appearance="outlined">Outlined</wa-tag>
   </p>
-
   <p>
     <wa-tag variant="neutral" appearance="accent">Accent</wa-tag>
     <wa-tag variant="neutral" appearance="filled-outlined">Filled-Outlined</wa-tag>
     <wa-tag variant="neutral" appearance="filled">Filled</wa-tag>
     <wa-tag variant="neutral" appearance="outlined">Outlined</wa-tag>
   </p>
-
   <p>
     <wa-tag variant="warning" appearance="accent">Accent</wa-tag>
     <wa-tag variant="warning" appearance="filled-outlined">Filled-Outlined</wa-tag>
     <wa-tag variant="warning" appearance="filled">Filled</wa-tag>
     <wa-tag variant="warning" appearance="outlined">Outlined</wa-tag>
   </p>
-
   <p>
     <wa-tag variant="danger" appearance="accent">Accent</wa-tag>
     <wa-tag variant="danger" appearance="filled-outlined">Filled-Outlined</wa-tag>
@@ -134,7 +144,7 @@ Use the `size` attribute to change a tag's visual appearance. The default appear
 </div>
 ```
 
-### Sizes
+### Size
 
 Use the `size` attribute to change a tag's size.
 
@@ -148,7 +158,7 @@ Use the `size` attribute to change a tag's size.
 
 ### Pill
 
-Use the `pill` attribute to give tabs rounded edges.
+Use the `pill` attribute to give tags rounded edges.
 
 ```html
 <wa-tag size="xs" pill>Extra Small</wa-tag>
@@ -160,7 +170,7 @@ Use the `pill` attribute to give tabs rounded edges.
 
 ### Removable
 
-Use the `with-remove` attribute to add a remove button to the tag.
+Use the `with-remove` attribute to add a remove button to the tag. The button carries a built-in `Remove` label for assistive technology, and activating it emits the `wa-remove` event so you can handle the removal.
 
 ```html
 <div class="tags-removable">

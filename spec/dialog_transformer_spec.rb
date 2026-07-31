@@ -500,5 +500,42 @@ RSpec.describe Markawesome::DialogTransformer do
         expect(result).to include("style='--width: 45.5em'")
       end
     end
+
+    context 'with an image trigger button' do
+      # An <img> in the trigger makes the button chrome-less via CSS parts. WA 3.11
+      # deprecated wa-button's generic `base` part in favour of `button`; we emit both so
+      # the style lands on 3.10-pinned sites (no `button` part) and 3.11+ sites alike.
+      # Byte-for-byte parity with markawesome-js's test/dialog.test.ts.
+      let(:input) do
+        <<~MARKDOWN
+          ???
+          <img src="/photo.png" alt="A photo" />
+          >>>
+          Content here.
+          ???
+        MARKDOWN
+      end
+
+      it 'targets both the deprecated base part and the WA 3.11 button part' do
+        result = described_class.transform(input)
+
+        expect(result).to include(
+          '  #dialog-f14fd894-btn::part(base), #dialog-f14fd894-btn::part(button) {'
+        )
+        expect(result).to include(
+          '  #dialog-f14fd894-btn::part(base):hover, #dialog-f14fd894-btn::part(button):hover {'
+        )
+        expect(result).to include(
+          '  #dialog-f14fd894-btn::part(base):active, #dialog-f14fd894-btn::part(button):active {'
+        )
+      end
+
+      it 'emits no part styling when the trigger has no image' do
+        result = described_class.transform("???\nOpen Dialog\n>>>\nContent here.\n???\n")
+
+        expect(result).not_to include('::part(')
+        expect(result).not_to include('<style>')
+      end
+    end
   end
 end

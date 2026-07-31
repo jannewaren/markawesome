@@ -6,7 +6,7 @@ Stable [Media](https://webawesome.com/docs/components/?category=media) [Since 2.
 
 Comparisons show the visual differences between two pieces of similar content using a draggable divider. Use them for before/after images, design revisions, or side-by-side previews.
 
-This is especially useful for comparing images, but can be used for comparing any type of content (for an example of using it to compare entire UIs, check out our [theme page](https://webawesome.com/docs/themes)). For best results, use content that shares the same dimensions. The slider can be controlled by dragging or pressing the left and right arrow keys. (Tip: press shift + arrows to move the slider in larger intervals, or home + end to jump to the beginning or end.)
+Compare two pieces of content with a divider users can drag across them. It's most often used for before/after images — for best results, the two sides should share the same dimensions. Any content works, though; see the [theme page](https://webawesome.com/docs/themes) for a full-UI example.
 
 ```html
 <wa-comparison>
@@ -23,7 +23,12 @@ This is especially useful for comparing images, but can be used for comparing an
 </wa-comparison>
 ```
 
-## Importing
+**The divider is keyboard accessible.**  
+Focus it and use the arrow keys — shift + arrow moves in larger steps, and home / end jump to either end.
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -32,7 +37,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/comparison/comparison.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/comparison/comparison.js';
 ```
 
 \*\*npm\*\*
@@ -59,51 +64,51 @@ To import this component for React 18 or below, use the following code:
 import WaComparison from '@awesome.me/webawesome/dist/react/comparison/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `before` — The before content, often an `<img>` or `<svg>` element.
-- `after` — The after content, often an `<img>` or `<svg>` element.
-- `handle` — The icon used inside the handle.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `position` | `position` | The position of the divider as a percentage. | `number` | `50` |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `change` | Emitted when the position changes. |
+| \`after\` | \`![]()\` The after content, often an or element. |
+| \`before\` | \`![]()\` The before content, often an or element. |
+| \`handle\` | The icon used inside the handle. |
 
-## CSS Custom Properties
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`position\` position | \`number\` The position of the divider as a percentage. Type Default 50 | |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`change\` | Emitted when the position changes. |
+
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
 | \`--divider-width\` | The width of the dividing line. |
 | \`--handle-size\` | The size of the compare handle. |
 
-## Custom States
+### Custom States
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| `dragging` | Applied when the comparison is being dragged. | `:state(dragging)` |
+| \`dragging\` | Applied when the comparison is being dragged. | \`:state(dragging)\` |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
 | \`after\` | The container that wraps the after content. | \`::part(after)\` |
-| \`base\` | The container that wraps the before and after content. | \`::part(base)\` |
 | \`before\` | The container that wraps the before content. | \`::part(before)\` |
+| \`comparison\` | The component's outer wrapper. | \`::part(comparison)\` |
 | \`divider\` | The divider that separates the before and after content. | \`::part(divider)\` |
 | \`handle\` | The handle that the user drags to expose the after content. | \`::part(handle)\` |
+| \`base\` | \`comparison\` Deprecated. Use the part instead. | \`::part(base)\` |
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 

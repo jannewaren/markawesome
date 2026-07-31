@@ -10,7 +10,9 @@ Spinners indicate that an operation is in progress when the duration is unknown.
 <wa-spinner></wa-spinner>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand â€” no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -19,7 +21,7 @@ If you're using the autoloader or a hosted project, components load on demand â€
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/spinner/spinner.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/spinner/spinner.js';
 ```
 
 \*\*npm\*\*
@@ -46,7 +48,7 @@ To import this component for React 18 or below, use the following code:
 import WaSpinner from '@awesome.me/webawesome/dist/react/spinner/index.js';
 ```
 
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
@@ -55,17 +57,18 @@ import WaSpinner from '@awesome.me/webawesome/dist/react/spinner/index.js';
 | \`--track-color\` | The color of the track. |
 | \`--track-width\` | The width of the track. |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
+| \`spinner\` | The component's outer wrapper. | \`::part(spinner)\` |
+| \`base\` | \`spinner\` Deprecated. Use the part instead. | \`::part(base)\` |
 
 ## Examples
 
 ### Size
 
-Spinners are sized based on the current font size. To change their size, set the `font-size` property on the spinner itself or on a parent element as shown below.
+Spinners are sized based on the current font size. To change the size, set `font-size` on the spinner itself or on a parent element.
 
 ```html
 <wa-spinner></wa-spinner>
@@ -75,16 +78,24 @@ Spinners are sized based on the current font size. To change their size, set the
 
 ### Track Width
 
-The width of the spinner's track can be changed by setting the `--track-width` custom property.
+Use the `--track-width` custom property to change the thickness of the spinner's track.
 
 ```html
 <wa-spinner style="font-size: 50px; --track-width: 10px;"></wa-spinner>
 ```
 
-### Color
+### Colors
 
-The spinner's colors can be changed by setting the `--indicator-color` and `--track-color` custom properties.
+Use the `--track-color` and `--indicator-color` custom properties to recolor the spinner.
 
 ```html
-<wa-spinner style="font-size: 3rem; --indicator-color: deeppink; --track-color: pink;"></wa-spinner>
+<wa-spinner style="font-size: 3rem; --indicator-color: var(--wa-color-success-fill-loud); --track-color: var(--wa-color-success-fill-quiet);"></wa-spinner>
+```
+
+### Speed
+
+Use the `--speed` custom property to set how long one full rotation takes.
+
+```html
+<wa-spinner style="font-size: 3rem; --speed: 4s;"></wa-spinner>
 ```

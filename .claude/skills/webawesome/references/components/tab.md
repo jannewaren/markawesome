@@ -8,7 +8,9 @@ Tabs label and activate an individual panel inside a tab group.
 
 This component must be used as a child of [`<wa-tab-group>`](https://webawesome.com/docs/components/tab-group). Please see the [Tab Group docs](https://webawesome.com/docs/components/tab-group) to see examples of this component in action.
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -17,7 +19,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/tab/tab.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/tab/tab.js';
 ```
 
 \*\*npm\*\*
@@ -44,22 +46,22 @@ To import this component for React 18 or below, use the following code:
 import WaTab from '@awesome.me/webawesome/dist/react/tab/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | The tab's label. |
 
-- `(default)` — The tab's label.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`disabled\` disabled | \`boolean\` Disables the tab and prevents selection. Type Default false | |
+| \`panel\` panel | \`string\` The name of the tab panel this tab is associated with. The panel must be located in the same tab group. Type Default '' | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `panel` | `panel` | The name of the tab panel this tab is associated with. The panel must be located in the same tab group. | `string` | `''` |
-| `disabled` | `disabled` | Disables the tab and prevents selection. | `boolean` | `false` |
-
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
+| \`tab\` | The component's outer wrapper. | \`::part(tab)\` |
+| \`base\` | \`tab\` Deprecated. Use the part instead. | \`::part(base)\` |

@@ -22,11 +22,13 @@ The markdown component turns raw markdown into rendered HTML using the [Marked](
 </wa-markdown>
 ```
 
-Since content is rendered client-side, it won't be visible to search engine crawlers or available before JavaScript loads. This makes it a poor fit for SEO-critical content like landing pages and blog posts. It's best suited for prototyping, dashboards, admin panels, and other contexts where search indexing isn't a concern.
+**This component isn't suited for SEO-critical content.** Content renders client-side, so crawlers won't see it and it won't appear before JavaScript loads. It's best for prototypes, dashboards, and admin panels — not landing pages or blog posts.
 
 **Do not use this component with unsanitized user input.** Markdown is parsed as-is without sanitization, so rendering untrusted content can lead to XSS vulnerabilities.
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -35,7 +37,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/markdown/markdown.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/markdown/markdown.js';
 ```
 
 \*\*npm\*\*
@@ -62,22 +64,22 @@ To import this component for React 18 or below, use the following code:
 import WaMarkdown from '@awesome.me/webawesome/dist/react/markdown/index.js';
 ```
 
-## Attributes & Properties
+### Attributes & Properties
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `tabSize` | `tab-size` | The tab stop width used when converting leading tabs to spaces during whitespace normalization. | `number` | `4` |
-| `marked` | — | A reference to the shared Marked instance for convenience. Equivalent to `WaMarkdown.getMarked()`. | `Marked` | — |
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`marked\` | \`WaMarkdown.getMarked()\` A reference to the shared Marked instance for convenience. Equivalent to . Type Marked | |
+| \`tabSize\` tab-size | \`number\` The tab stop width used when converting leading tabs to spaces during whitespace normalization. Type Default 4 | |
 
-## Methods
+### Methods
 
 | Name | Description | Arguments |
 | --- | --- | --- |
-| `getMarked()` | Returns the shared Marked instance used by all `<wa-markdown>` components. | — |
-| `updateAll()` | Re-renders all connected `<wa-markdown>` instances. Call this after changing the Marked configuration. | — |
-| `renderMarkdown()` | Reads the script content, normalizes whitespace, parses markdown, and injects the result. | — |
+| \`getMarked()\` | \`\` Returns the shared Marked instance used by all components. | |
+| \`renderMarkdown()\` | Reads the script content, normalizes whitespace, parses markdown, and injects the result. | |
+| \`updateAll()\` | \`\` Re-renders all connected instances. Call this after changing the Marked configuration. | |
 
-## SSR
+### SSR
 
 Learn more about [Server-Side Rendering (SSR)](https://webawesome.com/docs/ssr).
 
@@ -188,7 +190,7 @@ All `<wa-markdown>` instances share a single [Marked](https://marked.js.org/usin
 </script>
 ```
 
-The Marked instance is shared across all `<wa-markdown>` elements. If you want every instance on the page to pick up the new configuration, call `WaMarkdown.updateAll()` instead of `renderMarkdown()` on a single element.
+**The Marked configuration is shared across every instance.** To make all `<wa-markdown>` elements pick up a change, call `WaMarkdown.updateAll()` instead of `renderMarkdown()` on a single element.
 
 ### Writing a Custom Marked Plugin
 

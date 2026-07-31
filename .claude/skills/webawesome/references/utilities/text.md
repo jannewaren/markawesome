@@ -4,7 +4,7 @@
 
 CSS Utilities Text
 
-Text utility classes use custom properties from your Web Awesome theme and other standard CSS properties to style text elements on the fly.
+Text utility classes use design tokens from your Web Awesome theme and standard CSS properties to style text elements on the fly.
 
 The classes on this page cover the most common needs: picking a size and weight for body copy, styling headings, aligning paragraphs, truncating overflow, and changing font color. Every class is built on your theme's typography tokens, so switching themes or tweaking your type scale updates the whole site at once.
 
@@ -169,7 +169,7 @@ Use these classes to control how text wraps across lines. They apply standard CS
 
 `wa-text-pretty` is wrapped in an `@supports` rule because Firefox does not yet support `text-wrap: pretty`. In unsupported browsers, the class has no effect and text wraps normally.
 
-The original `wa-text-wrap-nowrap`, `wa-text-wrap-balance`, and `wa-text-wrap-pretty` class names continue to work as aliases for backwards compatibility. These older names are deprecated and will be removed in a future major version — we recommend updating to the shorter `wa-text-*` names above.
+The original `wa-text-wrap-nowrap`, `wa-text-wrap-balance`, and `wa-text-wrap-pretty` class names continue to work as aliases for backwards compatibility. These older names are deprecated and will be removed in a future major version; update to the shorter `wa-text-*` names above.
 
 ## Transform
 

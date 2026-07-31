@@ -6,8 +6,6 @@ Experimental [Layout](https://webawesome.com/docs/components/?category=layout) [
 
 Accordions are a vertically stacked set of interactive headings that each contain a title, representing a section of content.
 
-Accordions use [accordion items](https://webawesome.com/docs/components/accordion-item) to create a vertically stacked set of expandable sections.
-
 ```html
 <wa-accordion>
   <wa-accordion-item label="What is Web Awesome?">
@@ -25,7 +23,11 @@ Accordions use [accordion items](https://webawesome.com/docs/components/accordio
 </wa-accordion>
 ```
 
-## Importing
+Accordions use [accordion items](https://webawesome.com/docs/components/accordion-item) to create a vertically stacked set of expandable sections.
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -34,7 +36,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/accordion/accordion.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/accordion/accordion.js';
 ```
 
 \*\*npm\*\*
@@ -61,39 +63,38 @@ To import this component for React 18 or below, use the following code:
 import WaAccordion from '@awesome.me/webawesome/dist/react/accordion/index.js';
 ```
 
-## Slots
-
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
-
-- `(default)` — One or more `<wa-accordion-item>` elements.
-
-## Attributes & Properties
-
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `mode` | `mode` | Controls how items can be expanded. `multiple` (the default) allows any number of items to be open at once. `single` allows only one item to be open at a time; opening a new item collapses the previously open one, and clicking an open item does not collapse it. `single-collapsible` is the same as `single` except that clicking the open item collapses it, so zero open items is a valid state. | `'single' \| 'single-collapsible' \| 'multiple'` | `'multiple'` |
-| `iconPlacement` | `icon-placement` | The location of the expand/collapse icon in child items. | `'start' \| 'end'` | `'end'` |
-| `headingLevel` | `heading-level` | The heading level for child item triggers (1–6), or "none" to omit the heading wrapper. Defaults to 3. | `string` | `'3'` |
-| `appearance` | `appearance` | The accordion's visual appearance. | `'filled' \| 'outlined' \| 'filled-outlined' \| 'plain'` | `'outlined'` |
-
-## Methods
-
-| Name | Description | Arguments |
-| --- | --- | --- |
-| `expandAll()` | Expands all accordion items. No-op when `mode` is `single` or `single-collapsible`. | — |
-| `collapseAll()` | Collapses all accordion items. | — |
-
-## Events
+### Slots
 
 | Name | Description |
 | --- | --- |
-| `wa-expand` | Emitted before an item expands. Cancelable. |
-| `wa-after-expand` | Emitted after an item finishes expanding. |
-| `wa-collapse` | Emitted before an item collapses. Cancelable. |
-| `wa-after-collapse` | Emitted after an item finishes collapsing. |
+| (default) | \`\` One or more elements. |
 
-## Dependencies
+### Attributes & Properties
+
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`appearance\` appearance | \`'filled' \\| 'outlined' \\| 'filled-outlined' \\| 'plain'\` The accordion's visual appearance. Type Default 'outlined' | |
+| \`headingLevel\` heading-level | \`string\` The heading level for child item triggers (1–6), or "none" to omit the heading wrapper. Defaults to 3. Type Default '3' | |
+| \`iconPlacement\` icon-placement | \`'start' \\| 'end'\` The location of the expand/collapse icon in child items. Type Default 'end' | |
+| \`mode\` mode | \`multiple\` Controls how items can be expanded. (the default) allows any number of items to be open at once. single allows only one item to be open at a time; opening a new item collapses the previously open one, and clicking an open item does not collapse it. single-collapsible is the same as single except that clicking the open item collapses it, so zero open items is a valid state. Type 'single' \\| 'single-collapsible' \\| 'multiple' Default 'multiple' | |
+
+### Methods
+
+| Name | Description | Arguments |
+| --- | --- | --- |
+| \`collapseAll()\` | Collapses all accordion items. | |
+| \`expandAll()\` | \`mode\` Expands all accordion items. No-op when is single or single-collapsible. | |
+
+### Events
+
+| Name | Description |
+| --- | --- |
+| \`wa-after-collapse\` | Emitted after an item finishes collapsing. |
+| \`wa-after-expand\` | Emitted after an item finishes expanding. |
+| \`wa-collapse\` | Emitted before an item collapses. Cancelable. |
+| \`wa-expand\` | Emitted before an item expands. Cancelable. |
+
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 
@@ -117,7 +118,7 @@ Use the `expanded` attribute on an accordion item to expand it by default.
 </wa-accordion>
 ```
 
-### Disabled Items
+### Disabled
 
 Use the `disabled` attribute on an accordion item to prevent it from being toggled.
 
@@ -130,22 +131,9 @@ Use the `disabled` attribute on an accordion item to prevent it from being toggl
 </wa-accordion>
 ```
 
-### Without a Heading
-
-The [W3C accordion pattern](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/examples/accordion/) recommends wrapping each accordion trigger in a heading element so screen reader users can navigate the page outline and locate accordion sections using heading navigation. Each accordion item uses an `<h3>` by default for this reason.
-
-But if an accordion lives outside the document outline, for example, inside a nav or another component that has its own structure, set `heading-level="none"` on the accordion to omit the heading wrapper and render the button directly.
-
-```html
-<wa-accordion heading-level="none">
-  <wa-accordion-item label="Settings"> Adjust your preferences here. </wa-accordion-item>
-  <wa-accordion-item label="Notifications"> Manage how and when you receive notifications. </wa-accordion-item>
-</wa-accordion>
-```
-
 ### Heading Level
 
-The default heading level is `3`. Use `heading-level` on the accordion to match the level to your page's hierarchy. Values outside 1–6 fall back to `3`. The heading level is a semantic choice only — the accordion inherits the surrounding font, so the visual appearance is identical at every level.
+Each accordion item wraps its trigger in a heading so screen reader users can navigate to it, per the [W3C accordion pattern](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/examples/accordion/). The default is `<h3>`. Set the `heading-level` attribute to match your page's hierarchy (values outside 1–6 fall back to `3`). The level is semantic only; the accordion inherits the surrounding font, so the appearance is identical at every level.
 
 ```html
 <wa-accordion heading-level="2">
@@ -156,7 +144,16 @@ The default heading level is `3`. Use `heading-level` on the accordion to match 
 </wa-accordion>
 ```
 
-### Sizing
+If an accordion lives outside the document outline (inside a nav or another component with its own structure), set `heading-level="none"` to omit the heading wrapper and render the button directly.
+
+```html
+<wa-accordion heading-level="none">
+  <wa-accordion-item label="Settings"> Adjust your preferences here. </wa-accordion-item>
+  <wa-accordion-item label="Notifications"> Manage how and when you receive notifications. </wa-accordion-item>
+</wa-accordion>
+```
+
+### Size
 
 The accordion's text and expand/collapse icon scale with `font-size`. Setting `font-size` on a `<wa-accordion>` proportionally resizes the type and icon together.
 
@@ -221,11 +218,13 @@ Use the `appearance` attribute to change the accordion's visual appearance.
 
 ### Mode
 
-Use the `mode` attribute to control how items can be expanded:
+Use the `mode` attribute to control how items can be expanded.
 
--   `multiple` (default): any number of items can be open at once, and each item toggles independently.
--   `single`: only one item can be open at a time. Opening a new item collapses the previously open one, and clicking the open item is a no-op — once an item is open, it stays open until another is opened.
--   `single-collapsible`: at most one item can be open at a time. Same as `single`, except clicking the open item closes it, so zero open items is a valid state.
+| Mode | Behavior |
+| --- | --- |
+| \`multiple\` default | Any number of items open at once; each toggles independently |
+| \`single\` | One item open at a time; opening another collapses it, and clicking the open item keeps it open |
+| \`single-collapsible\` | \`single\` Like , but clicking the open item closes it — so zero open items is a valid state |
 
 ```html
 <wa-accordion mode="single">

@@ -210,8 +210,8 @@ Simply load the theme stylesheets, then add your preferred classes to each eleme
 
 ```html
 <!-- Load each theme's stylesheet -->
-<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.10.0/styles/themes/awesome.css" />
-<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.10.0/styles/themes/shoelace.css" />
+<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.11.0/styles/themes/awesome.css" />
+<link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.11.0/styles/themes/shoelace.css" />
 
 <wa-callout class="wa-theme-awesome wa-brand-yellow" style="margin-block-start: 0;">
   <wa-icon slot="icon" name="face-awesome"></wa-icon>
@@ -261,7 +261,7 @@ Parts allow you to style _any_ standard CSS property, not just those exposed thr
 <wa-button class="gradient-button"> Gradient Button </wa-button>
 
 <style>
-  .gradient-button::part(base) {
+  .gradient-button::part(button) {
     background: linear-gradient(217deg, var(--wa-color-indigo-50), var(--wa-color-purple-50), var(--wa-color-red-50));
     border: solid 1px var(--wa-color-purple-50);
     transition:
@@ -269,12 +269,12 @@ Parts allow you to style _any_ standard CSS property, not just those exposed thr
       box-shadow 100ms;
   }
 
-  .gradient-button::part(base):hover {
+  .gradient-button::part(button):hover {
     box-shadow: var(--wa-shadow-m);
     transform: translateY(-3px);
   }
 
-  .gradient-button::part(base):active {
+  .gradient-button::part(button):active {
     box-shadow: inset var(--wa-shadow-s);
     transform: translateY(0);
   }
@@ -296,6 +296,14 @@ CSS parts have a few important advantages:
     
 
 Most (but not all) components expose parts. You can find them in each component's API documentation under the "CSS Parts" section.
+
+#### The base part
+
+Components used to expose a generic `base` part for their outermost element. That name is deprecated in favor of a part named after the component itself, so [`<wa-button>`](https://webawesome.com/docs/components/button) exposes `button` and [`<wa-details>`](https://webawesome.com/docs/components/details) exposes `details`.
+
+Existing `::part(base)` selectors still work and will continue to until the next major version, so there's no rush to change them. New styles should target the component's own name. Deprecated parts appear muted in each component's CSS Parts table.
+
+Not every component has one. When a component's outer element is the host, style it directly instead — `wa-card { ... }` rather than a part.
 
 ### Custom Properties
 

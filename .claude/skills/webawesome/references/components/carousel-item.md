@@ -8,7 +8,9 @@ Carousel items represent individual slides within a carousel.
 
 This component must be used as a child of [`<wa-carousel>`](https://webawesome.com/docs/components/carousel). Please see the [Carousel docs](https://webawesome.com/docs/components/carousel) to see examples of this component in action.
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -17,7 +19,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/carousel-item/carousel-item.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/carousel-item/carousel-item.js';
 ```
 
 \*\*npm\*\*
@@ -44,14 +46,13 @@ To import this component for React 18 or below, use the following code:
 import WaCarouselItem from '@awesome.me/webawesome/dist/react/carousel-item/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | The carousel item's content.. |
 
-- `(default)` — The carousel item's content..
-
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |

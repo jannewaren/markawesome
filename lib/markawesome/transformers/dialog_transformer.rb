@@ -134,26 +134,7 @@ module Markawesome
         # Add CSS Parts styling for image buttons to make them invisible
         if is_image_button
           button_id = "#{dialog_id}-btn"
-          html << '<style>'
-          html << "  ##{button_id}::part(base) {"
-          html << '    padding: 0;'
-          html << '    margin: 0;'
-          html << '    border: none;'
-          html << '    background: transparent;'
-          html << '    box-shadow: none;'
-          html << '    color: inherit;'
-          html << '    min-width: 0;'
-          html << '    height: auto;'
-          html << '  }'
-          html << "  ##{button_id}::part(base):hover {"
-          html << '    background: transparent;'
-          html << '    border-color: transparent;'
-          html << '  }'
-          html << "  ##{button_id}::part(base):active {"
-          html << '    background: transparent;'
-          html << '    border-color: transparent;'
-          html << '  }'
-          html << '</style>'
+          html.concat(image_button_style(button_id))
         end
 
         # Trigger button
@@ -173,6 +154,27 @@ module Markawesome
         html << '</wa-dialog>'
 
         html.join("\n")
+      end
+
+      # Strip the trigger button's chrome so an image trigger reads as a bare image.
+      #
+      # WA 3.11 deprecated wa-button's generic `base` part in favour of a part named after
+      # the component (`button`). `base` still works but is on its way out, so target both —
+      # the output then styles correctly on 3.10-pinned and 3.11+ sites.
+      def image_button_style(button_id)
+        wrapper = lambda do |state|
+          "  ##{button_id}::part(base)#{state}, ##{button_id}::part(button)#{state} {"
+        end
+
+        ['<style>', wrapper.call(''),
+         '    padding: 0;', '    margin: 0;', '    border: none;',
+         '    background: transparent;', '    box-shadow: none;', '    color: inherit;',
+         '    min-width: 0;', '    height: auto;', '  }',
+         wrapper.call(':hover'),
+         '    background: transparent;', '    border-color: transparent;', '  }',
+         wrapper.call(':active'),
+         '    background: transparent;', '    border-color: transparent;', '  }',
+         '</style>']
       end
 
       # Escape HTML entities in text

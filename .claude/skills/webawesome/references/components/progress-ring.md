@@ -10,7 +10,9 @@ Progress rings show how far along a determinate operation is using a circular in
 <wa-progress-ring value="25"></wa-progress-ring>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -19,7 +21,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/progress-ring/progress-ring.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/progress-ring/progress-ring.js';
 ```
 
 \*\*npm\*\*
@@ -46,21 +48,20 @@ To import this component for React 18 or below, use the following code:
 import WaProgressRing from '@awesome.me/webawesome/dist/react/progress-ring/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | A label to show inside the ring. |
 
-- `(default)` — A label to show inside the ring.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`label\` label | \`string\` A custom label for assistive devices. Type Default '' | |
+| \`value\` value | \`number\` The current progress as a percentage, 0 to 100. Type Default 0 | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `value` | `value` | The current progress as a percentage, 0 to 100. | `number` | `0` |
-| `label` | `label` | A custom label for assistive devices. | `string` | `''` |
-
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
@@ -71,20 +72,29 @@ silently ignored and the element falls back to the default slot):
 | \`--track-color\` | The color of the track. |
 | \`--track-width\` | The width of the track. |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| \`base\` | The component's base wrapper. | \`::part(base)\` |
 | \`indicator\` | The progress ring's indicator. | \`::part(indicator)\` |
 | \`label\` | The progress ring label. | \`::part(label)\` |
+| \`progress-ring\` | The component's outer wrapper. | \`::part(progress-ring)\` |
 | \`track\` | The progress ring's track. | \`::part(track)\` |
+| \`base\` | \`progress-ring\` Deprecated. Use the part instead. | \`::part(base)\` |
 
 ## Examples
 
+### Label
+
+Use the `label` attribute to tell assistive devices how to announce the progress ring.
+
+```html
+<wa-progress-ring value="25" label="Sync progress"></wa-progress-ring>
+```
+
 ### Size
 
-Use the `--size` custom property to set the diameter of the progress ring.
+Use the `--size` custom property to set the diameter of the ring.
 
 ```html
 <wa-progress-ring value="50" style="--size: 200px;"></wa-progress-ring>
@@ -92,7 +102,7 @@ Use the `--size` custom property to set the diameter of the progress ring.
 
 ### Track & Indicator Width
 
-Use the `--track-width` and `--indicator-width` custom properties to set the width of the progress ring's track and indicator.
+Use the `--track-width` and `--indicator-width` custom properties to set the width of the ring's track and indicator independently.
 
 ```html
 <wa-progress-ring value="50" style="--track-width: 6px; --indicator-width: 12px;"></wa-progress-ring>
@@ -100,22 +110,21 @@ Use the `--track-width` and `--indicator-width` custom properties to set the wid
 
 ### Colors
 
-To change the color, use the `--track-color` and `--indicator-color` custom properties.
+Use the `--track-color` and `--indicator-color` custom properties to recolor the ring.
 
 ```html
 <wa-progress-ring
   value="50"
   style="
-    --track-color: pink;
-    --indicator-color: deeppink;
+    --track-color: var(--wa-color-success-fill-quiet);
+    --indicator-color: var(--wa-color-success-fill-loud);
   "
->
-</wa-progress-ring>
+></wa-progress-ring>
 ```
 
-### Labels
+### Showing Values
 
-Use the default slot to show a label inside the progress ring.
+Use the default slot to show a value inside the ring.
 
 ```html
 <div class="progress-ring-overview">
@@ -124,8 +133,8 @@ Use the default slot to show a label inside the progress ring.
   <wa-divider></wa-divider>
 
   <div class="wa-cluster">
-    <wa-button appearance="filled" circle><wa-icon name="minus" variant="solid" label="Decrease"></wa-icon></wa-button>
-    <wa-button appearance="filled" circle><wa-icon name="plus" variant="solid" label="Increase"></wa-icon></wa-button>
+    <wa-button appearance="filled" circle><wa-icon name="minus" label="Decrease"></wa-icon></wa-button>
+    <wa-button appearance="filled" circle><wa-icon name="plus" label="Increase"></wa-icon></wa-button>
   </div>
 </div>
 

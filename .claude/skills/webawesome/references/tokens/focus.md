@@ -4,7 +4,7 @@
 
 Design Tokens Focus
 
-Focus tokens create a consistent, recognizable outline that lets keyboard users track where they are on the page. Together with [`--wa-color-focus`](?active_tab=color), these tokens assemble the focus ring applied to all interactive Web Awesome components.
+Focus tokens create a consistent, recognizable outline that lets keyboard users track where they are on the page. Together with [`--wa-color-focus`](https://webawesome.com/docs/tokens/color), these tokens assemble the focus ring applied to all interactive Web Awesome components.
 
 | Custom Property | Description |
 | --- | --- |

@@ -74,7 +74,9 @@ Scrollers wrap overflowing content in an accessible container with visual cues t
 </style>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -83,7 +85,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/scroller/scroller.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/scroller/scroller.js';
 ```
 
 \*\*npm\*\*
@@ -110,39 +112,40 @@ To import this component for React 18 or below, use the following code:
 import WaScroller from '@awesome.me/webawesome/dist/react/scroller/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | The content to show inside the scroller. |
 
-- `(default)` — The content to show inside the scroller.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`orientation\` orientation | \`'horizontal' \\| 'vertical'\` The scroller's orientation. Type Default 'horizontal' | |
+| \`withoutScrollbar\` without-scrollbar | \`boolean\` Removes the visible scrollbar. Type Default false | |
+| \`withoutShadow\` without-shadow | \`boolean\` Removes the shadows. Type Default false | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `orientation` | `orientation` | The scroller's orientation. | `'horizontal' \| 'vertical'` | `'horizontal'` |
-| `withoutScrollbar` | `without-scrollbar` | Removes the visible scrollbar. | `boolean` | `false` |
-| `withoutShadow` | `without-shadow` | Removes the shadows. | `boolean` | `false` |
-
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
 | \`--shadow-color\` | \`var(--wa-color-surface-default)\` The base color of the shadow. Default |
 | \`--shadow-size\` | \`2rem\` The size of the shadow. Default |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
 | \`content\` | The container that wraps the slotted content. | \`::part(content)\` |
+| \`end-shadow\` | \`without-shadow\` The scroll shadow shown at the end edge when more content is available, unless is set. | \`::part(end-shadow)\` |
+| \`start-shadow\` | \`without-shadow\` The scroll shadow shown at the start edge when more content is available, unless is set. | \`::part(start-shadow)\` |
 
 ## Examples
 
 ### Adding Content
 
-The scroller component automatically provides a scrollable container for any content that exceeds the available space. Simply add your content as children of the `<wa-scroller>` element, and it will handle the rest.
+The scroller component automatically provides a scrollable container for any content that exceeds the available space. Add your content as children of the `<wa-scroller>` element, and it handles the rest.
 
 ```html
 <wa-scroller>
@@ -283,4 +286,5 @@ Use the `without-scrollbar` attribute to hide the scrollbar while maintaining sc
 </wa-scroller>
 ```
 
-Hiding scrollbars can negatively impact accessibility. Users who rely on visible scrollbars to navigate content may have difficulty recognizing that content is scrollable or controlling their scrolling position. Consider the needs of all users when implementing this option.
+**Hiding the scrollbar can hurt accessibility.**  
+People who rely on a visible scrollbar may not realize the content scrolls, or may struggle to control their position. Weigh that before turning it off.

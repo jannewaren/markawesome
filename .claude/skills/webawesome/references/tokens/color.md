@@ -461,7 +461,7 @@ Each core color also has a paired _on color_ (`--wa-color-{variant}-on`) guarant
 
 ### Changing Variant Colors
 
-Any hue from your color palette can be assigned to any variant without redefining the tokens in your own stylesheet. To use a different hue, simply apply the class `"wa-{variant}-{hue}` to the `<html>` element.
+Any hue from your color palette can be assigned to any variant without redefining the tokens in your own stylesheet. To use a different hue, apply the `wa-{variant}-{hue}` class to the `<html>` element.
 
 ```html
 <html class="wa-brand-purple wa-success-cyan"></html>
@@ -486,7 +486,7 @@ Surfaces are background layers that content rests on. They convey elevation hier
 
 ### Text
 
-Text colors are used for readable content. We recommend a minimum 4.5:1 contrast ratio against surface colors for text colors.
+Text colors are used for readable content and should meet a minimum 4.5:1 contrast ratio against surface colors.
 
 | Custom Property | Description |
 | --- | --- |
@@ -505,7 +505,7 @@ Overlays provide a backdrop that isolates content, often with some transparency 
 
 ### Shadow
 
-A single color is used for all drop shadows. Use it alongside the [shadow tokens](?active_tab=shadows) to construct realistic shadows.
+A single color is used for all drop shadows. Use it alongside the [shadow tokens](https://webawesome.com/docs/tokens/shadows) to construct realistic shadows.
 
 | Custom Property | Description |
 | --- | --- |

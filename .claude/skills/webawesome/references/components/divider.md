@@ -10,7 +10,9 @@ Dividers visually separate or group adjacent elements with a horizontal or verti
 <wa-divider></wa-divider>
 ```
 
-## Importing
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand â€” no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -19,7 +21,7 @@ If you're using the autoloader or a hosted project, components load on demand â€
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/divider/divider.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/divider/divider.js';
 ```
 
 \*\*npm\*\*
@@ -46,13 +48,13 @@ To import this component for React 18 or below, use the following code:
 import WaDivider from '@awesome.me/webawesome/dist/react/divider/index.js';
 ```
 
-## Attributes & Properties
+### Attributes & Properties
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `orientation` | `orientation` | Sets the divider's orientation. | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`orientation\` orientation | \`'horizontal' \\| 'vertical'\` Sets the divider's orientation. Type Default 'horizontal' | |
 
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
@@ -75,12 +77,12 @@ Use the `--width` custom property to change the width of the divider.
 Use the `--color` custom property to change the color of the divider.
 
 ```html
-<wa-divider style="--color: tomato;"></wa-divider>
+<wa-divider style="--color: var(--wa-color-brand-fill-loud);"></wa-divider>
 ```
 
 ### Spacing
 
-Use the `--spacing` custom property to change the amount of space between the divider and it's neighboring elements.
+Use the `--spacing` custom property to change the amount of space between the divider and its neighboring elements.
 
 ```html
 <div class="wa-text-center">
@@ -92,7 +94,7 @@ Use the `--spacing` custom property to change the amount of space between the di
 
 ### Orientation
 
-The default orientation for dividers is `horizontal`. Set `orientation` attribute to `vertical` to draw a vertical divider. The divider will span the full height of its [Flexbox](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox) or [CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid) container.
+The default orientation for dividers is `horizontal`. Set the `orientation` attribute to `vertical` to draw a vertical divider. The divider will span the full height of its [Flexbox](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox) or [CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid) container.
 
 ```html
 <div style="display: flex; align-items: center;">

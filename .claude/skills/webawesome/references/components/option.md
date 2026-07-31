@@ -8,7 +8,18 @@ Options represent the individual choices inside a select or similar form control
 
 This component must be used as a child of [`<wa-select>`](https://webawesome.com/docs/components/select). Please see the [Select docs](https://webawesome.com/docs/components/select) to see examples of this component in action.
 
-## Importing
+```html
+<!-- select is an overlay that won't render on a static stage, so the options show among dimmed siblings. -->
+<div style="display: flex; flex-direction: column;">
+  <wa-option><wa-icon slot="start" name="mug-hot"></wa-icon>Espresso</wa-option>
+  <wa-option data-anatomy-subject="true"><wa-icon slot="start" name="star"></wa-icon>Cortado</wa-option>
+  <wa-option><wa-icon slot="start" name="mug-saucer"></wa-icon>Cappuccino</wa-option>
+</div>
+```
+
+## API
+
+### Importing
 
 If you're using the autoloader or a hosted project, components load on demand — no manual import needed. To cherry-pick a component manually, use one of the following snippets.
 
@@ -17,7 +28,7 @@ If you're using the autoloader or a hosted project, components load on demand �
 Import this component directly from the CDN:
 
 ```js
-import 'https://ka-f.webawesome.com/webawesome@3.10.0/components/option/option.js';
+import 'https://ka-f.webawesome.com/webawesome@3.11.0/components/option/option.js';
 ```
 
 \*\*npm\*\*
@@ -44,47 +55,45 @@ To import this component for React 18 or below, use the following code:
 import WaOption from '@awesome.me/webawesome/dist/react/option/index.js';
 ```
 
-## Slots
+### Slots
 
-Valid slot names for this component (use exactly these — any other `slot` value is
-silently ignored and the element falls back to the default slot):
+| Name | Description |
+| --- | --- |
+| (default) | The option's label. |
+| \`end\` | \`\` An element, such as , placed before the label. |
 
-- `(default)` — The option's label.
-- `start` — An element, such as `<wa-icon>`, placed before the label.
-- `end` — An element, such as `<wa-icon>`, placed after the label.
+### Attributes & Properties
 
-## Attributes & Properties
+| Name | Description | Reflects |
+| --- | --- | --- |
+| \`defaultLabel\` | \`label\` The default , generated from the element contents. Will be equal to label in most cases. Type string | |
+| \`defaultSelected\` selected | \`boolean\` Selects an option initially. Type Default false | |
+| \`disabled\` disabled | \`boolean\` Draws the option in a disabled state, preventing selection. Type Default false | |
+| \`label\` label | \`string\` The option’s plain text label. Usually automatically generated, but can be useful to provide manually for cases involving complex content. Type | |
+| \`value\` value | \`string\` The option's value. When selected, the containing form control will receive this value. The value must be unique from other options in the same group. Values may not contain spaces, as spaces are used as delimiters when listing multiple values. Type Default '' | |
 
-| Property | Attribute | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| `value` | `value` | The option's value. When selected, the containing form control will receive this value. The value must be unique from other options in the same group. Values may not contain spaces, as spaces are used as delimiters when listing multiple values. | `string` | `''` |
-| `disabled` | `disabled` | Draws the option in a disabled state, preventing selection. | `boolean` | `false` |
-| `defaultSelected` | `selected` | Selects an option initially. | `boolean` | `false` |
-| `label` | `label` | The option’s plain text label. Usually automatically generated, but can be useful to provide manually for cases involving complex content. | `string` | — |
-| `defaultLabel` | — | The default label, generated from the element contents. Will be equal to `label` in most cases. | `string` | — |
-
-## CSS Custom Properties
+### CSS Custom Properties
 
 | Name | Description |
 | --- | --- |
 | \`--current-text-color\` | \`--wa-form-control-activated-color\` The text color of the current (highlighted) option, paired with . |
 
-## Custom States
+### Custom States
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
-| `current` | The user has keyed into the option, but hasn't selected it yet (shows a highlight) | `:state(current)` |
-| `selected` | The option is selected and has aria-selected="true" | `:state(selected)` |
-| `disabled` | Applied when the option is disabled | `:state(disabled)` |
-| `hover` | Like `:hover` but works while dragging in Safari | `:state(hover)` |
+| \`current\` | The user has keyed into the option, but hasn't selected it yet (shows a highlight) | \`:state(current)\` |
+| \`disabled\` | Applied when the option is disabled | \`:state(disabled)\` |
+| \`hover\` | \`:hover\` Like but works while dragging in Safari | \`:state(hover)\` |
+| \`selected\` | The option is selected and has aria-selected="true" | \`:state(selected)\` |
 
-## CSS Parts
+### CSS Parts
 
 | Name | Description | CSS selector |
 | --- | --- | --- |
 | \`checked-icon\` | \`
 
-## Dependencies
+### Dependencies
 
 This component automatically imports the following elements. Sub-dependencies, if any exist, will also be included in this list.
 
