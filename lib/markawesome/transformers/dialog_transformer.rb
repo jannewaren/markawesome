@@ -25,6 +25,10 @@ module Markawesome
       primary_regex = /^\?\?\?([^\n]*)$\n(.*?)\n^>>>$\n(.*?)\n^\?\?\?$/m
       alternative_regex = /^:::wa-dialog([^\n]*)$\n(.*?)\n^>>>$\n(.*?)\n^:::$/m
 
+      # Two dialogs with the same trigger and body hash alike, so suffix repeats
+      # (-2, -3, …) to keep ids unique — same scheme as popover/tooltip.
+      seen_ids = Hash.new(0)
+
       # Define shared transformation logic
       transform_proc = proc do |params_string, button_text, dialog_content|
         button_text = button_text.strip
@@ -37,7 +41,7 @@ module Markawesome
         label, content_without_label = extract_label(dialog_content, button_text)
 
         # Generate unique ID based on content
-        dialog_id = generate_dialog_id(button_text, dialog_content)
+        dialog_id = generate_dialog_id(button_text, dialog_content, seen_ids)
 
         # Convert markdown to HTML
         content_html = markdown_to_html(content_without_label)
@@ -104,11 +108,17 @@ module Markawesome
         end
       end
 
-      # Generate a unique ID for the dialog using MD5 hash
-      def generate_dialog_id(button_text, content)
+      # Generate a unique ID for the dialog using MD5 hash.
+      # The hash covers the trigger and body only, so two dialogs differing solely
+      # by a param (e.g. width) would collide — and identical ones always do. The
+      # occurrence counter disambiguates: the first keeps the bare id, later ones
+      # get -2, -3, … Mirrors generate_popover_id / generate_tooltip_id.
+      def generate_dialog_id(button_text, content, seen_ids)
         hash_input = "#{button_text}#{content}"
         hash = Digest::MD5.hexdigest(hash_input)
-        "dialog-#{hash[0..7]}" # Use first 8 characters of hash
+        base = "dialog-#{hash[0..7]}" # Use first 8 characters of hash
+        occurrence = seen_ids[base] += 1
+        occurrence == 1 ? base : "#{base}-#{occurrence}"
       end
 
       # Build the complete dialog HTML with trigger button

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Fixed
+
+- **Repeated dialogs no longer share a DOM id.** The id is an MD5 of the trigger text plus body, so two dialogs differing only by a param (e.g. width) collided — and byte-identical ones always did. Both triggers then emitted the same `data-dialog='open …'`, so `getElementById` resolved every one of them to the first dialog and the others were unreachable. Repeats now get a `-2`, `-3`, … suffix, the scheme `generate_popover_id`/`generate_tooltip_id` already used. The first occurrence keeps its bare id, so existing single-dialog output is unchanged.
+
 ### Changed
 
 - **Image-dialog trigger buttons now style both `::part(base)` and `::part(button)`.** Web Awesome 3.11.0 gives every component a CSS part named after itself and softly deprecates the generic `base` part — for `<wa-button>` the wrapper part is now `button`, and WA's own manifest marks `base` as *"Deprecated. Use the `button` part instead."* The chrome-stripping `<style>` block emitted for an image trigger (`![alt](src)` under `image_dialog: true`) now lists both selectors in each of its three rules, so the trigger stays chrome-less on 3.10-pinned sites (which have no `button` part) **and** on 3.11+ sites once `base` is eventually removed. Purely additive — no existing selector was dropped. The style block moved into a private `image_button_style` helper; output is byte-identical to `markawesome-js` and now locked by specs in `spec/dialog_transformer_spec.rb` (the emitted selectors were previously untested in either engine).

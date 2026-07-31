@@ -537,5 +537,49 @@ RSpec.describe Markawesome::DialogTransformer do
         expect(result).not_to include('<style>')
       end
     end
+
+    context 'with colliding dialog ids' do
+      # The id hashes the trigger and body only, so two dialogs differing solely by a
+      # param collide — and identical ones always do. Repeats get -2, -3, … like
+      # popover/tooltip. Byte-for-byte parity with markawesome-js's test/dialog.test.ts.
+      it 'suffixes a repeat that differs only by width' do
+        input = <<~MARKDOWN
+          ???
+          Open
+          >>>
+          Same body.
+          ???
+
+          ???60%
+          Open
+          >>>
+          Same body.
+          ???
+        MARKDOWN
+
+        result = described_class.transform(input)
+
+        expect(result).to include("id='dialog-03d05068'")
+        expect(result).to include("data-dialog='open dialog-03d05068'")
+        expect(result).to include("id='dialog-03d05068-2'")
+        expect(result).to include("data-dialog='open dialog-03d05068-2'")
+        # The suffixed dialog is the one carrying the width — they are not aliased
+        expect(result).to match(/id='dialog-03d05068-2'[^>]*style='--width: 60%'/)
+      end
+
+      it 'suffixes byte-identical dialogs, which no content hash can separate' do
+        one = "???\nOpen\n>>>\nSame body.\n???\n"
+        result = described_class.transform("#{one}\n#{one}")
+
+        expect(result.scan(/id='dialog-[0-9a-f]{8}(?:-\d+)?'/).uniq.size).to eq(2)
+      end
+
+      it 'numbers a third repeat -3' do
+        one = "???\nOpen\n>>>\nSame body.\n???\n"
+        result = described_class.transform("#{one}\n#{one}\n#{one}")
+
+        expect(result).to include("id='dialog-03d05068-3'")
+      end
+    end
   end
 end
