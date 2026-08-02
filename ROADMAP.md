@@ -32,34 +32,6 @@ human-readable descriptions already exist in `src/data/components.json` (surface
 today by `hoverProvider`), so the mode can reuse them; it fits alongside the
 existing commands in `src/commands/transformCommands.ts`.
 
-### 5. New component: `<wa-pagination>` (WA 3.11.0)
-
-_Repos: `markawesome`, `markawesome-js`, `markawesome-vscode`, `markawesome-skill`_
-
-`<wa-pagination>` (experimental, added in WA 3.11.0) splits a long list into
-numbered pages with previous/next controls. It is the **only** one of 3.11.0's new
-components that fits our static-site model, because of its **`href-template`**
-attribute: given a template, it renders each page control as a real link, so the
-component works with **zero authored JavaScript** — exactly the bar the rest of the
-engine meets. Without `href-template` it emits a `wa-page-change` event and needs a
-listener, which is out of scope.
-
-The obvious authoring shape is the explicit block form only —
-`:::wa-pagination total:100 page-size:10 page:3 href-template:/blog/page/{page}/`
-— since the terse-glyph space is nearly exhausted (see the `......` note in the
-3.10.0 section below). Attributes worth exposing: `total`, `page-size`, `page`,
-`href-template`, `format` (`standard`/`compact`), `appearance`
-(`outlined`/`filled`/`plain`), `with-edges`, `with-summary`, `hide-single-page`,
-`sibling-count`, `boundary-count`, `label`. The four icon slots
-(`previous-icon`/`next-icon`/`first-icon`/`last-icon`) can wait.
-
-**Open question before building it:** who actually owns paging in each host? Jekyll
-and Eleventy both generate paginated collections in *templates*, not in page bodies,
-so this may be more useful as an integration-level include in `jekyll-webawesome` /
-`eleventy-plugin-webawesome` than as body Markdown. Decide that first — the engines
-should only grow syntax that authors will genuinely reach for in a `.md` file.
-Note the component is **experimental**, so its API may still move.
-
 ---
 
 ## Plain-Markdown renderer parity in `markawesome-js` — done
@@ -78,7 +50,7 @@ degrade-to-Markdown capability.
 
 ---
 
-## Web Awesome 3.11.0 audit — done (except the pagination item above)
+## Web Awesome 3.11.0 audit — done
 
 _Repos: all six_
 
@@ -102,6 +74,48 @@ use still exist.
   specs/tests on both sides.
 - **Example-site CDN pins bumped to 3.11.0** in `jekyll-webawesome` and
   `eleventy-plugin-webawesome`, with the docs/skill pin references following.
+
+### `<wa-pagination>` — considered, then rejected
+
+_Repos: none — no code planned_
+
+`<wa-pagination>` (experimental, 3.11.0) was the one new 3.11.0 component that looked
+like a fit: its **`href-template`** attribute renders each page control as a real `<a>`,
+so it works with zero authored JavaScript — the bar the rest of the engine meets. It was
+carried as a planned item for a while. On closer analysis it is **not worth a
+transformer**, for three reasons, weakest first:
+
+1. **The control belongs in a layout, not a page body.** Paginating posts, docs or
+   products puts the markup in `_layouts/blog.html` (or an Eleventy layout). The Jekyll
+   hook has a `markdown_file?` guard — we only ever touch `.md` — so for the common case
+   our transformer is structurally unreachable.
+2. **The transform would be an identity function.** Every other transformer earns its
+   keep: `:::wa-callout` slots an icon, converts inner Markdown, applies configured
+   defaults. Pagination has no inner content, no slots to fill and no icon lookup — it is
+   a 1:1 attribute rename onto a void element. The shorthand comes out *longer* than the
+   HTML it replaces (two lines vs one).
+3. **It already works with no code from us.** Verified against both host converters: a
+   raw `<wa-pagination …></wa-pagination>` passes through Kramdown untouched and through
+   markdown-it wrapped in a `<p>` (harmless — the `<nav>` is in the shadow root). Authors
+   on both integrations can use the component today; a transformer would compete with
+   something that already functions.
+
+Also weighing against it: without `href-template` the component emits a `wa-page-change`
+event and needs a listener, which is out of scope; and it is **experimental**, so its API
+may still move.
+
+**What actually paginates what** — recorded so it isn't re-derived. Eleventy's
+`pagination` front matter is fully generic and chunks any array (a collection *or* a
+`_data/rows.json`), so splitting a 1000-row table across real URLs is native there, with
+the data living in JSON/CSV rather than Markdown. Jekyll has no equivalent:
+`jekyll-paginate` handles posts only, `jekyll-paginate-v2` handles collections, and
+arbitrary data rows need a custom generator plugin. `{% include table.md %}` does not
+help — Jekyll fires `:pre_render` at `renderer.rb:61` and only calls `render_liquid` at
+line 80, so included content is Kramdown-converted but never Markawesome-transformed.
+
+**If anything is ever built here**, it belongs in `markawesome-skill` as an authoring
+recipe (the Eleventy data-file pattern; "write it in your layout" for Jekyll), not as
+syntax in the engines.
 
 ### Considered but out of scope (3.11.0)
 
