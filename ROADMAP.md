@@ -50,6 +50,46 @@ degrade-to-Markdown capability.
 
 ---
 
+## Web Awesome 3.12.0 audit — done
+
+_Repos: all six_
+
+WA **3.12.0** (August 2026) was audited against the whole ecosystem. The manifest
+fixture was refreshed in both engines (`rake wa:manifest[3.12.0]` /
+`npm run update-wa-manifest 3.12.0`, `WA_VERSION` → `3.12.0`) and the enum diff is
+**one additive line**: `wa-dropdown-item` gained a `target` enum
+(`_blank`/`_parent`/`_self`/`_top`) to go with its new `href`/`rel`/`download`
+navigation attributes. **Zero DRIFT, zero GAP** — no transformer enum constant
+changed.
+
+**Nothing in 3.12.0 asks for new Markawesome syntax.** Both of its component-level
+additions land on components that are already *Explicitly out of scope* below:
+`<wa-dropdown-item>` (dropdowns need JS-driven open/close state) and
+`<wa-data-grid>`'s new `filterOptions` column option (Pro, experimental, driven
+entirely by JS-supplied data). The remaining "Added" item is the Figma Design Kit.
+Every 3.12.0 *Fixed* and *Changed* entry is internal to Web Awesome's own shadow
+DOM — no markup we emit has to change to benefit.
+
+**What we get for free** by moving the pins:
+
+- **`<wa-button>` keeps its accessible name while loading, and gains `aria-busy`.**
+  Both engines already accept a bare `loading` token, so every `loading` button we
+  emit becomes correctly announced with no engine change.
+- **Duplicate landmarks removed from `<wa-card>`, `<wa-dialog>` and `<wa-drawer>`** —
+  three elements the engines emit directly.
+- **`<wa-tooltip>` light dismiss** behaves better on target presses and page clicks.
+
+**What did change here:**
+
+- **Example-site CDN pins bumped to 3.12.0** in `jekyll-webawesome` and
+  `eleventy-plugin-webawesome`, with the docs/skill pin references following.
+
+Still outstanding: refresh the vendored WA Agent Skill under `.claude/skills/` to
+the 3.12.0 copy shipped in `@awesome.me/webawesome-pro` (its `skills-lock.json`
+hash is maintained by the installer, not by hand).
+
+---
+
 ## Web Awesome 3.11.0 audit — done
 
 _Repos: all six_

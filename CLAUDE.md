@@ -76,7 +76,7 @@ Inner Markdown content is converted to HTML via `markdown_to_html()` (wraps Kram
 Our transformers accept curated enum values (e.g. `BADGE_ATTRIBUTES[:variant]`)
 hand-transcribed from Web Awesome's docs. `spec/webawesome_manifest_coverage_spec.rb`
 guards those constants against Web Awesome's machine-readable **Custom Elements
-Manifest**, pinned to a single WA release (`WA_VERSION`, currently **3.11.0**). For
+Manifest**, pinned to a single WA release (`WA_VERSION`, currently **3.12.0**). For
 each `(constant → wa-tag/attribute)` mapping it fails on **DRIFT** (a value we
 accept that WA no longer lists) and **GAP** (a WA value we don't expose, gated by
 `INTENTIONALLY_OMITTED`, which starts empty). Entries WA can't describe as an inline
@@ -88,14 +88,14 @@ to `markawesome-js`'s copy (`diff` them to confirm), produced only by the genera
 
 ### Refreshing when Web Awesome releases a new version
 
-When WA ships e.g. 3.11.0:
+When WA ships e.g. 3.12.0:
 
-1. Regenerate the fixture: `bundle exec rake wa:manifest[3.11.0]` (in **zsh**, quote
-   it: `bundle exec rake 'wa:manifest[3.11.0]'`). This fetches that version's manifest
+1. Regenerate the fixture: `bundle exec rake wa:manifest[3.12.0]` (in **zsh**, quote
+   it: `bundle exec rake 'wa:manifest[3.12.0]'`). This fetches that version's manifest
    from unpkg and overwrites `spec/fixtures/webawesome-enums.json` in place. Do the
-   same in `markawesome-js` (`npm run update-wa-manifest 3.11.0`) so both fixtures stay
+   same in `markawesome-js` (`npm run update-wa-manifest 3.12.0`) so both fixtures stay
    byte-identical.
-2. Bump `WA_VERSION` to `'3.11.0'` in the spec (and in `markawesome-js`'s test).
+2. Bump `WA_VERSION` to `'3.12.0'` in the spec (and in `markawesome-js`'s test).
 3. Re-run the specs. **Green ⇒ nothing enum-relevant changed, done.** **Red is the
    point** — the git diff of `webawesome-enums.json` shows exactly what moved:
    - **GAP** (WA added a value) → implement the new option in *both* engines (and,
@@ -128,7 +128,7 @@ gem is released. Follow this order:
    (`cd examples && bundle exec jekyll serve`) and verify the rendered
    components in a browser. Confirm the change actually renders (measure/inspect
    the live DOM), not just that the HTML attribute is present. The Web Awesome
-   version is **pinned to 3.11.0** in the CDN URLs in the examples head include
+   version is **pinned to 3.12.0** in the CDN URLs in the examples head include
    (`jekyll-webawesome/examples/_includes/head.html`), so validate against that
    exact version; bump the pin deliberately when moving to a new WA release.
 5. **Release markawesome.** Bump `lib/markawesome/version.rb`, finalize the
