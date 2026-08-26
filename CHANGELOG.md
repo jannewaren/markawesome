@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-08-26
+
 ### Fixed
 
 - **Repeated dialogs no longer share a DOM id.** The id is an MD5 of the trigger text plus body, so two dialogs differing only by a param (e.g. width) collided — and byte-identical ones always did. Both triggers then emitted the same `data-dialog='open …'`, so `getElementById` resolved every one of them to the first dialog and the others were unreachable. Repeats now get a `-2`, `-3`, … suffix, the scheme `generate_popover_id`/`generate_tooltip_id` already used. The first occurrence keeps its bare id, so existing single-dialog output is unchanged.
