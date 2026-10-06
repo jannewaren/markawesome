@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "webAwesomeVersion": "3.12.0",
-    "source": "@awesome.me/webawesome@3.12.0/dist/custom-elements.json",
+    "webAwesomeVersion": "3.14.0",
+    "source": "@awesome.me/webawesome@3.14.0/dist/custom-elements.json",
     "allTags": [
       "wa-accordion",
       "wa-accordion-item",
@@ -60,11 +60,14 @@
       "wa-slider",
       "wa-spinner",
       "wa-split-panel",
+      "wa-step",
+      "wa-stepper",
       "wa-switch",
       "wa-tab",
       "wa-tab-group",
       "wa-tab-panel",
       "wa-tag",
+      "wa-tag-input",
       "wa-textarea",
       "wa-time-input",
       "wa-toast",
@@ -320,6 +323,11 @@
     ]
   },
   "wa-divider": {
+    "label-placement": [
+      "start",
+      "center",
+      "end"
+    ],
     "orientation": [
       "horizontal",
       "vertical"
@@ -809,6 +817,27 @@
       "end"
     ]
   },
+  "wa-step": {
+    "attention": [
+      "none",
+      "pulse",
+      "bounce"
+    ],
+    "variant": [
+      "neutral",
+      "brand",
+      "success",
+      "warning",
+      "danger"
+    ]
+  },
+  "wa-stepper": {
+    "orientation": [
+      "horizontal",
+      "vertical",
+      "auto"
+    ]
+  },
   "wa-switch": {
     "size": [
       "xs",
@@ -856,6 +885,50 @@
       "success",
       "warning",
       "danger"
+    ]
+  },
+  "wa-tag-input": {
+    "appearance": [
+      "filled",
+      "outlined",
+      "filled-outlined"
+    ],
+    "autocapitalize": [
+      "off",
+      "none",
+      "on",
+      "sentences",
+      "words",
+      "characters"
+    ],
+    "enterkeyhint": [
+      "enter",
+      "done",
+      "go",
+      "next",
+      "previous",
+      "search",
+      "send"
+    ],
+    "inputmode": [
+      "none",
+      "text",
+      "decimal",
+      "numeric",
+      "tel",
+      "search",
+      "email",
+      "url"
+    ],
+    "size": [
+      "xs",
+      "s",
+      "m",
+      "l",
+      "xl",
+      "small",
+      "medium",
+      "large"
     ]
   },
   "wa-textarea": {

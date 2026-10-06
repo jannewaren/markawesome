@@ -50,6 +50,54 @@ degrade-to-Markdown capability.
 
 ---
 
+## Web Awesome 3.14.0 audit — in progress
+
+_Repos: all six_
+
+WA **3.13.0** (September 16th, 2026) and **3.14.0** (September 24th, 2026) were audited
+together against the whole ecosystem. The manifest fixture was refreshed in both engines
+(`rake wa:manifest[3.14.0]` / `npm run update-wa-manifest 3.14.0`, `WA_VERSION` →
+`3.14.0`) and the enum diff is **purely additive**: three new tags (`wa-step`,
+`wa-stepper`, `wa-tag-input`) and a new `label-placement` enum on `wa-divider`.
+**Zero DRIFT, zero GAP** against the enums we accept — no transformer constant changed.
+
+**What we get for free** by moving the pins:
+
+- **`<wa-accordion>` and `<wa-random-content>` are now stable** (along with
+  `wa-known-date`, `wa-otp-input`, `wa-pagination` and `wa-time-input`). Both are
+  components we emit, so the "experimental" caveats were dropped from the engines,
+  the editor and the skill.
+
+**What is planned (new syntax, both engines + editor + skill + example sites):**
+
+- **Labeled divider.** `<wa-divider>` gained a default-slot label and
+  `label-placement` (`start`/`center`/`end`). New mirrored shorthand
+  `--- label ---` (plain `---` stays an `<hr>`), with leading
+  `start|center|end`, `horizontal|vertical` and `icon:name` tokens, plus the
+  `:::wa-divider` alt syntax. A labeled divider is pure presentation — a natural fit.
+- **Display-only stepper.** `<wa-stepper>` / `<wa-step>` (experimental) show
+  progress through a process. New `>>>>>>` fence whose body is a task list —
+  `[x]` marks completed steps, leading flags set `active`/`loading`/`disabled`,
+  variant, attention and `icon:name`, and indented continuation lines become the
+  step's `description` slot. The active step is resolved statically (explicit
+  `active`, else the first incomplete step, else the last). Interactivity —
+  `clickable`, `linear`, `data-stepper` invokers — is **excluded**: our steps have no
+  content panels, so navigation without app JavaScript has nothing to show (the
+  same stance as `<wa-tree>`).
+
+### Considered but out of scope (3.13.0 / 3.14.0)
+
+- `<wa-tag-input>` — a form control (experimental); see *Explicitly out of scope*.
+- `<wa-combobox>` async options — form control, JS-supplied data.
+- `<wa-page>` `nonce` — CSP plumbing for the page shell, which we don't emit.
+- `<wa-zoomable-frame>` `label` / `name` / `allow` — we don't emit zoomable frames.
+- `<wa-data-grid>` additions — Pro, experimental, JS-supplied data.
+- `with-label` on `<wa-dialog>` / `<wa-drawer>` and `with-description` /
+  `with-label` on `<wa-step>` / `<wa-divider>` — SSR hints that tell the server
+  render a slot is populated. We render client-side, so WA detects the slots itself.
+
+---
+
 ## Web Awesome 3.12.0 audit — done
 
 _Repos: all six_
@@ -191,7 +239,7 @@ out of scope (see the note at the end of this section)._
 _Repos: `markawesome`, `markawesome-js`, `markawesome-vscode`_
 
 Shipped as `RandomContentTransformer` (and its `markawesome-js` mirror + VS Code
-tooling). `<wa-random-content>` (experimental, added in WA 3.10.0) "randomly shows
+tooling). `<wa-random-content>` (added in WA 3.10.0, stable since 3.13.0) "randomly shows
 one or more of its children — handy for rotating testimonials, tips, or featured
 content." It is a **great fit for static sites**: it adds a genuine dynamic feel
 with **zero JavaScript wiring from the author** — the component picks its
@@ -313,7 +361,8 @@ These Web Awesome components need JavaScript, live data, or form submission
 wiring and **don't** fit a static-Markdown model:
 
 - All form controls — `input`, `textarea`, `select`, `checkbox`, `radio`,
-  `switch`, `slider`, `rating`, `color-picker`, date/time pickers, `combobox`
+  `switch`, `slider`, `rating`, `color-picker`, date/time pickers, `combobox`,
+  `tag-input`
 - All chart types
 - `dropdown`, `drawer`, `dialog`-as-app-modal beyond our current usage
 - Toasts/notifications, `mutation-observer` / `resize-observer`, `page`,

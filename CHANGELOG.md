@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Internal
+
+- **Refreshed the Web Awesome manifest fixture to 3.14.0** (September 24th, 2026; covers 3.13.0 too). `rake wa:manifest[3.14.0]` regenerated `spec/fixtures/webawesome-enums.json` and `WA_VERSION` moved to `3.14.0`. The diff is **purely additive** — three new tags (`wa-step`, `wa-stepper`, `wa-tag-input`) and a `label-placement` enum on `wa-divider` — with **zero DRIFT and zero GAP** against the enums we accept, so no transformer constant changed. `<wa-accordion>` and `<wa-random-content>` are now **stable** in Web Awesome, so the "experimental" wording was dropped from their transformer comments. Fixture remains byte-identical to `markawesome-js`'s copy. Example-site CDN pins bumped to 3.14.0 in `jekyll-webawesome` and `eleventy-plugin-webawesome`.
+
 ## [0.19.0] - 2026-08-26
 
 ### Fixed

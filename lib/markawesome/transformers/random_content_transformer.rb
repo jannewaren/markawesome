@@ -4,7 +4,7 @@ require_relative 'base_transformer'
 require_relative '../attribute_parser'
 
 module Markawesome
-  # Transforms random-content syntax into Web Awesome's experimental
+  # Transforms random-content syntax into Web Awesome's
   # <wa-random-content> element, which shows one or more of its direct element
   # children at random (optionally rotating them) and hides the rest — all in
   # WA's own runtime, so the author writes zero JavaScript. Ideal for a "little

@@ -23,7 +23,7 @@ module Markawesome
   #   - expanded -> expanded; disabled -> disabled
   #   - icon:name -> <wa-icon slot="icon" name="name"></wa-icon> as first child
   #
-  # wa-accordion is experimental in Web Awesome (added 3.7). expanded/disabled
+  # wa-accordion was added in Web Awesome 3.7 (stable since 3.13). expanded/disabled
   # and the mode/appearance/icon-placement attributes are all static-safe.
   class AccordionTransformer < BaseTransformer
     CONTAINER_ATTRIBUTES = {
