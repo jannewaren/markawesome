@@ -68,7 +68,7 @@ together against the whole ecosystem. The manifest fixture was refreshed in both
   components we emit, so the "experimental" caveats were dropped from the engines,
   the editor and the skill.
 
-**What is planned (new syntax, both engines + editor + skill + example sites):**
+**What was added (new syntax in both engines, the editor, the skill and both example sites; awaiting release):**
 
 - **Labeled divider.** `<wa-divider>` gained a default-slot label and
   `label-placement` (`start`/`center`/`end`). New mirrored shorthand
@@ -84,6 +84,11 @@ together against the whole ecosystem. The manifest fixture was refreshed in both
   `clickable`, `linear`, `data-stepper` invokers — is **excluded**: our steps have no
   content panels, so navigation without app JavaScript has nothing to show (the
   same stance as `<wa-tree>`).
+
+Both run first in the pipeline (right after code-block protection), so they nest
+inside any container. Ruby and Node output is byte-identical across 14 new
+parity-corpus cases, and both were checked live on the two example sites against
+the 3.14.0 CDN.
 
 ### Considered but out of scope (3.13.0 / 3.14.0)
 
