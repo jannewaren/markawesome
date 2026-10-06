@@ -59,6 +59,45 @@ RSpec.describe Markawesome::Transformer do
       expect(result).to include('<wa-tag>Tag</wa-tag>')
     end
 
+    it 'processes a labeled divider' do
+      expect(described_class.process('--- or ---')).to eq('<wa-divider>or</wa-divider>')
+    end
+
+    it 'processes a vertical divider inside a cluster layout' do
+      input = "::::cluster\n%%%\nYes\n%%%\n--- vertical vs ---\n%%%\nNo\n%%%\n::::"
+      result = described_class.process(input)
+      expect(result).to eq(
+        "<div class=\"wa-cluster\">\n<wa-button>Yes</wa-button>\n" \
+        "<wa-divider orientation=\"vertical\">vs</wa-divider>\n<wa-button>No</wa-button>\n</div>"
+      )
+    end
+
+    it 'processes a divider inside a card body without wrapping it in a paragraph' do
+      result = described_class.process("===\nTop\n\n--- or ---\n\nBottom\n===")
+      expect(result).to eq("<wa-card><p>Top</p>\n\n<wa-divider>or</wa-divider>\n\n<p>Bottom</p>\n</wa-card>")
+    end
+
+    it 'processes a stepper inside a callout' do
+      result = described_class.process(":::info\n>>>>>>\n- Plan\n- Build\n>>>>>>\n:::")
+      expect(result).to include(
+        '<wa-stepper active="step-1"><wa-step name="step-1">Plan</wa-step>' \
+        '<wa-step name="step-2">Build</wa-step></wa-stepper>'
+      )
+      expect(result).not_to include('<p><wa-stepper')
+    end
+
+    it 'leaves the >>> separators of other components intact around a stepper' do
+      input = "^^^\nSummary\n>>>\n>>>>>>\n- One\n>>>>>>\n^^^"
+      result = described_class.process(input)
+      expect(result).to include('<wa-details')
+      expect(result).to include('<wa-stepper active="step-1"><wa-step name="step-1">One</wa-step></wa-stepper>')
+    end
+
+    it 'does not transform divider or stepper syntax inside fenced code blocks' do
+      input = "```\n--- or ---\n>>>>>>\n- A\n>>>>>>\n```"
+      expect(described_class.process(input)).to eq(input)
+    end
+
     it 'processes tabs syntax' do
       input = "++++++\n+++ Tab 1\nContent 1\n+++\n+++ Tab 2\nContent 2\n+++\n++++++"
       result = described_class.process(input)

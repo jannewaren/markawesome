@@ -10,6 +10,13 @@ module Markawesome
     def self.process(content, options = {})
       content, tokens = CodeBlockProtector.protect(content)
 
+      # Divider and stepper run FIRST: their content is inline-only (a label,
+      # a list of one-line steps), so emitting them before any container lets
+      # them sit inside layouts, cards, callouts, tabs, accordion and dialog
+      # bodies — e.g. `--- vertical vs ---` inside a `::::cluster`.
+      content = DividerTransformer.transform(content)
+      content = StepperTransformer.transform(content)
+
       content = LayoutTransformer.transform(content)
       content = PopoverTransformer.transform(content)
       content = TooltipTransformer.transform(content)

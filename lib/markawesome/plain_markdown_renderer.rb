@@ -25,9 +25,9 @@ module Markawesome
       # component without forking the gem.
       #
       # @param component [Symbol] one of :accordion, :callout, :badge, :button,
-      #   :card, :carousel, :comparison, :copy_button, :details, :dialog, :icon,
-      #   :image_dialog, :layout, :popover, :random_content, :tabs, :tag,
-      #   :tooltip.
+      #   :card, :carousel, :comparison, :copy_button, :details, :dialog,
+      #   :divider, :icon, :image_dialog, :layout, :popover, :random_content,
+      #   :stepper, :tabs, :tag, :tooltip, :tree.
       # @yield [content, options] Proc that receives the full source content
       #   and the renderer options; returns the content with that component
       #   syntax replaced.
@@ -44,6 +44,8 @@ module Markawesome
     end
 
     PIPELINE = %i[
+      divider
+      stepper
       layout
       popover
       tooltip
@@ -68,6 +70,8 @@ module Markawesome
     ].freeze
 
     TRANSFORMER_MAP = {
+      divider: DividerTransformer,
+      stepper: StepperTransformer,
       layout: LayoutTransformer,
       popover: PopoverTransformer,
       tooltip: TooltipTransformer,

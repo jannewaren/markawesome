@@ -25,9 +25,11 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 | **Copy Button** | `<<<placement? tooltip:full\|copy\|none?` | `:::wa-copy-button placement? tooltip:full\|copy\|none?` | `<wa-copy-button value="content" tooltip-placement="top" tooltip="copy"></wa-copy-button>` |
 | **Details** | `^^^appearance? icon-placement?` | `:::wa-details appearance? icon-placement?` | `<wa-details>content</wa-details>` |
 | **Dialog** | `???params?` | `:::wa-dialog params?` | `<wa-dialog>` with trigger button and content |
+| **Divider** | `--- label ---` (e.g. `--- start icon:star New ---`) | `:::wa-divider params?` (body is the label) | `<wa-divider label-placement="start"><wa-icon name="star"></wa-icon> New</wa-divider>` |
 | **Icon** | `$$$icon-name` | `:::wa-icon icon-name` | `<wa-icon name="icon-name"></wa-icon>` |
 | **Image Dialog** | `![alt](url)` | — | Wraps images in clickable `<wa-dialog>` overlays |
 | **Popover** | `&&&params?` or inline `&&&trigger >>> content&&&` | `:::wa-popover params?` | `<wa-popover>` with trigger button and content |
+| **Stepper** | `>>>>>> params?` wrapping a task list | `:::wa-stepper params?` | `<wa-stepper active="step-2"><wa-step name="step-1" completed>…</wa-step>…</wa-stepper>` |
 | **Tab Group** | `++++++` | `:::wa-tabs` | `<wa-tab-group><wa-tab>content</wa-tab></wa-tab-group>` |
 | **Tag** | `@@@brand` | `:::wa-tag brand` | `<wa-tag variant="brand">content</wa-tag>` |
 
@@ -37,6 +39,22 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 > library, the button is inert. To make it functional, add your own `wa-remove`
 > listener (e.g. a single global handler that removes `event.target`). The markup
 > we emit is valid either way.
+
+> **Labeled divider:** `--- label ---` needs text between the mirrored dashes,
+> so a plain `---` stays an `<hr>`. Leading `start`/`center`/`end`
+> (label placement), `horizontal`/`vertical` (orientation) and `icon:name`
+> tokens are consumed from the left; the rest is the label, as inline Markdown.
+> A line made only of `|`, `:` and `-` (a pipe-less table separator) is left
+> alone. Use `:::wa-divider` when a label must start with one of those words.
+
+> **Stepper (display-only):** each unindented list line is a step. `[x]` marks
+> it completed; leading `active`, `loading`, `disabled`, a variant, an attention
+> (`pulse`/`bounce`/`none`) and `icon:name` are flags; lines indented under a
+> step become its description. The active step is the one flagged `active`,
+> else the first incomplete step, else the last. Container params are
+> `horizontal`/`vertical`/`auto` and `label:"…"`. `wa-stepper` is experimental
+> in Web Awesome 3.14.0, and its interactive features (`clickable`, `linear`)
+> are deliberately not exposed.
 
 ## Layout Utilities
 

@@ -96,6 +96,18 @@ coverage = [
   { label: 'random-content animation', tag: 'wa-random-content', attr: 'animation',
     accepted: -> { Markawesome::RandomContentTransformer::COMPONENT_ATTRIBUTES[:animation] } },
 
+  { label: 'divider orientation', tag: 'wa-divider', attr: 'orientation',
+    accepted: -> { Markawesome::DividerTransformer::DIVIDER_ATTRIBUTES[:orientation] } },
+  { label: 'divider label-placement', tag: 'wa-divider', attr: 'label-placement',
+    accepted: -> { Markawesome::DividerTransformer::DIVIDER_ATTRIBUTES[:label_placement] } },
+
+  { label: 'stepper orientation', tag: 'wa-stepper', attr: 'orientation',
+    accepted: -> { Markawesome::StepperTransformer::STEPPER_ATTRIBUTES[:orientation] } },
+  { label: 'step variant', tag: 'wa-step', attr: 'variant',
+    accepted: -> { Markawesome::StepperTransformer::STEP_ATTRIBUTES[:variant] } },
+  { label: 'step attention', tag: 'wa-step', attr: 'attention',
+    accepted: -> { Markawesome::StepperTransformer::STEP_ATTRIBUTES[:attention] } },
+
   { label: 'relative-time format', tag: 'wa-relative-time', attr: 'format',
     accepted: -> { Markawesome::DateTransformer::RELATIVE_FORMATS } },
   { label: 'relative-time numeric', tag: 'wa-relative-time', attr: 'numeric',
