@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-10-09
+
 ### Added
 
 - **Labeled divider (`<wa-divider>` label, Web Awesome 3.13.0+).** New `DividerTransformer` with a mirrored one-line shorthand, `--- label ---`, and a `:::wa-divider params?` alternative whose body is the label (empty for a bare divider). Leading tokens are consumed from the left: `start`/`center`/`end` → `label-placement`, `horizontal`/`vertical` → `orientation`, `icon:name` → a `<wa-icon>` before the label. The rest is the label, rendered as inline Markdown. Output: `<wa-divider orientation="…" label-placement="…"><wa-icon name="…"></wa-icon> Label</wa-divider>`, attributes only when given. Plain `---` and `--- ---` are untouched and stay `<hr>`, and so is any line made only of `|`, `:`, `-` and whitespace, which keeps pipe-less GFM table separators such as `--- | ---` intact. The plain-Markdown renderer degrades it to `---` followed by the label as its own paragraph (icon dropped), with a leading blank line so the rule can't turn a preceding line into a setext heading. Known limitation, shared with every transformer: only backtick code fences are protected, so a `--- x ---` line inside a `~~~` fence is transformed.
