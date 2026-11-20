@@ -16,6 +16,7 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 
 | Component | Primary Syntax | Alternative Syntax | HTML Output |
 |-----------|----------------|-------------------|-------------|
+| **Accordion** | `//////params?` with `/// Title` items | `:::wa-accordion params?` | `<wa-accordion>` of `<wa-accordion-item label="…">` sections |
 | **Badge** | `!!!variant` | `:::wa-badge variant` | `<wa-badge variant="brand">content</wa-badge>` |
 | **Button** | `%%%variant` | `:::wa-button variant` | `<wa-button variant="brand" href="url">text</wa-button>` or `<wa-button variant="brand">text</wa-button>` |
 | **Callout** | `:::info` | `:::wa-callout info` | `<wa-callout variant="brand"><wa-icon ...></wa-icon>content</wa-callout>` |
@@ -27,14 +28,21 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 | **Details** | `^^^appearance? icon-placement?` | `:::wa-details appearance? icon-placement?` | `<wa-details>content</wa-details>` |
 | **Dialog** | `???params?` | `:::wa-dialog params?` | `<wa-dialog>` with trigger button and content |
 | **Divider** | `--- label ---` (e.g. `--- start icon:star New ---`) | `:::wa-divider params?` (body is the label) | `<wa-divider label-placement="start"><wa-icon name="star"></wa-icon> New</wa-divider>` |
+| **Format Date** | `[[[2026-06-26 style:long]]]` | `:::wa-format-date date params?` (empty body) | `<wa-format-date date="2026-06-26" year="numeric" month="long" day="numeric"></wa-format-date>` |
 | **Icon** | `$$$icon-name` | `:::wa-icon icon-name` | `<wa-icon name="icon-name"></wa-icon>` |
 | **Image Dialog** | `![alt](url)` | — | Wraps images in clickable `<wa-dialog>` overlays |
 | **Lightbox** | `::::lightbox params?` wrapping image lines | `:::wa-lightbox params?` | `<wa-lightbox class="wa-grid"><wa-lightbox-item src="full.jpg" caption="…"><img …></wa-lightbox-item>…</wa-lightbox>` |
 | **Number Ticker** | `[[[ number params? ]]]` (e.g. `[[[ 87% ]]]`) | `:::wa-number-ticker number params?` (empty body) | `<wa-number-ticker value="0.87" type="percent"></wa-number-ticker>` |
 | **Popover** | `&&&params?` or inline `&&&trigger >>> content&&&` | `:::wa-popover params?` | `<wa-popover>` with trigger button and content |
+| **Random Content** | `......params?` with `>>>`-separated options | `:::wa-random-content params?` | `<wa-random-content>` showing a random/rotating subset of its options |
+| **Relative Time** | `[[[relative 2026-06-20]]]` | `:::wa-relative-time date params?` (empty body) | `<wa-relative-time date="2026-06-20"></wa-relative-time>` |
 | **Stepper** | `>>>>>> params?` wrapping a task list | `:::wa-stepper params?` | `<wa-stepper active="step-2"><wa-step name="step-1" completed>…</wa-step>…</wa-stepper>` |
 | **Tab Group** | `++++++` | `:::wa-tabs` | `<wa-tab-group><wa-tab>content</wa-tab></wa-tab-group>` |
 | **Tag** | `@@@brand` | `:::wa-tag brand` | `<wa-tag variant="brand">content</wa-tag>` |
+| **Tooltip** | `(((anchor >>> tip)))` | `:::wa-tooltip placement? distance:N?` | focusable `<span>` anchor + `<wa-tooltip for="…" placement="top">tip</wa-tooltip>` |
+| **Tree** | `\|\|\|\|\|\|open?` wrapping a nested bullet list | `:::wa-tree open?` | `<wa-tree>` of nested `<wa-tree-item>`s |
+| **Video** | `;;;params?` with a link + optional poster image | `:::wa-video params?` | `<wa-video>` (Web Awesome Pro) |
+| **Video Playlist** | `;;;;;;params?` wrapping `;;;` videos | `:::wa-video-playlist params?` | `<wa-video-playlist>` (Web Awesome Pro) |
 
 > **Note on `<wa-tag>` `with-remove`:** the `with-remove` attribute renders a
 > remove (×) button, but Web Awesome only *fires* a `wa-remove` event — it does
