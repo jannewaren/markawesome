@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Internal
+
+- **Refreshed the Web Awesome manifest fixture to 3.15.0** (November 17th, 2026). `rake wa:manifest[3.15.0]` regenerated `spec/fixtures/webawesome-enums.json` and `WA_VERSION` moved to `3.15.0`. The diff is **purely additive** — five new tags (`wa-code-highlighter`, `wa-counter`, `wa-lightbox`, `wa-lightbox-item`, `wa-number-ticker`) and their enums — with **zero DRIFT and zero GAP** against the enums we accept, so no transformer constant changed. `<wa-stepper>` is now **stable** in Web Awesome, so the "experimental" wording was dropped from the README. Fixture remains byte-identical to `markawesome-js`'s copy. Example-site CDN pins bumped to 3.15.0 in `jekyll-webawesome` and `eleventy-plugin-webawesome`.
+
 ## [0.20.0] - 2026-10-09
 
 ### Added

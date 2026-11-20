@@ -50,7 +50,60 @@ degrade-to-Markdown capability.
 
 ---
 
-## Web Awesome 3.14.0 audit — in progress
+## Web Awesome 3.15.0 audit — in progress
+
+_Repos: all six_
+
+WA **3.15.0** (November 17th, 2026) was audited against the whole ecosystem. The
+manifest fixture was refreshed in both engines (`rake wa:manifest[3.15.0]` /
+`npm run update-wa-manifest 3.15.0`, `WA_VERSION` → `3.15.0`) and the enum diff is
+**purely additive**: five new tags (`wa-code-highlighter`, `wa-counter`, `wa-lightbox`,
+`wa-lightbox-item`, `wa-number-ticker`) and the enums on them. **Zero DRIFT, zero GAP**
+against the enums we accept — no transformer constant changed.
+
+**What we get for free** by moving the pins:
+
+- **`<wa-stepper>` / `<wa-step>` are now stable.** We emit them, so the
+  "experimental" caveat was dropped from the engines, the editor and the skill.
+
+**What we add (new syntax in both engines, the editor, the skill and both example sites):**
+
+- **Lightbox gallery.** `<wa-lightbox>` / `<wa-lightbox-item>` (experimental) open
+  images and videos in a full-screen viewer from their thumbnails. New
+  `::::lightbox` fence — it *is* a `wa-grid` (`gap:`, `min:` reuse the layout rules)
+  whose body is Markdown images: `![alt](src "caption")`, or a linked image
+  `[![alt](thumb)](full "caption")` for a separate full-size file; a video
+  extension makes the item `type="video"`. Flags: `loop`, `thumbnails`, `no-nav`,
+  `no-counter`, `no-zoom`, `label:"…"`; thumbnails are square-cropped by default
+  (`landscape`, `portrait`, `natural`). Each item's `src` is a real link target, so
+  the gallery still works without JavaScript.
+- **Counter.** `<wa-counter>` (experimental) counts down to / up from a date. A
+  mode of the existing `[[[ … ]]]` date syntax: `countdown` / `countup`, with
+  `largest:`/`smallest:` units, `format:`, `no-labels`, `delimiter:"…"`,
+  `label:"…"` and `finished:"…"` (the finished slot).
+- **Number ticker.** `<wa-number-ticker>` (experimental) counts up to a value when
+  it scrolls into view. Also `[[[ … ]]]`: a leading number (`[[[ 87% ]]]`,
+  `[[[ 18452.75 currency:EUR ]]]`) with `from:`, `duration:`, `delay:`, `easing:`,
+  `eager`, `no-grouping`, `decimals:`, `display:` and `lang:`.
+
+### Considered but out of scope (3.15.0)
+
+- `<wa-code-highlighter>` — would take over every code fence, and every host
+  (Jekyll/Rouge, Eleventy plugins) already highlights at build time. Revisit as an
+  opt-in.
+- `<wa-rich-text-editor>` — a Pro form control; see *Explicitly out of scope*.
+- `<wa-timeline>` — announced but not in 3.15.0. Revisit at 3.16.
+- `--backdrop-color`, `disable-sticky` and the new `*__<component>` CSS parts — none
+  apply to markup we emit.
+- Lightbox `data-lightbox` external triggers, `width`/`height`/`srcset`, the
+  `actions` slot and `<template>` slides — need per-image metadata or app
+  JavaScript Markdown can't express.
+- Counter `duration` (relative to page load, not a date) and `paused` (needs JS to
+  resume); ticker significant/integer digits, `valueFormatter` and `restart()`.
+
+---
+
+## Web Awesome 3.14.0 audit — done
 
 _Repos: all six_
 
@@ -68,7 +121,7 @@ together against the whole ecosystem. The manifest fixture was refreshed in both
   components we emit, so the "experimental" caveats were dropped from the engines,
   the editor and the skill.
 
-**What was added (new syntax in both engines, the editor, the skill and both example sites; awaiting release):**
+**What was added (new syntax in both engines, the editor, the skill and both example sites; shipped in markawesome 0.20.0 / markawesome-js 0.5.0):**
 
 - **Labeled divider.** `<wa-divider>` gained a default-slot label and
   `label-placement` (`start`/`center`/`end`). New mirrored shorthand

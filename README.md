@@ -52,9 +52,9 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 > (`pulse`/`bounce`/`none`) and `icon:name` are flags; lines indented under a
 > step become its description. The active step is the one flagged `active`,
 > else the first incomplete step, else the last. Container params are
-> `horizontal`/`vertical`/`auto` and `label:"…"`. `wa-stepper` is experimental
-> in Web Awesome 3.14.0, and its interactive features (`clickable`, `linear`)
-> are deliberately not exposed.
+> `horizontal`/`vertical`/`auto` and `label:"…"`. `wa-stepper` is stable as of
+> Web Awesome 3.15.0; its interactive features (`clickable`, `linear`) are
+> deliberately not exposed.
 
 ## Layout Utilities
 

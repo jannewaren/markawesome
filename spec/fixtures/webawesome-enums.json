@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "webAwesomeVersion": "3.14.0",
-    "source": "@awesome.me/webawesome@3.14.0/dist/custom-elements.json",
+    "webAwesomeVersion": "3.15.0",
+    "source": "@awesome.me/webawesome@3.15.0/dist/custom-elements.json",
     "allTags": [
       "wa-accordion",
       "wa-accordion-item",
@@ -19,9 +19,11 @@
       "wa-carousel-item",
       "wa-checkbox",
       "wa-checkbox-group",
+      "wa-code-highlighter",
       "wa-color-picker",
       "wa-comparison",
       "wa-copy-button",
+      "wa-counter",
       "wa-details",
       "wa-dialog",
       "wa-divider",
@@ -36,9 +38,12 @@
       "wa-input",
       "wa-intersection-observer",
       "wa-known-date",
+      "wa-lightbox",
+      "wa-lightbox-item",
       "wa-markdown",
       "wa-mutation-observer",
       "wa-number-input",
+      "wa-number-ticker",
       "wa-option",
       "wa-otp-input",
       "wa-page",
@@ -310,6 +315,17 @@
       "left"
     ]
   },
+  "wa-counter": {
+    "direction": [
+      "down",
+      "up"
+    ],
+    "format": [
+      "long",
+      "short",
+      "narrow"
+    ]
+  },
   "wa-details": {
     "appearance": [
       "filled",
@@ -535,6 +551,12 @@
       "large"
     ]
   },
+  "wa-lightbox-item": {
+    "type": [
+      "image",
+      "video"
+    ]
+  },
   "wa-number-input": {
     "appearance": [
       "filled",
@@ -566,6 +588,19 @@
     ],
     "step": [
       "any"
+    ]
+  },
+  "wa-number-ticker": {
+    "currency-display": [
+      "symbol",
+      "narrowSymbol",
+      "code",
+      "name"
+    ],
+    "type": [
+      "currency",
+      "decimal",
+      "percent"
     ]
   },
   "wa-otp-input": {

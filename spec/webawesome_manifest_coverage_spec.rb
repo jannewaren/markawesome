@@ -14,7 +14,7 @@ require 'json'
 
 # The Web Awesome release these lists are curated against. Bump in lockstep with
 # regenerating the fixture.
-wa_version = '3.14.0'
+wa_version = '3.15.0'
 
 fixture = JSON.parse(File.read(File.expand_path('fixtures/webawesome-enums.json', __dir__)))
 all_tags = fixture.dig('_meta', 'allTags')
