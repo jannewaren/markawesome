@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-11-20
+
 ### Added
 
 - **Lightbox gallery (`<wa-lightbox>` / `<wa-lightbox-item>`, Web Awesome 3.15.0, experimental).** New `LightboxTransformer`: a `::::lightbox params?` fence (or `:::wa-lightbox params?`) whose body lines are Markdown images. `![alt](src "caption")` → an item whose `src` and thumbnail are the image; a linked image `[![alt](thumb "t")](href "caption")` → thumbnail `thumb`, item `src` = `href`. The caption is the link title, else the image title. An item `src` ending in `.mp4`/`.webm`/`.mov`/`.ogv`/`.m4v` (any case, ignoring `?query`/`#hash`) gets `type="video"`. Blank lines are ignored; any other line is rendered as Markdown in place. The gallery always carries `class="wa-grid"`, and `gap:`/`min:`/`align:`/`justify:` follow the `::::grid` rules via a new public `LayoutTransformer.grid_attributes`. Flags: `loop`, `thumbnails` → `with-thumbnails`, `no-nav` → `without-navigation`, `no-counter` → `without-counter`, `no-zoom` → `without-zoom`, `label:"…"`. Thumbnails are `<img loading="lazy">` square-cropped by default; `landscape` (4 / 3), `portrait` (3 / 4) or `natural` (no crop). Runs **first** in the pipeline with divider/stepper, so a gallery can sit inside a `::::grid`, card or tab, and `image_dialog: true` never wraps gallery images. Plain-Markdown degrade: the image lines as written, fence dropped (new `:lightbox` override key).

@@ -50,7 +50,7 @@ degrade-to-Markdown capability.
 
 ---
 
-## Web Awesome 3.15.0 audit — in progress
+## Web Awesome 3.15.0 audit — done
 
 _Repos: all six_
 
@@ -66,7 +66,7 @@ against the enums we accept — no transformer constant changed.
 - **`<wa-stepper>` / `<wa-step>` are now stable.** We emit them, so the
   "experimental" caveat was dropped from the engines, the editor and the skill.
 
-**What we add (new syntax in both engines, the editor, the skill and both example sites):**
+**What was added (new syntax in both engines, the editor, the skill and both example sites; shipped in markawesome 0.21.0 / markawesome-js 0.6.0 / jekyll-webawesome 0.27.0 / eleventy-plugin-webawesome 0.6.0 / markawesome-vscode 0.16.0 / markawesome-skill 0.3.0):**
 
 - **Lightbox gallery.** `<wa-lightbox>` / `<wa-lightbox-item>` (experimental) open
   images and videos in a full-screen viewer from their thumbnails. New
