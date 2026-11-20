@@ -93,6 +93,36 @@ RSpec.describe Markawesome::Transformer do
       expect(result).to include('<wa-stepper active="step-1"><wa-step name="step-1">One</wa-step></wa-stepper>')
     end
 
+    it 'routes [[[ … ]]] to a number ticker, a counter or a date' do
+      result = described_class.process('[[[ 87% ]]] [[[ 2026-12-24 countdown ]]] [[[ 2026-06-26 ]]]')
+      expect(result).to eq(
+        '<wa-number-ticker value="0.87" type="percent"></wa-number-ticker> ' \
+        '<wa-counter date="2026-12-24"></wa-counter> ' \
+        '<wa-format-date date="2026-06-26" year="numeric" month="long" day="numeric"></wa-format-date>'
+      )
+    end
+
+    it 'processes a lightbox inside a grid layout' do
+      input = "::::grid gap:l\n::::lightbox\n![A](a.jpg)\n::::\nSide text\n::::"
+      result = described_class.process(input)
+      expect(result).to start_with("<div class=\"wa-grid wa-gap-l\">\n<wa-lightbox class=\"wa-grid\">")
+      expect(result).to end_with("</wa-lightbox>\nSide text\n</div>")
+    end
+
+    it 'processes a lightbox inside a card without wrapping it in a paragraph' do
+      result = described_class.process("===\nGallery\n\n::::lightbox\n![A](a.jpg)\n::::\n===")
+      expect(result).to start_with('<wa-card><p>Gallery</p>')
+      expect(result).to include('<wa-lightbox class="wa-grid"><wa-lightbox-item src="a.jpg">')
+      expect(result).not_to include('<p><wa-lightbox')
+    end
+
+    it 'does not dialog-wrap lightbox images when image_dialog is enabled' do
+      input = "::::lightbox\n![A](a.jpg)\n::::\n\n![Solo](solo.jpg)"
+      result = described_class.process(input, image_dialog: true)
+      expect(result.scan('<wa-dialog').length).to eq(1)
+      expect(result).to include('<wa-lightbox-item src="a.jpg"><img src="a.jpg" alt="A" loading="lazy"')
+    end
+
     it 'does not transform divider or stepper syntax inside fenced code blocks' do
       input = "```\n--- or ---\n>>>>>>\n- A\n>>>>>>\n```"
       expect(described_class.process(input)).to eq(input)

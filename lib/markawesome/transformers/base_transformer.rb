@@ -2,6 +2,7 @@
 
 require 'English'
 require 'kramdown'
+require_relative '../quoted_tokens'
 
 module Markawesome
   # Base class for all Web Awesome component transformers
@@ -17,6 +18,16 @@ module Markawesome
       # Helper method to convert markdown content to HTML
       def markdown_to_html(content)
         Kramdown::Document.new(content).to_html
+      end
+
+      # Split a params string into tokens, keeping `key:"a b"` together.
+      def quoted_tokens(string)
+        QuotedTokens.split(string)
+      end
+
+      # Strip one pair of matching surrounding quotes ("…" or '…'), if present.
+      def unquote(value)
+        QuotedTokens.unquote(value)
       end
 
       # Helper method to apply multiple regex patterns with the same transformation logic

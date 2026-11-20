@@ -26,7 +26,7 @@ module Markawesome
       #
       # @param component [Symbol] one of :accordion, :callout, :badge, :button,
       #   :card, :carousel, :comparison, :copy_button, :details, :dialog,
-      #   :divider, :icon, :image_dialog, :layout, :popover, :random_content,
+      #   :divider, :icon, :image_dialog, :layout, :lightbox, :number_ticker, :popover, :random_content,
       #   :stepper, :tabs, :tag, :tooltip, :tree.
       # @yield [content, options] Proc that receives the full source content
       #   and the renderer options; returns the content with that component
@@ -46,9 +46,11 @@ module Markawesome
     PIPELINE = %i[
       divider
       stepper
+      lightbox
       layout
       popover
       tooltip
+      number_ticker
       date
       badge
       button
@@ -72,9 +74,11 @@ module Markawesome
     TRANSFORMER_MAP = {
       divider: DividerTransformer,
       stepper: StepperTransformer,
+      lightbox: LightboxTransformer,
       layout: LayoutTransformer,
       popover: PopoverTransformer,
       tooltip: TooltipTransformer,
+      number_ticker: NumberTickerTransformer,
       date: DateTransformer,
       badge: BadgeTransformer,
       button: ButtonTransformer,

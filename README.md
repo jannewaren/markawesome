@@ -23,11 +23,14 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 | **Carousel** | `~~~~~~` | `:::wa-carousel` | `<wa-carousel>` with carousel items |
 | **Comparison** | `\|\|\|` or `\|\|\|25` | `:::wa-comparison` or `:::wa-comparison 25` | `<wa-comparison>` with before/after slots |
 | **Copy Button** | `<<<placement? tooltip:full\|copy\|none?` | `:::wa-copy-button placement? tooltip:full\|copy\|none?` | `<wa-copy-button value="content" tooltip-placement="top" tooltip="copy"></wa-copy-button>` |
+| **Counter** | `[[[ date countdown\|countup params? ]]]` | `:::wa-counter date params?` (empty body) | `<wa-counter date="2026-12-24" direction="up"></wa-counter>` |
 | **Details** | `^^^appearance? icon-placement?` | `:::wa-details appearance? icon-placement?` | `<wa-details>content</wa-details>` |
 | **Dialog** | `???params?` | `:::wa-dialog params?` | `<wa-dialog>` with trigger button and content |
 | **Divider** | `--- label ---` (e.g. `--- start icon:star New ---`) | `:::wa-divider params?` (body is the label) | `<wa-divider label-placement="start"><wa-icon name="star"></wa-icon> New</wa-divider>` |
 | **Icon** | `$$$icon-name` | `:::wa-icon icon-name` | `<wa-icon name="icon-name"></wa-icon>` |
 | **Image Dialog** | `![alt](url)` | — | Wraps images in clickable `<wa-dialog>` overlays |
+| **Lightbox** | `::::lightbox params?` wrapping image lines | `:::wa-lightbox params?` | `<wa-lightbox class="wa-grid"><wa-lightbox-item src="full.jpg" caption="…"><img …></wa-lightbox-item>…</wa-lightbox>` |
+| **Number Ticker** | `[[[ number params? ]]]` (e.g. `[[[ 87% ]]]`) | `:::wa-number-ticker number params?` (empty body) | `<wa-number-ticker value="0.87" type="percent"></wa-number-ticker>` |
 | **Popover** | `&&&params?` or inline `&&&trigger >>> content&&&` | `:::wa-popover params?` | `<wa-popover>` with trigger button and content |
 | **Stepper** | `>>>>>> params?` wrapping a task list | `:::wa-stepper params?` | `<wa-stepper active="step-2"><wa-step name="step-1" completed>…</wa-step>…</wa-stepper>` |
 | **Tab Group** | `++++++` | `:::wa-tabs` | `<wa-tab-group><wa-tab>content</wa-tab></wa-tab-group>` |
@@ -55,6 +58,26 @@ Used as the transformation engine for the [jekyll-webawesome](https://github.com
 > `horizontal`/`vertical`/`auto` and `label:"…"`. `wa-stepper` is stable as of
 > Web Awesome 3.15.0; its interactive features (`clickable`, `linear`) are
 > deliberately not exposed.
+
+> **Lightbox:** each body line is an item — `![alt](src "caption")`, or a
+> linked image `[![alt](thumb)](full "caption")` for a separate full-size file;
+> a video extension (`.mp4`, `.webm`, `.mov`, `.ogv`, `.m4v`) makes it
+> `type="video"`. Other lines are rendered as Markdown in place. The gallery is a
+> `wa-grid` (`gap:`, `min:`, `align:`, `justify:`); flags are `loop`,
+> `thumbnails`, `no-nav`, `no-counter`, `no-zoom` and `label:"…"`; thumbnails
+> are square-cropped unless `landscape`, `portrait` or `natural`. Every item's
+> `src` is a real link, so the gallery degrades to links without JavaScript.
+> Experimental in Web Awesome 3.15.0.
+
+> **Counter and number ticker:** both share the `[[[ … ]]]` date syntax. A
+> `countdown`/`countup` token makes a `<wa-counter>` (`largest:`/`smallest:`
+> units, `format:short|narrow`, `no-labels`, `delimiter:"…"`, `label:"…"`,
+> `finished:"…"`, `lang:`); a leading number makes a `<wa-number-ticker>`
+> (`87%` → `type="percent" value="0.87"`, `currency:EUR`, `display:`, `from:`,
+> `duration:`, `delay:`, `easing:`, `eager`, `no-grouping`, `decimals:N`,
+> `lang:`). Quote values with spaces: `key:"…"`. Like dates, both render into
+> shadow DOM and show nothing without Web Awesome's JavaScript. Experimental in
+> Web Awesome 3.15.0.
 
 ## Layout Utilities
 

@@ -113,6 +113,19 @@ coverage = [
   { label: 'relative-time numeric', tag: 'wa-relative-time', attr: 'numeric',
     accepted: -> { Markawesome::DateTransformer::RELATIVE_NUMERICS } },
 
+  { label: 'counter direction', tag: 'wa-counter', attr: 'direction',
+    accepted: -> { Markawesome::CounterAttributes::DIRECTIONS } },
+  { label: 'counter format', tag: 'wa-counter', attr: 'format',
+    accepted: -> { Markawesome::CounterAttributes::FORMATS } },
+
+  { label: 'lightbox-item type', tag: 'wa-lightbox-item', attr: 'type',
+    accepted: -> { Markawesome::LightboxTransformer::LIGHTBOX_ITEM_TYPES } },
+
+  { label: 'number-ticker type', tag: 'wa-number-ticker', attr: 'type',
+    accepted: -> { Markawesome::NumberTickerTransformer::TICKER_TYPES } },
+  { label: 'number-ticker currency-display', tag: 'wa-number-ticker', attr: 'currency-display',
+    accepted: -> { Markawesome::NumberTickerTransformer::CURRENCY_DISPLAYS } },
+
   { label: 'format-date weekday', tag: 'wa-format-date', attr: 'weekday',
     accepted: -> { Markawesome::DateTransformer::GRANULAR_ENUMS['weekday'] } },
   { label: 'format-date era', tag: 'wa-format-date', attr: 'era',

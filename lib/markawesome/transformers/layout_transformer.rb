@@ -60,6 +60,14 @@ module Markawesome
       apply_multiple_patterns(content, patterns)
     end
 
+    # Grid classes and inline styles for a params string, using the same rules
+    # as `::::grid` (gap:, align:, justify:, min:). Unknown tokens are ignored.
+    # Shared with LightboxTransformer, whose gallery is itself a wa-grid.
+    # @return [Array(Array<String>, Array<String>)] [classes, styles]
+    def self.grid_attributes(params_string)
+      build_attributes('grid', params_string)
+    end
+
     class << self
       private
 

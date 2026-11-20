@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'base_transformer'
+require_relative '../counter_attributes'
 
 module Markawesome
-  # Transforms declarative timestamp syntax into Web Awesome's two timestamp
+  # Transforms declarative timestamp syntax into Web Awesome's three date
   # components:
   #   <wa-format-date>   — an absolute, locale-formatted date ("June 26, 2026")
   #   <wa-relative-time> — a relative phrase ("3 days ago"), optionally ticking
+  #   <wa-counter>       — a live countdown to / count up from a date
   #
   # These are pure declarative wrappers over the browser's Intl.DateTimeFormat /
   # Intl.RelativeTimeFormat: the date value is baked into the markup at build
@@ -15,11 +17,16 @@ module Markawesome
   #
   # Inline (primary):    [[[ <date> <tokens> ]]]
   # Block (alternative): :::wa-format-date <date> <tokens>  /  :::wa-relative-time …
-  #                      followed by a closing ::: (empty body)
+  #                      /  :::wa-counter …, followed by a closing ::: (empty body)
   #
-  # Mode: absolute (<wa-format-date>) is the default; a bare `relative` token in
-  # the inline form switches to <wa-relative-time>. The block selector name
-  # chooses the mode directly.
+  # Mode: absolute (<wa-format-date>) is the default; in the inline form a bare
+  # `countdown` / `countup` token switches to <wa-counter>, else a bare
+  # `relative` token switches to <wa-relative-time>. The block selector name
+  # chooses the mode directly (a counter counts down unless `up`/`countup`).
+  #
+  # Tokens are whitespace-separated, except that `key:"…"` / `key:'…'` keeps a
+  # quoted value (spaces included) together — used by the counter's
+  # `finished:`, `label:` and `delimiter:`.
   #
   # Static-site caveat: both components render generated text into shadow DOM
   # with no light-DOM fallback — with Web Awesome's JS disabled they show
@@ -29,7 +36,7 @@ module Markawesome
     # Inline: content excludes `]`, non-greedy, multiple-per-line, single-line.
     INLINE_REGEX = /\[\[\[[ \t]*([^\]\r\n]+?)[ \t]*\]\]\]/
     # Block: selector name picks the mode; an empty body, closed by `:::`.
-    ALTERNATIVE_REGEX = /^:::wa-(format-date|relative-time)[ \t]*([^\n]*)\n:::$/
+    ALTERNATIVE_REGEX = /^:::wa-(format-date|relative-time|counter)[ \t]*([^\n]*)\n:::$/
 
     # A token is the date when it is an ISO 8601 date or datetime (datetimes use
     # the `T` separator — a space would break whitespace tokenization).
@@ -77,11 +84,16 @@ module Markawesome
     RELATIVE_FORMATS = %w[long short narrow].freeze
     RELATIVE_NUMERICS = %w[auto always].freeze
 
+    # Bare tokens that switch the inline form to <wa-counter>; its options live
+    # in CounterAttributes.
+    COUNTER_MODE_TOKENS = %w[countdown countup].freeze
+    BLOCK_MODES = { 'format-date' => :absolute, 'relative-time' => :relative, 'counter' => :counter }.freeze
+
     def self.transform(content)
       patterns = [
         { regex: INLINE_REGEX, block: proc { |_m, md| render_tokens(md[1], nil) } },
         { regex: ALTERNATIVE_REGEX,
-          block: proc { |_m, md| render_tokens(md[2], md[1] == 'relative-time' ? :relative : :absolute) } }
+          block: proc { |_m, md| render_tokens(md[2], BLOCK_MODES[md[1]]) } }
       ]
       apply_multiple_patterns(content, patterns)
     end
@@ -100,11 +112,19 @@ module Markawesome
       private
 
       def render_tokens(token_string, mode_override)
-        tokens = token_string.to_s.strip.split(/\s+/)
+        tokens = quoted_tokens(token_string)
         date, tokens = split_date(tokens)
-        mode = mode_override || (tokens.include?('relative') ? :relative : :absolute)
+        case mode_override || inline_mode(tokens)
+        when :counter then build_element('wa-counter', *CounterAttributes.build(date, tokens))
+        when :relative then build_relative_time(date, tokens)
+        else build_format_date(date, tokens)
+        end
+      end
 
-        mode == :relative ? build_relative_time(date, tokens) : build_format_date(date, tokens)
+      def inline_mode(tokens)
+        return :counter if tokens.intersect?(COUNTER_MODE_TOKENS)
+
+        tokens.include?('relative') ? :relative : :absolute
       end
 
       # Pull the first date/datetime token out, leaving the option tokens.
@@ -116,7 +136,7 @@ module Markawesome
       end
 
       def extract_date(token_string)
-        tokens = token_string.to_s.strip.split(/\s+/)
+        tokens = quoted_tokens(token_string)
         tokens.find { |token| token.match?(DATE_TOKEN_REGEX) }.to_s
       end
 
@@ -194,10 +214,10 @@ module Markawesome
         opts
       end
 
-      def build_element(tag, parts)
-        return "<#{tag}></#{tag}>" if parts.empty?
+      def build_element(tag, parts, inner = '')
+        return "<#{tag}>#{inner}</#{tag}>" if parts.empty?
 
-        "<#{tag} #{parts.join(' ')}></#{tag}>"
+        "<#{tag} #{parts.join(' ')}>#{inner}</#{tag}>"
       end
 
       def escape_html(text)

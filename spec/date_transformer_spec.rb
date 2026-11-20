@@ -224,7 +224,94 @@ RSpec.describe Markawesome::DateTransformer do
     end
   end
 
+  describe '.transform with a counter' do
+    it 'transforms a countdown with a finished message (exact)' do
+      result = described_class.transform(%(Launch in [[[ 2026-12-24T18:00:00Z countdown finished:"We're live!" ]]]))
+      expect(result).to eq(
+        'Launch in <wa-counter date="2026-12-24T18:00:00Z">' \
+        '<span slot="finished">We&#39;re live!</span></wa-counter>'
+      )
+    end
+
+    it 'transforms a count-up with units and a short format (exact)' do
+      result = described_class.transform('Up for [[[ 2020-03-01 countup largest:years smallest:days format:short ]]]')
+      expect(result).to eq(
+        'Up for <wa-counter date="2020-03-01" direction="up" largest-unit="years" ' \
+        'smallest-unit="days" format="short"></wa-counter>'
+      )
+    end
+
+    it 'transforms a clock-style countdown with every option, in a fixed order' do
+      result = described_class.transform(
+        '[[[ lang:fi label:"New year" delimiter:":" no-labels largest:hours 2026-12-31T23:59:59 countdown ]]]'
+      )
+      expect(result).to eq(
+        '<wa-counter date="2026-12-31T23:59:59" largest-unit="hours" without-labels ' \
+        'delimiter=":" label="New year" lang="fi"></wa-counter>'
+      )
+    end
+
+    it 'accepts single-quoted values with spaces' do
+      result = described_class.transform("[[[ 2026-12-24 countdown delimiter:' : ' finished:'Done, \"really\"' ]]]")
+      expect(result).to eq(
+        '<wa-counter date="2026-12-24" delimiter=" : "><span slot="finished">Done, &quot;really&quot;</span></wa-counter>'
+      )
+    end
+
+    it 'escapes HTML in the finished text and label' do
+      result = described_class.transform('[[[ 2026-12-24 countdown label:"<b>" finished:"<script>x</script>" ]]]')
+      expect(result).to include('label="&lt;b&gt;"')
+      expect(result).to include('<span slot="finished">&lt;script&gt;x&lt;/script&gt;</span>')
+    end
+
+    it 'drops invalid units and formats and omits the long default' do
+      result = described_class.transform('[[[ 2026-12-24 countdown largest:weeks smallest:ms format:long format:wide ]]]')
+      expect(result).to eq('<wa-counter date="2026-12-24"></wa-counter>')
+    end
+
+    it 'lets later tokens win' do
+      result = described_class.transform('[[[ 2026-12-24 countup countdown largest:days largest:hours ]]]')
+      expect(result).to eq('<wa-counter date="2026-12-24" largest-unit="hours"></wa-counter>')
+    end
+
+    it 'prefers counter mode over relative mode' do
+      expect(described_class.transform('[[[ relative 2026-12-24 countdown ]]]'))
+        .to eq('<wa-counter date="2026-12-24"></wa-counter>')
+    end
+
+    it 'emits a date-less counter when no date is given' do
+      expect(described_class.transform('[[[ countdown ]]]')).to eq('<wa-counter></wa-counter>')
+    end
+
+    it 'supports the :::wa-counter block, counting down by default' do
+      expect(described_class.transform(":::wa-counter 2026-12-24 format:narrow\n:::"))
+        .to eq('<wa-counter date="2026-12-24" format="narrow"></wa-counter>')
+    end
+
+    it 'counts up in the block form with up or countup' do
+      expect(described_class.transform(":::wa-counter 2020-01-01 up\n:::"))
+        .to eq('<wa-counter date="2020-01-01" direction="up"></wa-counter>')
+      expect(described_class.transform(":::wa-counter 2020-01-01 countup\n:::"))
+        .to eq('<wa-counter date="2020-01-01" direction="up"></wa-counter>')
+    end
+
+    it 'keeps quoted tokens together without changing format-date output' do
+      expect(described_class.transform('[[[2026-06-26 style:long finished:"a 2026-01-01 b"]]]'))
+        .to eq('<wa-format-date date="2026-06-26" year="numeric" month="long" day="numeric"></wa-format-date>')
+    end
+  end
+
   describe '.render_as_markdown' do
+    it 'degrades a counter to its raw date string' do
+      result = described_class.render_as_markdown('Launch [[[ 2026-12-24 countdown finished:"Live 2027-01-01" ]]].')
+
+      expect(result).to eq('Launch 2026-12-24.')
+    end
+
+    it 'degrades a :::wa-counter block to its raw date string' do
+      expect(described_class.render_as_markdown(":::wa-counter 2020-01-01 up\n:::")).to eq('2020-01-01')
+    end
+
     it 'degrades an inline format-date to its raw date string' do
       result = described_class.render_as_markdown('Published [[[2026-06-26 style:long]]].')
 
